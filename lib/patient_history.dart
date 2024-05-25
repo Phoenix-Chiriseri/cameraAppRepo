@@ -1,0 +1,69 @@
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class PatientHistory extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Patient History'),
+        backgroundColor: Colors.green,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            // Add widgets to display patient history here
+            // For example, you can use ListView to display a list of past appointments or medical records
+            Expanded(
+              child: ListView(
+                children: [
+                  // Card 1
+                  Card(
+                    elevation: 3, // Add elevation for a raised effect
+                    margin: EdgeInsets.only(bottom: 16.0), // Add margin between cards
+                    child: ListTile(
+                      title: Text('Appointment Date: January 5, 2023'),
+                      subtitle: Text('Reason for Visit: Follow-up checkup'),
+                    ),
+                  ),
+                  // Card 2
+                  Card(
+                    elevation: 3, // Add elevation for a raised effect
+                    margin: EdgeInsets.only(bottom: 16.0), // Add margin between cards
+                    child: ListTile(
+                      title: Text('Appointment Date: March 12, 2023'),
+                      subtitle: Text('Reason for Visit: Flu symptoms'),
+                    ),
+                  ),
+                  // Add more cards as needed
+                ],
+              ),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                // Implement functionality to navigate back to the previous screen
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green, // Change the background color to green
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // Adjust the padding
+                textStyle: TextStyle(fontSize: 12), // Adjust the text size
+              ),
+              child: Text('Back', style: TextStyle(fontSize: 12)), // Adjust the text size
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: PatientHistory(),
+  ));
+}

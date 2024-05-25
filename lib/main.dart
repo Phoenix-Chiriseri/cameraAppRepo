@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:simple_project/dash.dart';
+import 'package:simple_project/main.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(Login());
 }
 
-class MyApp extends StatelessWidget {
+class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Health App',
+      title: '',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -56,6 +58,18 @@ class _HealthFormState extends State<HealthForm> {
                 decoration: InputDecoration(
                   labelText: 'Please Enter Your Id',
                   border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.blue,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.green,
+                      width: 2.0,
+                    ),
+                  ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -70,6 +84,18 @@ class _HealthFormState extends State<HealthForm> {
                 decoration: InputDecoration(
                   labelText: 'Date',
                   border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.blue,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.green,
+                      width: 2.0,
+                    ),
+                  ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -79,19 +105,26 @@ class _HealthFormState extends State<HealthForm> {
                 },
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Navigate to camera screen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CameraScreen(),
-                      ),
-                    );
-                  }
-                },
-                child: Text('Navigate'),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      // Navigate to camera screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyApp(),
+                        ),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                    textStyle: TextStyle(fontSize: 16),
+                  ),
+                  child: Text('Login'),
+                ),
               ),
             ],
           ),
@@ -115,8 +148,7 @@ class CameraScreen extends StatefulWidget {
 
 class _CameraScreenState extends State<CameraScreen> {
   late CameraController _controller;
-  //late Future<void> ?_initializeControllerFuture;
-  Future<void>? _initializeControllerFuture;
+  late Future<void>? _initializeControllerFuture;
 
   @override
   void initState() {
