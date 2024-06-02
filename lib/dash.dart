@@ -3,6 +3,7 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'new_patient.dart';
 import 'patient_history.dart';
 import 'search_patient.dart';
+import 'camera_example.dart';
 
 void main() {
   runApp(MyApp());
@@ -64,6 +65,17 @@ class MyHomePage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SearchPatient()),
+              );
+            },
+          ),
+          CustomCard(
+            imageAsset: 'assets/viewImages.png',
+            title: 'View Previous Images',
+            subtitle: 'View Images About Your Patient',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CameraExample()),
               );
             },
           ),

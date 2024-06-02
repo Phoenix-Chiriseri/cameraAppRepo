@@ -116,86 +116,69 @@ class _CameraScreen1State extends State<CameraScreen1> {
     if (_controller == null || !_controller!.value.isInitialized) {
       return Center(child: CircularProgressIndicator());
     }
-
     return Scaffold(
       appBar: AppBar(title: Text('Presaline')),
       body: GestureDetector(
         onScaleUpdate: _onScaleUpdate,
-        child: Column(
+        child: Stack(
           children: [
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Stack(
-                      children: [
-                        ColorFiltered(
-                          colorFilter: _isSepia
-                              ? ColorFilter.mode(
-                            Colors.brown.withOpacity(0.5),
-                            BlendMode.darken,
-                          )
-                              : ColorFilter.mode(
-                            Colors.transparent,
-                            BlendMode.multiply,
-                          ),
-                          child: CameraPreview(_controller!),
-                        ),
-                        Center(
-                          child: Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (_capturedImagePath != null)
-                    Container(
-                      width: 100,
-                      margin: EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 2,
-                        ),
-                      ),
-                      child: Image.file(File(_capturedImagePath!)),
-                    ),
-                ],
+            Center(
+              child: ColorFiltered(
+                colorFilter: _isSepia
+                    ? ColorFilter.mode(
+                  Colors.brown.withOpacity(0.5),
+                  BlendMode.darken,
+                )
+                    : ColorFilter.mode(
+                  Colors.transparent,
+                  BlendMode.multiply,
+                ),
+                child: AspectRatio(
+                  aspectRatio: _controller!.value.aspectRatio,
+                  child: CameraPreview(_controller!),
+                ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: _takePicture,
-                  child: Icon(Icons.camera),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Time remaining: $_start seconds',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    backgroundColor: Colors.black.withOpacity(0.5),
+                  ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CameraScreen2()),
-                    );
-                  },
-                  child: Text('Next'),
-                ),
-                ElevatedButton(
-                  onPressed: _toggleSepiaFilter,
-                  child: Text('Sepia Filter'),
-                ),
-              ],
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Time remaining: $_start seconds',
-                style: TextStyle(fontSize: 20),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: _takePicture,
+                      child: Icon(Icons.camera),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => CameraScreen2()),
+                        );
+                      },
+                      child: Text('Next'),
+                    ),
+                    ElevatedButton(
+                      onPressed: _toggleSepiaFilter,
+                      child: Text('Sepia Filter'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

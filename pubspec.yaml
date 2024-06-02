@@ -24,7 +24,8 @@ dependencies:
   whatsapp_unilink: ^2.1.0
   contacts_service: ^0.6.3
   fluttertoast: ^8.0.8
-  pdf: ^3.10.4
+  image_picker: ^0.8.4+8
+  flutter_tflite: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -38,3 +39,6 @@ flutter:
     - assets/advice.png
     - assets/diagnose.png
     - assets/medical.png
+    - assets/viewImages.png
+    - assets/model_unquant.tflite
+    - assets/labels.txt

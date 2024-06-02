@@ -48,7 +48,7 @@ class _NewPatientState extends State<NewPatient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recommend A Friend'),
+        title: Text('Save Patient'),
         backgroundColor: Colors.green,
       ),
       body: Padding(
