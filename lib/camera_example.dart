@@ -28,7 +28,6 @@ class _CameraExampleState extends State<CameraExample> {
   }
 
   Future<void> loadModel() async {
-
     String? res = await Tflite.loadModel(
       model: "assets/model_unquant.tflite",
       labels: "assets/labels.txt",

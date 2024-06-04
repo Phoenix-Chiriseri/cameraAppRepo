@@ -9,6 +9,7 @@ class NewPatient extends StatefulWidget {
 }
 
 class _NewPatientState extends State<NewPatient> {
+  TextEditingController patientIdController = TextEditingController();
   TextEditingController jobNameController = TextEditingController();
   TextEditingController jobDateController = TextEditingController();
   String? gender;
@@ -26,8 +27,9 @@ class _NewPatientState extends State<NewPatient> {
     }
   }
 
-  Future<void> saveInSqliteDatabase(String name, String date, String? gender) async {
+  Future<void> saveInSqliteDatabase(String id, String name, String date, String? gender) async {
     final patient = {
+      'id': id,
       'name': name,
       'date': date,
       'gender': gender
@@ -57,6 +59,11 @@ class _NewPatientState extends State<NewPatient> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             TextField(
+              controller: patientIdController,
+              decoration: InputDecoration(labelText: 'Patient ID'),
+            ),
+            SizedBox(height: 12.0),
+            TextField(
               controller: jobNameController,
               decoration: InputDecoration(labelText: 'Full Name'),
             ),
@@ -85,15 +92,16 @@ class _NewPatientState extends State<NewPatient> {
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
+                String id = patientIdController.text;
                 String name = jobNameController.text;
                 String date = jobDateController.text;
 
-                if (name.isEmpty || date.isEmpty || gender == null) {
+                if (id.isEmpty || name.isEmpty || date.isEmpty || gender == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Please Don\'t Leave Any Empty Fields')),
                   );
                 } else {
-                  saveInSqliteDatabase(name, date, gender);
+                  saveInSqliteDatabase(id, name, date, gender);
                 }
               },
               style: ElevatedButton.styleFrom(

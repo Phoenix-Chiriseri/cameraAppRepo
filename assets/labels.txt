@@ -1,2 +1,4 @@
 0 Normal
-1 Cancer
+1 CIN1
+2 Cin 2, 3
+3 Cancer

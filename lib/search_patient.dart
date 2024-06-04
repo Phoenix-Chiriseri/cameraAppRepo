@@ -8,9 +8,7 @@ class SearchPatient extends StatefulWidget {
 }
 
 class _SearchPatientState extends State<SearchPatient> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController dobController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController idController = TextEditingController();
 
   @override
   void initState() {
@@ -38,19 +36,9 @@ class _SearchPatientState extends State<SearchPatient> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             TextField(
-              controller: nameController,
-              decoration: InputDecoration(labelText: 'Patient Name'),
-            ),
-            SizedBox(height: 12.0),
-            TextField(
-              controller: dobController,
-              decoration: InputDecoration(labelText: 'Date of Birth'),
-            ),
-            SizedBox(height: 12.0),
-            TextField(
-              controller: phoneNumberController,
-              decoration: InputDecoration(labelText: 'Phone Number'),
-              keyboardType: TextInputType.phone,
+              controller: idController,
+              decoration: InputDecoration(labelText: 'Patient ID'),
+              keyboardType: TextInputType.number,
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
@@ -71,11 +59,16 @@ class _SearchPatientState extends State<SearchPatient> {
   }
 
   Future<void> searchPatient(BuildContext context) async {
-    String name = nameController.text;
-    String dob = dobController.text;
-    String phoneNumber = phoneNumberController.text;
+    String id = idController.text;
 
-    final results = await DatabaseHelper.instance.searchPatients(name, dob, phoneNumber);
+    if (id.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter a patient ID')),
+      );
+      return;
+    }
+
+    final results = await DatabaseHelper.instance.searchPatientsById(id);
 
     if (results.isEmpty) {
       showDialog(
@@ -83,7 +76,7 @@ class _SearchPatientState extends State<SearchPatient> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('No Patient Found'),
-            content: Text('No patient found with the provided details.'),
+            content: Text('No patient found with the provided ID.'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -108,7 +101,7 @@ class _SearchPatientState extends State<SearchPatient> {
                 for (var patient in results)
                   ListTile(
                     title: Text('Name: ${patient['name']}'),
-                    subtitle: Text('DOB: ${patient['date']}, Phone: ${patient['phoneNumber']}'),
+                    subtitle: Text('DOB: ${patient['date']}, Gender: ${patient['gender']}'),
                   ),
               ],
             ),

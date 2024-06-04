@@ -41,12 +41,12 @@ CREATE TABLE patients (
     return await db.insert('patients', patient);
   }
 
-  Future<List<Map<String, dynamic>>> searchPatients(String name, String date, String gender) async {
+  Future<List<Map<String, dynamic>>> searchPatientsById(String id) async {
     final db = await instance.database;
     final result = await db.query(
       'patients',
-      where: 'name = ? AND date = ? AND gender = ?',
-      whereArgs: [name, date, gender],
+      where: 'id = ?',
+      whereArgs: [id],
     );
     return result;
   }
