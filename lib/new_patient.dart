@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'database_helper.dart'; // Import the database helper
 import 'camera_screen1.dart'; // Import the camera screen
@@ -9,7 +10,7 @@ class NewPatient extends StatefulWidget {
 }
 
 class _NewPatientState extends State<NewPatient> {
-  TextEditingController patientIdController = TextEditingController();
+  final TextEditingController patientIdController = TextEditingController();
   TextEditingController jobNameController = TextEditingController();
   TextEditingController jobDateController = TextEditingController();
   String? gender;
@@ -17,14 +18,14 @@ class _NewPatientState extends State<NewPatient> {
   @override
   void initState() {
     super.initState();
-    requestPermission();
+    requestPermissions();
   }
 
-  Future<void> requestPermission() async {
-    final status = await Permission.contacts.status;
-    if (!status.isGranted) {
-      await Permission.contacts.request();
-    }
+  Future<void> requestPermissions() async {
+    await [
+      Permission.contacts,
+      Permission.camera,
+    ].request();
   }
 
   Future<void> saveInSqliteDatabase(String id, String name, String date, String? gender) async {
@@ -61,6 +62,10 @@ class _NewPatientState extends State<NewPatient> {
             TextField(
               controller: patientIdController,
               decoration: InputDecoration(labelText: 'Patient ID'),
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly,
+              ],
             ),
             SizedBox(height: 12.0),
             TextField(
@@ -72,18 +77,19 @@ class _NewPatientState extends State<NewPatient> {
               controller: jobDateController,
               decoration: InputDecoration(labelText: 'Date Of Birth'),
             ),
+            SizedBox(height: 12.0),
             Center(
               child: DropdownButton<String>(
                 value: gender,
-                items: ['Male', 'Female'].map((shift) {
+                items: ['Male', 'Female'].map((value) {
                   return DropdownMenuItem<String>(
-                    value: shift,
-                    child: Text(shift),
+                    value: value,
+                    child: Text(value),
                   );
                 }).toList(),
-                onChanged: (String? value) {
+                onChanged: (String? newValue) {
                   setState(() {
-                    gender = value;
+                    gender = newValue;
                   });
                 },
                 hint: Text('Gender'),
@@ -98,7 +104,7 @@ class _NewPatientState extends State<NewPatient> {
 
                 if (id.isEmpty || name.isEmpty || date.isEmpty || gender == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Please Don\'t Leave Any Empty Fields')),
+                    SnackBar(content: Text('Please don\'t leave any fields empty')),
                   );
                 } else {
                   saveInSqliteDatabase(id, name, date, gender);
@@ -107,9 +113,9 @@ class _NewPatientState extends State<NewPatient> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                textStyle: TextStyle(fontSize: 12),
+                textStyle: TextStyle(fontSize: 16),
               ),
-              child: Text('Save', style: TextStyle(fontSize: 12)),
+              child: Text('Save', style: TextStyle(fontSize: 16)),
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
@@ -119,9 +125,9 @@ class _NewPatientState extends State<NewPatient> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                textStyle: TextStyle(fontSize: 12),
+                textStyle: TextStyle(fontSize: 16),
               ),
-              child: Text('Back', style: TextStyle(fontSize: 12)),
+              child: Text('Back', style: TextStyle(fontSize: 16)),
             ),
           ],
         ),

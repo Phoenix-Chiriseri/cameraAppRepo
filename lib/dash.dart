@@ -4,6 +4,7 @@ import 'new_patient.dart';
 import 'patient_history.dart';
 import 'search_patient.dart';
 import 'camera_example.dart';
+import 'camera_example2.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,7 +30,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Health Application'),
+        title: Text('UZ Project App'),
         backgroundColor: Colors.green,
       ),
       body: ListView(
@@ -37,7 +38,7 @@ class MyHomePage extends StatelessWidget {
         children: <Widget>[
           CustomCard(
             imageAsset: 'assets/advice.png',
-            title: 'Save New Patient',
+            title: 'New Patient',
             subtitle: 'Add a new patient to your database and manage their information',
             onTap: () {
               Navigator.push(
@@ -48,7 +49,7 @@ class MyHomePage extends StatelessWidget {
           ),
           CustomCard(
             imageAsset: 'assets/diagnose.png',
-            title: 'View Patient History',
+            title: 'Patient History',
             subtitle: 'Access and review patients medical history and past appointments',
             onTap: () {
               Navigator.push(
@@ -70,12 +71,23 @@ class MyHomePage extends StatelessWidget {
           ),
           CustomCard(
             imageAsset: 'assets/viewImages.png',
-            title: 'View Previous Images',
-            subtitle: 'View Images About Your Patient',
+            title: 'Review Images',
+            subtitle: 'View Images About Your Patients',
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => CameraExample()),
+              );
+            },
+          ),
+          CustomCard(
+            imageAsset: 'assets/viewImages.png',
+            title: 'Test Camera',
+            subtitle: 'Connect Application To External Camera',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CameraExample2()),
               );
             },
           ),
