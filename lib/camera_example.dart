@@ -26,7 +26,7 @@ class _CameraExampleState extends State<CameraExample> {
       await Permission.storage.request();
     }
   }
-
+  //function that loads the model
   Future<void> loadModel() async {
     String? res = await Tflite.loadModel(
       model: "assets/model_unquant.tflite",

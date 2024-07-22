@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'database_helper.dart'; // Import the database helper
 import 'camera_screen1.dart'; // Import the camera screen
+import 'package:intl/intl.dart';
 
 class NewPatient extends StatefulWidget {
   @override
@@ -47,6 +48,33 @@ class _NewPatientState extends State<NewPatient> {
     );
   }
 
+  Future<void> _selectDateTime(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2101),
+    );
+    if (pickedDate != null) {
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(DateTime.now()),
+      );
+      if (pickedTime != null) {
+        final DateTime pickedDateTime = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
+        setState(() {
+          jobDateController.text = DateFormat('yyyy-MM-dd HH:mm').format(pickedDateTime); // Format the date and time
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +103,14 @@ class _NewPatientState extends State<NewPatient> {
             SizedBox(height: 12.0),
             TextField(
               controller: jobDateController,
-              decoration: InputDecoration(labelText: 'Date Of Birth'),
+              decoration: InputDecoration(
+                labelText: 'Date Of Birth',
+                suffixIcon: Icon(Icons.calendar_today), // Optional: adds a calendar icon
+              ),
+              readOnly: true, // Prevents keyboard from appearing
+              onTap: () {
+                _selectDateTime(context);
+              },
             ),
             SizedBox(height: 12.0),
             Center(

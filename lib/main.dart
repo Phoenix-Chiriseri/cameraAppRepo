@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:simple_project/dash.dart';
-import 'package:simple_project/main.dart';
 
 void main() {
   runApp(Login());
@@ -11,9 +10,9 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '',
+      title: 'Healthcare Application',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
       home: HealthForm(),
     );
@@ -34,7 +33,7 @@ class _HealthFormState extends State<HealthForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Health App'),
+        title: Text(''),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -45,7 +44,7 @@ class _HealthFormState extends State<HealthForm> {
             children: <Widget>[
               Center(
                 child: Text(
-                  'Welcome to Health App',
+                  'Welcome To HealthCare Application',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -60,7 +59,7 @@ class _HealthFormState extends State<HealthForm> {
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.blue,
+                      color: Colors.green,
                       width: 2.0,
                     ),
                   ),
@@ -82,11 +81,11 @@ class _HealthFormState extends State<HealthForm> {
               TextFormField(
                 controller: _dateController,
                 decoration: InputDecoration(
-                  labelText: 'Date',
+                  labelText: 'Password',
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.blue,
+                      color: Colors.green,
                       width: 2.0,
                     ),
                   ),
@@ -97,9 +96,10 @@ class _HealthFormState extends State<HealthForm> {
                     ),
                   ),
                 ),
+                obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a date';
+                    return 'Please enter your password';
                   }
                   return null;
                 },

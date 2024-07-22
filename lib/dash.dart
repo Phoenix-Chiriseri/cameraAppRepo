@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'new_patient.dart';
 import 'patient_history.dart';
 import 'search_patient.dart';
 import 'camera_example.dart';
-import 'camera_example2.dart';
+import 'zoom-session.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,14 +24,15 @@ class MyHomePage extends StatelessWidget {
   final List<String> imageList = [
     'assets/advice.png',
     'assets/diagnose.png',
-    'assets/medical.png'
+    'assets/medical.png',
+    'assets/zoom.jpg'
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('UZ Project App'),
+        title: Text('HealthCare Application'),
         backgroundColor: Colors.green,
       ),
       body: ListView(
@@ -81,13 +83,13 @@ class MyHomePage extends StatelessWidget {
             },
           ),
           CustomCard(
-            imageAsset: 'assets/viewImages.png',
-            title: 'Test Camera',
-            subtitle: 'Connect Application To External Camera',
+            imageAsset: 'assets/zoom.jpg',
+            title: 'View Zoom Session',
+            subtitle: 'Connect to Zoom and Start Meeting',
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CameraExample2()),
+                MaterialPageRoute(builder: (context) => ZoomSession()),
               );
             },
           ),
@@ -95,12 +97,14 @@ class MyHomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // The phone number to call for enquiries
-          final phoneNumber = "+263771255849";
-          FlutterPhoneDirectCaller.callNumber(phoneNumber);
+          //click the floating action button to start the zoom call..
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ZoomSession()),
+          );
         },
-        tooltip: 'Call',
-        child: Icon(Icons.phone),
+        tooltip: 'Start Zoom Meeting',
+        child: Icon(Icons.no_meeting_room_rounded),
         backgroundColor: Colors.green,
       ),
     );
@@ -140,3 +144,5 @@ class CustomCard extends StatelessWidget {
     );
   }
 }
+
+
