@@ -52,6 +52,18 @@ class _SearchPatientState extends State<SearchPatient> {
               ),
               child: Text('Search Patient'),
             ),
+            SizedBox(height: 16), // Add space between the buttons
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                padding: EdgeInsets.symmetric(horizontal: 22, vertical: 12),
+                textStyle: TextStyle(fontSize: 16),
+              ),
+              child: Text('Back', style: TextStyle(fontSize: 16)),
+            ),
           ],
         ),
       ),
