@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'database_helper.dart'; // Import the database helper
-import 'camera_screen1.dart'; // Import the camera screen
+// Import the database helper if needed
+// import 'database_helper.dart';
+// Import the camera screen if needed
+// import 'camera_screen1.dart';
 import 'package:intl/intl.dart';
 
 class NewPatient extends StatefulWidget {
@@ -12,8 +14,7 @@ class NewPatient extends StatefulWidget {
 
 class _NewPatientState extends State<NewPatient> {
   final TextEditingController patientIdController = TextEditingController();
-  TextEditingController jobNameController = TextEditingController();
-  TextEditingController jobDateController = TextEditingController();
+  final TextEditingController jobDateController = TextEditingController();
   String? gender;
 
   @override
@@ -29,23 +30,18 @@ class _NewPatientState extends State<NewPatient> {
     ].request();
   }
 
-  Future<void> saveInSqliteDatabase(String id, String name, String date, String? gender) async {
-    final patient = {
-      'id': id,
-      'name': name,
-      'date': date,
-      'gender': gender
-    };
-
-    await DatabaseHelper.instance.create(patient);
+  Future<void> saveInSqliteDatabase(String id, String date, String? gender) async {
+    // Replace DatabaseHelper.instance.create(patient); with your actual database handling code
+    // await DatabaseHelper.instance.create(patient);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Data Saved Successfully')),
     );
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => CameraScreen1()),
-    );
+    // Navigate to camera screen or any other screen
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => CameraScreen1()),
+    // );
   }
 
   Future<void> _selectDateTime(BuildContext context) async {
@@ -87,62 +83,42 @@ class _NewPatientState extends State<NewPatient> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            TextField(
-              controller: patientIdController,
-              decoration: InputDecoration(labelText: 'Patient ID'),
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-            ),
-            SizedBox(height: 12.0),
-            TextField(
-              controller: jobNameController,
-              decoration: InputDecoration(labelText: 'Full Name'),
-            ),
-            SizedBox(height: 12.0),
-            TextField(
-              controller: jobDateController,
-              decoration: InputDecoration(
-                labelText: 'Date Of Birth',
-                suffixIcon: Icon(Icons.calendar_today), // Optional: adds a calendar icon
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12.0), // Adjust bottom padding as needed
+              child: TextField(
+                controller: patientIdController,
+                decoration: InputDecoration(labelText: 'Patient ID'),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
               ),
-              readOnly: true, // Prevents keyboard from appearing
-              onTap: () {
-                _selectDateTime(context);
-              },
             ),
-            SizedBox(height: 12.0),
-            Center(
-              child: DropdownButton<String>(
-                value: gender,
-                items: ['Male', 'Female'].map((value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    gender = newValue;
-                  });
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12.0), // Adjust bottom padding as needed
+              child: TextField(
+                controller: jobDateController,
+                decoration: InputDecoration(
+                  labelText: 'Date Of Birth',
+                  suffixIcon: Icon(Icons.calendar_today),
+                ),
+                readOnly: true,
+                onTap: () {
+                  _selectDateTime(context);
                 },
-                hint: Text('Gender'),
               ),
             ),
-            SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 String id = patientIdController.text;
-                String name = jobNameController.text;
                 String date = jobDateController.text;
 
-                if (id.isEmpty || name.isEmpty || date.isEmpty || gender == null) {
+                if (id.isEmpty || date.isEmpty || gender == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Please don\'t leave any fields empty')),
                   );
                 } else {
-                  saveInSqliteDatabase(id, name, date, gender);
+                  saveInSqliteDatabase(id, date, gender);
                 }
               },
               style: ElevatedButton.styleFrom(

@@ -6,6 +6,7 @@ import 'patient_history.dart';
 import 'search_patient.dart';
 import 'camera_example.dart';
 import 'zoom-session.dart';
+import 'telemedicine.dart';
 
 void main() {
   runApp(MyApp());
@@ -68,6 +69,17 @@ class MyHomePage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SearchPatient()),
+              );
+            },
+          ),
+          CustomCard(
+            imageAsset: 'assets/telemedicine.png',
+            title: 'TeleMedicine',
+            subtitle: 'Connect instantly, manage records efficiently, and provide personalized care from anywhere.',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TelemedicineScreen()),
               );
             },
           ),

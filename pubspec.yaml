@@ -54,6 +54,7 @@ flutter:
     - assets/diagnose.png
     - assets/medical.png
     - assets/viewImages.png
+    - assets/telemedicine.png
     - assets/zoom.jpg
     - assets/model_unquant.tflite
     - assets/labels.txt
