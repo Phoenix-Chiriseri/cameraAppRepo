@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:simple_project/google_meet.dart';
 import 'new_patient.dart';
 import 'patient_history.dart';
 import 'search_patient.dart';
@@ -94,13 +95,13 @@ class MyHomePage extends StatelessWidget {
             },
           ),
           CustomCard(
-            imageAsset: 'assets/zoom.jpg',
-            title: 'View Zoom Session',
-            subtitle: 'Connect to Zoom and Start Meeting',
+            imageAsset: 'assets/googleMeetIcon.jpeg',
+            title: 'View Google Meet Meeting',
+            subtitle: 'Connect to Google Meet and Start Meeting',
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CameraExample()),
+                MaterialPageRoute(builder: (context) => GoogleMeet()),
               );
             },
           ),
@@ -111,10 +112,10 @@ class MyHomePage extends StatelessWidget {
           //click the floating action button to start the zoom call..
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CameraExample()),
+            MaterialPageRoute(builder: (context) => GoogleMeet()),
           );
         },
-        tooltip: 'Start Zoom Meeting',
+        tooltip: 'Start Meeting',
         child: Icon(Icons.no_meeting_room_rounded),
         backgroundColor: Colors.green,
       ),

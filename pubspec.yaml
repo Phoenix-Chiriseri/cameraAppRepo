@@ -12,7 +12,6 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   camera: ^0.9.4+5
-
   flutter_phone_direct_caller: ^2.0.0
   url_launcher: ^6.0.13
   sqflite: ^2.0.0+4
@@ -43,7 +42,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/greenIcon.jpg"  # Path to your main icon
+  image_path: "assets/telemedicine.png"  # Path to your main icon
 
 flutter:
   uses-material-design: true
@@ -55,5 +54,7 @@ flutter:
     - assets/viewImages.png
     - assets/telemedicine.png
     - assets/zoom.jpg
+    - assets/googleMeet.png
+    - assets/googleMeetIcon.jpeg
     - assets/model_unquant.tflite
     - assets/labels.txt

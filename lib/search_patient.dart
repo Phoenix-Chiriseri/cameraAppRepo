@@ -53,6 +53,7 @@ class _SearchPatientState extends State<SearchPatient> {
       return;
     }
     final results = await DatabaseHelper.instance.searchPatientsById(id);
+    print(results);
     if (results.isEmpty) {
       showDialog(
         context: context,
