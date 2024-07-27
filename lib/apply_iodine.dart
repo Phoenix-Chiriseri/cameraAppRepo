@@ -3,7 +3,8 @@ import 'package:camera/camera.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'dart:io';
-import 'diagnosis.dart';
+import 'package:simple_project/dash.dart';
+
 import 'camera_screen2.dart'; // Import CameraScreen2
 
 class ApplyIodine extends StatefulWidget {
@@ -142,7 +143,7 @@ class _ApplyIodine extends State<ApplyIodine> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Diagnosis()),
+                      MaterialPageRoute(builder: (context) => MyApp()),
                     );
                   },
                   child: Text('Next'),

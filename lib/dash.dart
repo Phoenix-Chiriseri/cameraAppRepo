@@ -5,7 +5,6 @@ import 'new_patient.dart';
 import 'patient_history.dart';
 import 'search_patient.dart';
 import 'camera_example.dart';
-import 'zoom-session.dart';
 import 'telemedicine.dart';
 
 void main() {
@@ -101,7 +100,7 @@ class MyHomePage extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ZoomSession()),
+                MaterialPageRoute(builder: (context) => CameraExample()),
               );
             },
           ),
@@ -112,7 +111,7 @@ class MyHomePage extends StatelessWidget {
           //click the floating action button to start the zoom call..
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ZoomSession()),
+            MaterialPageRoute(builder: (context) => CameraExample()),
           );
         },
         tooltip: 'Start Zoom Meeting',

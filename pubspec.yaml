@@ -32,7 +32,6 @@ dependencies:
   video_player: ^2.4.5
   wifi_iot: ^0.3.12
   font_awesome_flutter: ^10.0.0
-  flutter_zoom_sdk: ^1.1.0+4
   intl: ^0.17.0
 
 dev_dependencies:

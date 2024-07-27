@@ -1,6 +1,5 @@
-import 'dart:async';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
@@ -19,40 +18,72 @@ class DatabaseHelper {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(path, version: 1, onCreate: _createDB);
+    return await openDatabase(
+      path,
+      version: 1,
+      onCreate: _createDB,
+    );
   }
 
   Future _createDB(Database db, int version) async {
-    const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
-    const textType = 'TEXT NOT NULL';
-
     await db.execute('''
-CREATE TABLE patients (
-  id $idType,
-  name $textType,
-  date $textType,
-  gender $textType
-  )
-''');
+      CREATE TABLE patients (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        patient_id TEXT,
+        date_of_birth TEXT
+      )
+    ''');
   }
 
-  Future<int> create(Map<String, dynamic> patient) async {
-    final db = await instance.database;
-    return await db.insert('patients', patient);
+  Future<void> createPatient(String id, String dateOfBirth) async {
+    final db = await database;
+
+    await db.insert(
+      'patients',
+      {
+        'patient_id': id,
+        'date_of_birth': dateOfBirth,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   Future<List<Map<String, dynamic>>> searchPatientsById(String id) async {
-    final db = await instance.database;
-    final result = await db.query(
+    final db = await database;
+    return await db.query(
+      'patients',
+      where: 'patient_id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getPatients() async {
+    final db = await database;
+
+    return await db.query('patients');
+  }
+
+  Future<void> updatePatient(int id, String newId, String newDateOfBirth) async {
+    final db = await database;
+
+    await db.update(
+      'patients',
+      {
+        'patient_id': newId,
+        'date_of_birth': newDateOfBirth,
+      },
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<void> deletePatient(int id) async {
+    final db = await database;
+
+    await db.delete(
       'patients',
       where: 'id = ?',
       whereArgs: [id],
     );
-    return result;
-  }
-
-  Future close() async {
-    final db = await instance.database;
-    db.close();
   }
 }

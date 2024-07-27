@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
-// Import the database helper if needed
-// import 'database_helper.dart';
-// Import the camera screen if needed
-// import 'camera_screen1.dart';
 import 'package:intl/intl.dart';
+import 'camera_screen1.dart';
+import 'database_helper.dart'; // Import your database helper
 
 class NewPatient extends StatefulWidget {
   @override
@@ -15,7 +13,6 @@ class NewPatient extends StatefulWidget {
 class _NewPatientState extends State<NewPatient> {
   final TextEditingController patientIdController = TextEditingController();
   final TextEditingController jobDateController = TextEditingController();
-  String? gender;
 
   @override
   void initState() {
@@ -30,18 +27,15 @@ class _NewPatientState extends State<NewPatient> {
     ].request();
   }
 
-  Future<void> saveInSqliteDatabase(String id, String date, String? gender) async {
-    // Replace DatabaseHelper.instance.create(patient); with your actual database handling code
-    // await DatabaseHelper.instance.create(patient);
+  Future<void> saveInSqliteDatabase(String id, String date) async {
+    await DatabaseHelper.instance.createPatient(id, date);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Data Saved Successfully')),
     );
-
-    // Navigate to camera screen or any other screen
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => CameraScreen1()),
-    // );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CameraScreen1())
+    );
   }
 
   Future<void> _selectDateTime(BuildContext context) async {
@@ -84,7 +78,7 @@ class _NewPatientState extends State<NewPatient> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(bottom: 12.0), // Adjust bottom padding as needed
+              padding: const EdgeInsets.only(bottom: 12.0),
               child: TextField(
                 controller: patientIdController,
                 decoration: InputDecoration(labelText: 'Patient ID'),
@@ -95,7 +89,7 @@ class _NewPatientState extends State<NewPatient> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 12.0), // Adjust bottom padding as needed
+              padding: const EdgeInsets.only(bottom: 12.0),
               child: TextField(
                 controller: jobDateController,
                 decoration: InputDecoration(
@@ -113,12 +107,12 @@ class _NewPatientState extends State<NewPatient> {
                 String id = patientIdController.text;
                 String date = jobDateController.text;
 
-                if (id.isEmpty || date.isEmpty || gender == null) {
+                if (id.isEmpty || date.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Please don\'t leave any fields empty')),
                   );
                 } else {
-                  saveInSqliteDatabase(id, date, gender);
+                  saveInSqliteDatabase(id, date);
                 }
               },
               style: ElevatedButton.styleFrom(
