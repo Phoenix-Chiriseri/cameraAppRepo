@@ -14,14 +14,29 @@ class GoogleMeet extends StatelessWidget {
   }
 }
 
-class GoogleMeetIntegrationScreen extends StatelessWidget {
-  final String meetUrl = 'https://meet.google.com/xks-brsp-pvi'; // Replace with your Google Meet URL
+class GoogleMeetIntegrationScreen extends StatefulWidget {
+  @override
+  _GoogleMeetIntegrationScreenState createState() => _GoogleMeetIntegrationScreenState();
+}
+
+class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScreen> {
+  final TextEditingController _meetingIdController = TextEditingController();
+  String _baseMeetUrl = 'https://meet.google.com/'; // Base URL for Google Meet
 
   Future<void> _launchMeet() async {
-    if (await canLaunch(meetUrl)) {
-      await launch(meetUrl);
+    String meetingId = _meetingIdController.text.trim();
+    if (meetingId.isNotEmpty) {
+      String meetUrl = _baseMeetUrl + meetingId;
+      if (await canLaunch(meetUrl)) {
+        await launch(meetUrl);
+      } else {
+        throw 'Could not launch $meetUrl';
+      }
     } else {
-      throw 'Could not launch $meetUrl';
+      // Handle the case where the meeting ID is empty
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter a meeting ID.')),
+      );
     }
   }
 
@@ -47,16 +62,28 @@ class GoogleMeetIntegrationScreen extends StatelessWidget {
               width: 150, // Adjust the size as needed
               height: 150,
             ),
-            SizedBox(height: 20), // Space between image and button
+            SizedBox(height: 20), // Space between image and input field
             Text(
-              'Join a Google Meet Meeting',
+              'Enter Google Meet Meeting ID',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 20), // Space between text and button
+            SizedBox(height: 20), // Space between text and input field
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: TextField(
+                controller: _meetingIdController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Meeting ID',
+                ),
+                keyboardType: TextInputType.text,
+              ),
+            ),
+            SizedBox(height: 20), // Space between input field and button
             ElevatedButton(
               onPressed: _launchMeet,
               style: ElevatedButton.styleFrom(

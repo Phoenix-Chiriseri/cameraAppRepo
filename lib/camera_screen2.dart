@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
-import 'package:simple_project/apply_acetic.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'dart:io';
+import 'dart:typed_data';
 import 'camera_screen2.dart'; // Import CameraScreen2
+import 'package:simple_project/apply_acetic.dart';
 
 class CameraScreen2 extends StatefulWidget {
   @override
@@ -20,9 +22,14 @@ class _CameraScreen2State extends State<CameraScreen2> {
   double _maxZoomLevel = 1.0;
   String? _capturedImagePath;
 
+  late final encrypt.Key key;
+  late final encrypt.Encrypter encrypter;
+
   @override
   void initState() {
     super.initState();
+    key = encrypt.Key.fromLength(32); // Generate a secure key
+    encrypter = encrypt.Encrypter(encrypt.AES(key));
     _initializeCamera();
   }
 
@@ -69,12 +76,28 @@ class _CameraScreen2State extends State<CameraScreen2> {
 
     try {
       XFile picture = await _controller!.takePicture();
-      await picture.saveTo(picturePath);
+      final bytes = await picture.readAsBytes();
+
+      // Generate a random IV
+      final iv = encrypt.IV.fromLength(16);
+      final encryptedData = encrypter.encryptBytes(bytes, iv: iv);
+
+      // Store the IV along with the encrypted data
+      final encryptedPicturePath = path.join(
+        directory.path,
+        '${DateTime.now()}.enc',
+      );
+
+      final file = File(encryptedPicturePath);
+      await file.writeAsBytes(
+        Uint8List.fromList(iv.bytes + encryptedData.bytes),
+      );
+
       setState(() {
-        _capturedImagePath = picturePath;
+        _capturedImagePath = encryptedPicturePath;
       });
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Picture saved to $picturePath'),
+        content: Text('Encrypted picture saved to $encryptedPicturePath'),
       ));
     } catch (e) {
       print(e);
