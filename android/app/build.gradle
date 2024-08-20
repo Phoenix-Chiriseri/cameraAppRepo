@@ -14,10 +14,10 @@ if (localPropertiesFile.exists()) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
-def appAuthRedirectScheme = 'com.medstake.yourappname'
+def appAuthRedirectScheme = 'com.example.simple_project'
 
 android {
-    namespace "com.medstake.yourappname"
+    namespace "com.example.simple_project"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -35,7 +35,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.medstake.yourappname"
+        applicationId "com.example.simple_project"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
