@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:simple_project/dash.dart';
+import 'package:simple_project/splash_screen.dart';
 
+//live_xHMiY2V9C88kvPldcyiUne6TMQprZvRVmmO1M7bM5Ai8NTtQvjOYDgfbMxQshLDZ
 void main() {
   runApp(Login());
 }
@@ -10,11 +12,17 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Healthcare Application',
+      title: 'MedStake',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blue,
       ),
-      home: HealthForm(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => SplashScreen(),
+        '/home': (context) => HealthForm(),
+        '/camera': (context) => CameraScreen(),
+        '/next_camera': (context) => NextCameraScreen(),
+      },
     );
   }
 }
@@ -26,6 +34,8 @@ class HealthForm extends StatefulWidget {
 
 class _HealthFormState extends State<HealthForm> {
   final _formKey = GlobalKey<FormState>();
+  //these are the two fields that will capture the id and the date. the controllers will capture the data from
+  //the forms. we can log the data on the console to check if it is there
   TextEditingController _idController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
 
@@ -37,102 +47,124 @@ class _HealthFormState extends State<HealthForm> {
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // Jumbotron Container
+            Container(
+              padding: EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 8.0,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Center(
                 child: Text(
-                  'Welcome To HealthCare Application',
+                  'MedStake',
                   style: TextStyle(
-                    fontSize: 24,
+                    color: Colors.white,
+                    fontSize: 36,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _idController,
-                decoration: InputDecoration(
-                  labelText: 'Please Enter Your Id',
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.green,
-                      width: 2.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.green,
-                      width: 2.0,
-                    ),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your ID';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _dateController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.green,
-                      width: 2.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.green,
-                      width: 2.0,
-                    ),
-                  ),
-                ),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // Navigate to camera screen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MyApp(),
+            ),
+            SizedBox(height: 20),
+            // Form Fields
+            Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  TextFormField(
+                    controller: _idController,
+                    decoration: InputDecoration(
+                      labelText: 'Please Enter Your Id',
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                          width: 2.0,
                         ),
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                    textStyle: TextStyle(fontSize: 16),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                          width: 2.0,
+                        ),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your ID';
+                      }
+                      return null;
+                    },
                   ),
-                  child: Text('Login'),
-                ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: _dateController,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                          width: 2.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                          width: 2.0,
+                        ),
+                      ),
+                    ),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        //return 'Please enter your password';
+                        print("please check your username of your password");
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          // Navigate to camera screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Login(),
+                            ),
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                        textStyle: TextStyle(fontSize: 16),
+                      ),
+                      child: Text('Login'),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
-
   @override
   void dispose() {
     _idController.dispose();

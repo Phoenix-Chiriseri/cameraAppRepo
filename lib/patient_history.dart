@@ -8,7 +8,7 @@ class PatientHistory extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Patient History'),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -49,7 +49,7 @@ class PatientHistory extends StatelessWidget {
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green, // Change the background color to green
+                backgroundColor: Colors.blue, // Change the background color to green
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // Adjust the padding
                 textStyle: TextStyle(fontSize: 12), // Adjust the text size
               ),

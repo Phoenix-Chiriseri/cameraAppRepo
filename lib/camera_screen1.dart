@@ -13,9 +13,11 @@ class CameraScreen1 extends StatefulWidget {
 }
 
 class _CameraScreen1State extends State<CameraScreen1> {
-  CameraController? _controller;
-  List<CameraDescription>? cameras;
-  CameraDescription? firstCamera;
+  CameraController? _rearCameraController;
+  CameraController? _frontCameraController;
+  List<CameraDescription>? _cameras;
+  CameraDescription? _rearCamera;
+  CameraDescription? _frontCamera;
   double _currentZoomLevel = 1.0;
   double _minZoomLevel = 1.0;
   double _maxZoomLevel = 1.0;
@@ -29,28 +31,53 @@ class _CameraScreen1State extends State<CameraScreen1> {
     super.initState();
     key = encrypt.Key.fromLength(32); // Generate a secure key
     encrypter = encrypt.Encrypter(encrypt.AES(key));
-    _initializeCamera();
+    _initializeCameras();
   }
 
-  Future<void> _initializeCamera() async {
-    cameras = await availableCameras();
-    firstCamera = cameras?.first;
-    _controller = CameraController(
-      firstCamera!,
-      ResolutionPreset.high,
-    );
-    await _controller?.initialize();
+  Future<void> _initializeCameras() async {
+    try {
+      _cameras = await availableCameras();
+      _rearCamera = _cameras?.firstWhere((camera) => camera.lensDirection == CameraLensDirection.back);
+      _frontCamera = _cameras?.firstWhere((camera) => camera.lensDirection == CameraLensDirection.front);
 
-    // Get the min and max zoom levels
-    _minZoomLevel = await _controller!.getMinZoomLevel();
-    _maxZoomLevel = await _controller!.getMaxZoomLevel();
+      if (_rearCamera != null && _frontCamera != null) {
+        _rearCameraController = CameraController(
+          _rearCamera!,
+          ResolutionPreset.high,
+        );
 
-    setState(() {});
+        _frontCameraController = CameraController(
+          _frontCamera!,
+          ResolutionPreset.low,
+        );
+
+        await Future.wait([
+          _rearCameraController!.initialize(),
+          _frontCameraController!.initialize(),
+        ]);
+
+        // Get the min and max zoom levels
+        _minZoomLevel = await _rearCameraController!.getMinZoomLevel();
+        _maxZoomLevel = await _rearCameraController!.getMaxZoomLevel();
+
+        if (!mounted) return; // Check if the widget is still in the tree
+
+        setState(() {});
+      } else {
+        print('No cameras found');
+      }
+    } catch (e) {
+      print('Error initializing cameras: $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error initializing cameras: $e'),
+      ));
+    }
   }
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _rearCameraController?.dispose();
+    _frontCameraController?.dispose();
     super.dispose();
   }
 
@@ -58,12 +85,12 @@ class _CameraScreen1State extends State<CameraScreen1> {
     setState(() {
       _currentZoomLevel = (_currentZoomLevel * details.scale)
           .clamp(_minZoomLevel, _maxZoomLevel);
-      _controller?.setZoomLevel(_currentZoomLevel);
+      _rearCameraController?.setZoomLevel(_currentZoomLevel);
     });
   }
 
   Future<void> _takePicture() async {
-    if (!_controller!.value.isInitialized) {
+    if (!_rearCameraController!.value.isInitialized) {
       return;
     }
 
@@ -74,7 +101,7 @@ class _CameraScreen1State extends State<CameraScreen1> {
     );
 
     try {
-      XFile picture = await _controller!.takePicture();
+      XFile picture = await _rearCameraController!.takePicture();
       final bytes = await picture.readAsBytes();
 
       // Generate a random IV
@@ -108,71 +135,66 @@ class _CameraScreen1State extends State<CameraScreen1> {
 
   @override
   Widget build(BuildContext context) {
-    if (_controller == null || !_controller!.value.isInitialized) {
+    if (_rearCameraController == null || !_rearCameraController!.value.isInitialized ||
+        _frontCameraController == null || !_frontCameraController!.value.isInitialized) {
       return Center(child: CircularProgressIndicator());
     }
 
     return Scaffold(
       appBar: AppBar(title: Text('Apply Saline')),
-      body: GestureDetector(
-        onScaleUpdate: _onScaleUpdate,
-        child: Column(
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Stack(
-                      children: [
-                        CameraPreview(_controller!),
-                        Center(
-                          child: Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: CameraPreview(_rearCameraController!), // Main rear camera preview
+          ),
+          Positioned(
+            bottom: 10,
+            right: 10,
+            width: 100,
+            height: 100,
+            child: CameraPreview(_frontCameraController!), // Miniature front camera preview
+          ),
+          GestureDetector(
+            onScaleUpdate: _onScaleUpdate,
+            child: Container(
+              color: Colors.black.withOpacity(0.5),
+            ),
+          ),
+          if (_capturedImagePath != null)
+            Positioned(
+              top: 10,
+              left: 10,
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 2,
                   ),
-                  if (_capturedImagePath != null)
-                    Container(
-                      width: 100,
-                      margin: EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 2,
-                        ),
-                      ),
-                      child: Image.file(File(_capturedImagePath!)),
-                    ),
-                ],
+                ),
+                child: Image.file(File(_capturedImagePath!)),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: _takePicture,
-                  child: Icon(Icons.camera),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CameraScreen2()),
-                    );
-                  },
-                  child: Text('Next'),
-                ),
-              ],
-            ),
-          ],
-        ),
+        ],
+      ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ElevatedButton(
+            onPressed: _takePicture,
+            child: Icon(Icons.camera),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CameraScreen2()),
+              );
+            },
+            child: Text('Next'),
+          ),
+        ],
       ),
     );
   }

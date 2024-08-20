@@ -12,12 +12,13 @@ class CameraExample extends StatefulWidget {
 class _CameraExampleState extends State<CameraExample> {
   XFile? _image;
   List<dynamic>? _recognitions;
-
   @override
   void initState() {
     super.initState();
-    requestPermission();
-    loadModel();
+     //request the permission into the application
+     requestPermission();
+     //load the model into the application throught the loadModel() function
+     loadModel();
   }
 
   Future<void> requestPermission() async {
@@ -26,13 +27,16 @@ class _CameraExampleState extends State<CameraExample> {
       await Permission.storage.request();
     }
   }
-  //function that loads the model
+
+  //function that will load the model into the application
   Future<void> loadModel() async {
-    String? res = await Tflite.loadModel(
+    String? results = await Tflite.loadModel(
       model: "assets/model_unquant.tflite",
       labels: "assets/labels.txt",
     );
-    print(res);
+
+    print(results);
+
   }
 
   Future<void> pickImage(ImageSource source) async {
@@ -64,7 +68,7 @@ class _CameraExampleState extends State<CameraExample> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Results'),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -79,7 +83,7 @@ class _CameraExampleState extends State<CameraExample> {
             if (_image == null)
               Placeholder(
                 fallbackHeight: 200,
-                color: Colors.grey,
+                color: Colors.blue,
               ),
             SizedBox(height: 16.0),
             Text(
@@ -100,7 +104,7 @@ class _CameraExampleState extends State<CameraExample> {
                 pickImage(ImageSource.camera);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: Colors.blue,
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 textStyle: TextStyle(fontSize: 16),
               ),
@@ -112,7 +116,7 @@ class _CameraExampleState extends State<CameraExample> {
                 pickImage(ImageSource.gallery);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: Colors.blue,
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 textStyle: TextStyle(fontSize: 16),
               ),

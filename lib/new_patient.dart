@@ -33,12 +33,12 @@ class _NewPatientState extends State<NewPatient> {
       SnackBar(content: Text('Data Saved Successfully')),
     );
     Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => CameraScreen1())
+        context,
+        MaterialPageRoute(builder: (context) => CameraScreen1())
     );
   }
 
-  Future<void> _selectDateTime(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -46,22 +46,9 @@ class _NewPatientState extends State<NewPatient> {
       lastDate: DateTime(2101),
     );
     if (pickedDate != null) {
-      final TimeOfDay? pickedTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.fromDateTime(DateTime.now()),
-      );
-      if (pickedTime != null) {
-        final DateTime pickedDateTime = DateTime(
-          pickedDate.year,
-          pickedDate.month,
-          pickedDate.day,
-          pickedTime.hour,
-          pickedTime.minute,
-        );
-        setState(() {
-          jobDateController.text = DateFormat('yyyy-MM-dd HH:mm').format(pickedDateTime); // Format the date and time
-        });
-      }
+      setState(() {
+        jobDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate); // Format the date
+      });
     }
   }
 
@@ -70,7 +57,7 @@ class _NewPatientState extends State<NewPatient> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Save Patient'),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -98,7 +85,7 @@ class _NewPatientState extends State<NewPatient> {
                 ),
                 readOnly: true,
                 onTap: () {
-                  _selectDateTime(context);
+                  _selectDate(context);
                 },
               ),
             ),
@@ -116,7 +103,7 @@ class _NewPatientState extends State<NewPatient> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: Colors.blue,
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 textStyle: TextStyle(fontSize: 16),
               ),
@@ -128,7 +115,7 @@ class _NewPatientState extends State<NewPatient> {
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: Colors.blue,
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 textStyle: TextStyle(fontSize: 16),
               ),

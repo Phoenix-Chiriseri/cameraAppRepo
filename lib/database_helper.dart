@@ -3,7 +3,6 @@ import 'package:path/path.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
-
   static Database? _database;
 
   DatabaseHelper._init();
@@ -20,8 +19,9 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 2, // Incremented version for migration
       onCreate: _createDB,
+      onUpgrade: _upgradeDB,
     );
   }
 
@@ -33,11 +33,35 @@ class DatabaseHelper {
         date_of_birth TEXT
       )
     ''');
+
+    await db.execute('''
+      CREATE TABLE medications (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        amount INTEGER,
+        type TEXT,
+        time TEXT
+      )
+    ''');
   }
 
+  Future _upgradeDB(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute('''
+        CREATE TABLE medications (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT,
+          amount INTEGER,
+          type TEXT,
+          time TEXT
+        )
+      ''');
+    }
+  }
+
+  // Patient methods
   Future<void> createPatient(String id, String dateOfBirth) async {
     final db = await database;
-
     await db.insert(
       'patients',
       {
@@ -59,7 +83,6 @@ class DatabaseHelper {
 
   Future<List<Map<String, dynamic>>> getPatients() async {
     final db = await database;
-
     return await db.query('patients');
   }
 
@@ -79,9 +102,53 @@ class DatabaseHelper {
 
   Future<void> deletePatient(int id) async {
     final db = await database;
-
     await db.delete(
       'patients',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  // Medication methods
+  Future<void> createMedication(String name, int amount, String type, String time) async {
+    final db = await database;
+    await db.insert(
+      'medications',
+      {
+        'name': name,
+        'amount': amount,
+        'type': type,
+        'time': time,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getMedications() async {
+    final db = await database;
+    return await db.query('medications');
+  }
+
+  Future<void> updateMedication(int id, String name, int amount, String type, String time) async {
+    final db = await database;
+
+    await db.update(
+      'medications',
+      {
+        'name': name,
+        'amount': amount,
+        'type': type,
+        'time': time,
+      },
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<void> deleteMedication(int id) async {
+    final db = await database;
+    await db.delete(
+      'medications',
       where: 'id = ?',
       whereArgs: [id],
     );

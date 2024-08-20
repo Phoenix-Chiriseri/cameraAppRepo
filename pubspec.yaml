@@ -1,5 +1,5 @@
 name: simple_project
-description: "Health Application"
+description: "MedStake"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
@@ -27,12 +27,23 @@ dependencies:
   fluttertoast: ^8.0.8
   image_picker: ^0.8.4+8
   flutter_tflite: ^1.0.1
-  http: ^0.13.4
+  googleapis: ^10.0.0
   video_player: ^2.4.5
   wifi_iot: ^0.3.12
+  googleapis_auth: ^1.4.0
+  http: ^0.13.0
   font_awesome_flutter: ^10.0.0
   intl: ^0.17.0
   encrypt: ^5.0.0
+  webview_flutter: ^3.0.0
+  webview_flutter_plus: ^0.3.0+2
+  flutter_local_notifications: ^13.0.0
+  timezone: ^0.9.4
+  firebase_core: ^2.4.0
+  firebase_messaging: ^14.0.0
+  google_sign_in: ^5.4.2
+  flutter_web_auth: 0.5.0
+  flutter_appauth: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -59,3 +70,7 @@ flutter:
     - assets/googleMeetIcon.jpeg
     - assets/model_unquant.tflite
     - assets/labels.txt
+    - assets/stake.png
+    - assets/microsoftTeams.jpg
+    - assets/meet.gif
+    - assets/pills.png

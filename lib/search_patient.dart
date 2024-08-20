@@ -14,7 +14,7 @@ class _SearchPatientState extends State<SearchPatient> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Search Patient'),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -32,11 +32,23 @@ class _SearchPatientState extends State<SearchPatient> {
                 _searchPatient(context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: Colors.blue,
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 textStyle: TextStyle(fontSize: 16),
               ),
               child: Text('Search Patient', style: TextStyle(fontSize: 16)),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                textStyle: TextStyle(fontSize: 16),
+              ),
+              child: Text('Back', style: TextStyle(fontSize: 16)),
             ),
           ],
         ),

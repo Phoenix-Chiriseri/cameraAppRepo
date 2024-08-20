@@ -131,7 +131,7 @@ class _ApplyAceticState extends State<ApplyAcetic> {
                             width: 10,
                             height: 10,
                             decoration: BoxDecoration(
-                              color: Colors.red,
+                              color: Colors.blue,
                               shape: BoxShape.circle,
                             ),
                           ),

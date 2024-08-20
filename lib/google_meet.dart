@@ -45,7 +45,7 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
     return Scaffold(
       appBar: AppBar(
         title: Text('Start Google Meet Meeting'),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.blue,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -68,7 +68,7 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Colors.blue,
               ),
             ),
             SizedBox(height: 20), // Space between text and input field
@@ -87,11 +87,24 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
             ElevatedButton(
               onPressed: _launchMeet,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green, // Background color
+                backgroundColor: Colors.blue, // Background color
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12), // Padding
                 textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), // Text style
               ),
               child: Text('Join Google Meet'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+
+                //this is the back button to go back within the stack
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                padding: EdgeInsets.symmetric(vertical: 12),
+                textStyle: TextStyle(fontSize: 16),
+              ),
+              child: Text('Back'),
             ),
           ],
         ),
