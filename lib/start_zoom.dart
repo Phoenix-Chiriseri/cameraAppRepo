@@ -70,9 +70,8 @@ class _MeetsState extends State<MeetsState> {
         _scopes,
       ),
     );
-
     var calendarApi = calendar.CalendarApi(authClient);
-    //set a new calendar event for the application and set all the data
+    //set a new event for the calendar api and this will create a new meeting
     var newEvent = calendar.Event(
       summary: 'New Medstake Meeting',
       start: calendar.EventDateTime(
