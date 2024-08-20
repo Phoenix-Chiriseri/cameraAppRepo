@@ -72,18 +72,18 @@ class _MeetsState extends State<MeetsState> {
     );
 
     var calendarApi = calendar.CalendarApi(authClient);
-
+    //set a new calendar event for the application and set all the data
     var newEvent = calendar.Event(
-      summary: 'New Meeting',
+      summary: 'New Medstake Meeting',
       start: calendar.EventDateTime(
         dateTime: DateTime.now().add(Duration(hours: 1)),
-        timeZone: 'America/Los_Angeles',
+        timeZone: 'Africa/Harare',
       ),
       end: calendar.EventDateTime(
         dateTime: DateTime.now().add(Duration(hours: 2)),
-        timeZone: 'America/Los_Angeles',
+        timeZone: 'Africa/Harare',
       ),
-      description: 'A new meeting created from Flutter app.',
+      description: 'A new meeting has been created from Medstake.',
       location: 'Virtual',
     );
 
