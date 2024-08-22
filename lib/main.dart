@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:simple_project/widgets/inputTextWidget.dart';
 import 'package:simple_project/signUpScreen.dart';
+import 'package:simple_project/new_dash.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -37,7 +38,7 @@ class _SearchScreenState extends State<LoginScreen> {
             width: 28,
           ),
           Text(
-            'Bienvenue',
+            'Welcome',
             style: TextStyle(
               fontFamily: 'Segoe UI',
               fontSize: 40,
@@ -58,7 +59,7 @@ class _SearchScreenState extends State<LoginScreen> {
             children: [
               InputTextWidget(
                   controller: _emailController,
-                  labelText: "Adresse Email",
+                  labelText: "Email",
                   icon: Icons.email,
                   obscureText: false,
                   keyboardType: TextInputType.emailAddress),
@@ -67,7 +68,7 @@ class _SearchScreenState extends State<LoginScreen> {
               ),
               InputTextWidget(
                   controller: _pwdController,
-                  labelText: "Mots de Passe",
+                  labelText: "Password",
                   icon: Icons.lock,
                   obscureText: true,
                   keyboardType: TextInputType.text),
@@ -80,7 +81,7 @@ class _SearchScreenState extends State<LoginScreen> {
                       child: InkWell(
                         onTap: () {},
                         child: Text(
-                          "Mots de passe oublié ?",
+                          "Forgot Password?",
                           style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -96,10 +97,10 @@ class _SearchScreenState extends State<LoginScreen> {
                 height: 55.0,
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      print("I ove tunisia");
-                    }
-                    //Get.to(ChoiceScreen());
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Home()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
@@ -166,7 +167,7 @@ class _SearchScreenState extends State<LoginScreen> {
                         SizedBox(
                           width: 7.0,
                         ),
-                        Text("Sign in avec\nfacebook")
+                        Text("Sign in with\nfacebook")
                       ],
                     ),
                   ),
@@ -203,7 +204,7 @@ class _SearchScreenState extends State<LoginScreen> {
                         SizedBox(
                           width: 7.0,
                         ),
-                        Text("Sign in avec\nGoogle")
+                        Text("Sign in with\nGoogle")
                       ],
                     ),
                   ),
@@ -235,7 +236,7 @@ class _SearchScreenState extends State<LoginScreen> {
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               background:
-              Image.asset("assets/images/cover.jpg", fit: BoxFit.cover),
+              Image.asset("assets/ndandi.jpg", fit: BoxFit.cover),
             ),
           ),
           SliverToBoxAdapter(
@@ -285,7 +286,7 @@ class _SearchScreenState extends State<LoginScreen> {
                 child: Wrap(
                   children: [
                     Text(
-                      "Vous n'avez pas un compte?  ",
+                      "Forgot Password?  ",
                       style: TextStyle(
                           color: Colors.grey[600], fontWeight: FontWeight.bold),
                     ),

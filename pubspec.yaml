@@ -45,6 +45,11 @@ dependencies:
   flutter_web_auth: 0.5.0
   flutter_appauth: ^1.1.0
   get: ^4.6.5
+  flutter_rating_bar: ^4.0.1
+  animations: ^2.0.3
+  flutter_round_slider: ^1.0.0
+  sleek_circular_slider: ^2.0.1
+  floating_frosted_bottom_bar: ^0.0.1
 
 
 dev_dependencies:
