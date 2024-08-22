@@ -44,6 +44,8 @@ dependencies:
   google_sign_in: ^5.4.2
   flutter_web_auth: 0.5.0
   flutter_appauth: ^1.1.0
+  get: ^4.6.5
+
 
 dev_dependencies:
   flutter_test:
@@ -74,3 +76,6 @@ flutter:
     - assets/microsoftTeams.jpg
     - assets/meet.gif
     - assets/pills.png
+    - assets/ndandi.jpg
+    - assets/fb.png
+    - assets/google.png

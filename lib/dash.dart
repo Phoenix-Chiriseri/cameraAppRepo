@@ -191,7 +191,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TeamsHandler()),
+                MaterialPageRoute(builder: (context) => ZoomIntegrationApp()),
               );
             },
           ),
@@ -208,7 +208,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => GoogleMeetsApp()),
+                    MaterialPageRoute(builder: (context) => ZoomIntegrationApp()),
                   );
                 },
                 tooltip: 'Start Meeting',

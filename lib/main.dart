@@ -1,267 +1,313 @@
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
-import 'package:simple_project/dash.dart';
-import 'package:simple_project/splash_screen.dart';
+import 'package:get/get.dart';
+import 'package:simple_project/widgets/inputTextWidget.dart';
+import 'package:simple_project/signUpScreen.dart';
 
-//live_xHMiY2V9C88kvPldcyiUne6TMQprZvRVmmO1M7bM5Ai8NTtQvjOYDgfbMxQshLDZ
 void main() {
-  runApp(Login());
+  runApp(MaterialApp(
+    home: LoginScreen(),
+  ));
 }
 
-class Login extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  LoginScreen() : super();
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'MedStake',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => SplashScreen(),
-        '/home': (context) => HealthForm(),
-        '/camera': (context) => CameraScreen(),
-        '/next_camera': (context) => NextCameraScreen(),
-      },
-    );
-  }
+  _SearchScreenState createState() => _SearchScreenState();
 }
 
-class HealthForm extends StatefulWidget {
-  @override
-  _HealthFormState createState() => _HealthFormState();
-}
-
-class _HealthFormState extends State<HealthForm> {
+class _SearchScreenState extends State<LoginScreen> {
+  final TextEditingController _pwdController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  //final snackBar = SnackBar(content: Text('email ou mot de passe incorrect'));
   final _formKey = GlobalKey<FormState>();
-  //these are the two fields that will capture the id and the date. the controllers will capture the data from
-  //the forms. we can log the data on the console to check if it is there
-  TextEditingController _idController = TextEditingController();
-  TextEditingController _dateController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(''),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            // Jumbotron Container
-            Container(
-              padding: EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(10.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 8.0,
-                    offset: Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  'MedStake',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+    final screenWidth = MediaQuery.of(context).size.width;
+    final double r = (175 / 360); //  rapport for web test(304 / 540);
+    final coverHeight = screenWidth * r;
+    bool _pinned = false;
+    bool _snap = false;
+    bool _floating = false;
+
+    final widgetList = [
+      Row(
+        children: [
+          SizedBox(
+            width: 28,
+          ),
+          Text(
+            'Bienvenue',
+            style: TextStyle(
+              fontFamily: 'Segoe UI',
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xff000000),
+
             ),
-            SizedBox(height: 20),
-            // Form Fields
-            Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  TextFormField(
-                    controller: _idController,
-                    decoration: InputDecoration(
-                      labelText: 'Please Enter Your Id',
-                      border: OutlineInputBorder(),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.blue,
-                          width: 2.0,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.blue,
-                          width: 2.0,
-                        ),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your ID';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: _dateController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.blue,
-                          width: 2.0,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.blue,
-                          width: 2.0,
-                        ),
-                      ),
-                    ),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        //return 'Please enter your password';
-                        print("please check your username of your password");
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          // Navigate to camera screen
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Login(),
-                            ),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                        textStyle: TextStyle(fontSize: 16),
-                      ),
-                      child: Text('Login'),
-                    ),
-                  ),
-                ],
+            textAlign: TextAlign.left,
+          ),
+        ],
+      ),
+      SizedBox(
+        height: 12.0,
+      ),
+      Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              InputTextWidget(
+                  controller: _emailController,
+                  labelText: "Adresse Email",
+                  icon: Icons.email,
+                  obscureText: false,
+                  keyboardType: TextInputType.emailAddress),
+              SizedBox(
+                height: 12.0,
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-  @override
-  void dispose() {
-    _idController.dispose();
-    _dateController.dispose();
-    super.dispose();
-  }
-}
-
-class CameraScreen extends StatefulWidget {
-  @override
-  _CameraScreenState createState() => _CameraScreenState();
-}
-
-class _CameraScreenState extends State<CameraScreen> {
-  late CameraController _controller;
-  late Future<void>? _initializeControllerFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeControllerFuture = null;
-    // Obtain a list of the available cameras on the device.
-    availableCameras().then((cameras) {
-      // Get a specific camera from the list of available cameras.
-      _controller = CameraController(
-        cameras[0],
-        ResolutionPreset.medium,
-      );
-      // Initialize the camera controller.
-      _initializeControllerFuture = _controller.initialize();
-    });
-  }
-
-  @override
-  void dispose() {
-    // Dispose of the camera controller when the widget is disposed.
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Camera'),
-      ),
-      body: FutureBuilder<void>(
-        future: _initializeControllerFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            // If the Future is complete, display the preview.
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CameraPreview(_controller),
-                SizedBox(height: 20),
-                Text(
-                  'Preseline Solution',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    // Navigate to the NextCameraScreen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NextCameraScreen(),
+              InputTextWidget(
+                  controller: _pwdController,
+                  labelText: "Mots de Passe",
+                  icon: Icons.lock,
+                  obscureText: true,
+                  keyboardType: TextInputType.text),
+              Padding(
+                padding: const EdgeInsets.only(right: 25.0, top: 10.0),
+                child: Align(
+                    alignment: Alignment.topRight,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {},
+                        child: Text(
+                          "Mots de passe oublié ?",
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[700]),
+                        ),
                       ),
-                    );
+                    )),
+              ),
+              SizedBox(
+                height: 15.0,
+              ),
+              Container(
+                height: 55.0,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      print("I ove tunisia");
+                    }
+                    //Get.to(ChoiceScreen());
                   },
-                  child: Text('Next'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    elevation: 0.0,
+                    minimumSize: Size(screenWidth, 150),
+                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(0)),
+                    ),
+                  ),
+                  child: Ink(
+                    decoration: BoxDecoration(
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                              color: Colors.red,
+                              offset: const Offset(1.1, 1.1),
+                              blurRadius: 10.0),
+                        ],
+                        color: Colors.red, // Color(0xffF05945),
+                        borderRadius: BorderRadius.circular(12.0)),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Sign In",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 25),
+                      ),
+                    ),
+                  ),
                 ),
-              ],
-            );
-          } else {
-            // Otherwise, display a loading indicator.
-            return Center(child: CircularProgressIndicator());
-          }
-        },
+              ),
+            ],
+          )),
+      SizedBox(
+        height: 15.0,
       ),
-    );
-  }
-}
-
-class NextCameraScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+      Wrap(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 30.0, right: 10.0, top: 15.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                        color: Colors.grey, //Color(0xfff05945),
+                        offset: const Offset(0, 0),
+                        blurRadius: 5.0),
+                  ],
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.0)),
+              width: (screenWidth / 2) - 40,
+              height: 55,
+              child: Material(
+                borderRadius: BorderRadius.circular(12.0),
+                child: InkWell(
+                  onTap: () {
+                    print("facebook tapped");
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Image.asset("assets/fb.png", fit: BoxFit.cover),
+                        SizedBox(
+                          width: 7.0,
+                        ),
+                        Text("Sign in avec\nfacebook")
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 15.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                        color: Colors.grey, //Color(0xfff05945),
+                        offset: const Offset(0, 0),
+                        blurRadius: 5.0),
+                  ],
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.0)),
+              width: (screenWidth / 2) - 40,
+              height: 55,
+              child: Material(
+                borderRadius: BorderRadius.circular(12.0),
+                child: InkWell(
+                  onTap: () {
+                    print("google tapped");
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Image.asset("assets/google.png",
+                            fit: BoxFit.cover),
+                        SizedBox(
+                          width: 7.0,
+                        ),
+                        Text("Sign in avec\nGoogle")
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      SizedBox(
+        height: 15.0,
+      ),
+    ];
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('Next Camera Screen'),
+        // leading: Icon(Icons.arrow_back),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
       ),
-      body: Center(
-        child: Text(
-          'This is the next camera screen',
-          style: TextStyle(fontSize: 24),
-        ),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: _pinned,
+            snap: _snap,
+            floating: _floating,
+            expandedHeight: coverHeight - 25, //304,
+            backgroundColor: Color(0xFFdccdb4),
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
+              background:
+              Image.asset("assets/images/cover.jpg", fit: BoxFit.cover),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+
+                  ),
+                  gradient: LinearGradient(
+                      colors: <Color>[Color(0xFFdccdb4), Color(0xFFd8c3ab)])
+
+              ),
+              width: screenWidth,
+              height: 25,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Container(
+                    width: screenWidth,
+                    height: 25,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+
+                      borderRadius: BorderRadius.only(
+                        topLeft: const Radius.circular(30.0),
+                        topRight: const Radius.circular(30.0),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          SliverList(
+              delegate:
+              SliverChildBuilderDelegate((BuildContext context, int index) {
+                return widgetList[index];
+              }, childCount: widgetList.length))
+        ],
+      ),
+      bottomNavigationBar: Stack(
+        children: [
+          new Container(
+            height: 50.0,
+            color: Colors.white,
+            child: Center(
+                child: Wrap(
+                  children: [
+                    Text(
+                      "Vous n'avez pas un compte?  ",
+                      style: TextStyle(
+                          color: Colors.grey[600], fontWeight: FontWeight.bold),
+                    ),
+                    Material(
+                        child: InkWell(
+                          onTap: () {
+                            print("sign up tapped");
+                            Get.to(SignUpScreen());
+                          },
+                          child: Text(
+                            "Sign Up",
+                            style: TextStyle(
+                              color: Colors.blue[800],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        )),
+                  ],
+                )),
+          ),
+        ],
       ),
     );
   }

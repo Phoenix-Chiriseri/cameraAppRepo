@@ -1,108 +1,106 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_appauth/flutter_appauth.dart';
-import 'package:googleapis/calendar/v3.dart' as calendar;
-import 'package:googleapis_auth/googleapis_auth.dart' as auth;
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
-  runApp(GoogleMeetsApp());
+  runApp(ZoomIntegrationApp());
 }
 
-//this is the google meets widget that will run when the applicaiton loads
-class GoogleMeetsApp extends StatelessWidget {
+class ZoomIntegrationApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MeetsState(),
+      home: ZoomIntegrationPage(),
     );
   }
 }
 
-class MeetsState extends StatefulWidget {
+class ZoomIntegrationPage extends StatefulWidget {
   @override
-  _MeetsState createState() => _MeetsState();
+  _ZoomIntegrationPageState createState() => _ZoomIntegrationPageState();
 }
 
-class _MeetsState extends State<MeetsState> {
-  final String clientId = '500686653155-i24aakgq6a04ecul97h16qcpg9s64aig.apps.googleusercontent.com';
-  final String redirectUri = 'YOUR_REDIRECT_URI';
-  final List<String> _scopes = [calendar.CalendarApi.calendarScope];
+class _ZoomIntegrationPageState extends State<ZoomIntegrationPage> {
+  final String jwtToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJuRVVURE1iSFFYT2JoRFRrQzBiTGRRIiwiZXhwIjoxNzI0Mjg0MjgzLCJpYXQiOjE3MjQyODA2ODN9.lrpwGXDW2g1W9r3Jg39SvqcGJ2ZKtF5g8d6IQEkt24A'; // Replace with your JWT token
+  String _errorMessage='';
+  bool _isCreatingMeeting=false;
 
-  final FlutterAppAuth _flutterAppAuth = FlutterAppAuth();
+  Future<void> _createMeeting() async {
+    if (_isCreatingMeeting) return; // Prevent multiple concurrent requests
 
-  Future<void> _authenticateWithGoogle() async {
+    setState(() {
+      _isCreatingMeeting = true;
+    });
+
     try {
-      final AuthorizationTokenResponse? result = await _flutterAppAuth.authorizeAndExchangeCode(
-        AuthorizationTokenRequest(
-          clientId,
-          redirectUri,
-          scopes: _scopes,
-        ),
+      final response = await http.post(
+        Uri.parse('https://api.zoom.us/v2/users/me/meetings'),
+        headers: {
+          'Authorization': 'Bearer $jwtToken',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'topic': 'Zoom Meeting',
+          'type': 2, // Scheduled meeting
+          'start_time': DateTime.now().add(Duration(hours: 1)).toUtc().toIso8601String(),
+          'duration': 60,
+          'timezone': 'UTC',
+        }),
       );
 
-      if (result != null) {
-        final accessToken = result.accessToken;
-        if (accessToken != null) {
-          await _createEvent(accessToken);
-        } else {
+      // Check and log the response
+      if (response.statusCode == 200) {
+        final meetingData = json.decode(response.body);
+        final joinUrl = meetingData['join_url'];
+
+        if (joinUrl != null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to get access token')),
+            SnackBar(content: Text('Meeting created: $joinUrl')),
           );
+        } else {
+          setState(() {
+            _errorMessage = 'Failed to retrieve meeting URL from response.';
+          });
         }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Authorization result is null')),
-        );
+        // Log detailed response body and status code
+        setState(() {
+          _errorMessage = 'Failed to create meeting. Status code: ${response.statusCode}, Response: ${response.body}';
+        });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      // Log the actual exception
+      setState(() {
+        _errorMessage = 'Error creating meeting: $e';
+      });
+    } finally {
+      setState(() {
+        _isCreatingMeeting = false;
+      });
     }
-  }
-
-  Future<void> _createEvent(String accessToken) async {
-    final authClient = await auth.authenticatedClient(
-      http.Client(),
-      auth.AccessCredentials(
-        auth.AccessToken('Bearer', accessToken, DateTime.now().add(Duration(hours: 1))),
-        null,
-        _scopes,
-      ),
-    );
-    var calendarApi = calendar.CalendarApi(authClient);
-    //set a new event for the calendar api and this will create a new meeting
-    var newEvent = calendar.Event(
-      summary: 'New Medstake Meeting',
-      start: calendar.EventDateTime(
-        dateTime: DateTime.now().add(Duration(hours: 1)),
-        timeZone: 'Africa/Harare',
-      ),
-      end: calendar.EventDateTime(
-        dateTime: DateTime.now().add(Duration(hours: 2)),
-        timeZone: 'Africa/Harare',
-      ),
-      description: 'A new meeting has been created from Medstake.',
-      location: 'Virtual',
-    );
-
-    var calendarId = 'primary';
-    var createdEvent = await calendarApi.events.insert(newEvent, calendarId);
-
-    print('Event created: ${createdEvent.htmlLink}');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Event created: ${createdEvent.htmlLink}')),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Google Calendar Integration')),
+      appBar: AppBar(title: Text('Zoom Integration')),
       body: Center(
-        child: ElevatedButton(
-          onPressed: _authenticateWithGoogle,
-          child: Text('Authenticate with Google'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: _isCreatingMeeting ? null : _createMeeting,
+              child: Text('Create Zoom Meeting'),
+            ),
+            if (_errorMessage.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  _errorMessage,
+                  style: TextStyle(color: Colors.red, fontSize: 16),
+                ),
+              ),
+          ],
         ),
       ),
     );
