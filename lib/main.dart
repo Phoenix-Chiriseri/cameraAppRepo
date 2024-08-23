@@ -293,8 +293,10 @@ class _SearchScreenState extends State<LoginScreen> {
                     Material(
                         child: InkWell(
                           onTap: () {
-                            print("sign up tapped");
-                            Get.to(SignUpScreen());
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => SignUpScreen()),
+                            );
                           },
                           child: Text(
                             "Sign Up",
