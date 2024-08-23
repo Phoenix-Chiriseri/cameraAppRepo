@@ -127,7 +127,7 @@ class _NewPatientState extends State<NewPatient> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PatientListScreen()),
+                  MaterialPageRoute(builder: (context) => SeeAll()),
                 );
               },
               style: ElevatedButton.styleFrom(
