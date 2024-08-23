@@ -4,8 +4,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'dart:io';
 import 'package:simple_project/dash.dart';
-
 import 'camera_screen2.dart'; // Import CameraScreen2
+import 'new_dash.dart'; // Import CameraScreen2
 
 class ApplyIodine extends StatefulWidget {
   @override
@@ -141,10 +141,7 @@ class _ApplyIodine extends State<ApplyIodine> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyApp()),
-                    );
+                   print("hello world");
                   },
                   child: Text('Next'),
                 ),

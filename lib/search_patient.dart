@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
 
+void main() {
+  runApp(MaterialApp(
+    home: SearchPatient(),
+  ));
+}
+
+
 class SearchPatient extends StatefulWidget {
   @override
   _SearchPatientState createState() => _SearchPatientState();

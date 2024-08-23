@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:simple_project/widgets/inputTextWidget.dart';
+import 'package:simple_project/new_patient.dart';
+import 'package:simple_project/telemedicine.dart';
+import 'package:simple_project/search_patient.dart';
+import 'package:simple_project/apply_iodine.dart';
+import 'package:simple_project/camera_example.dart';
 
 void main() {
   runApp(Home());
@@ -184,7 +191,7 @@ class Home extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SavePatientScreen()),
+                          MaterialPageRoute(builder: (context) => NewPatient()),
                         );
                       },
                     ),
@@ -199,7 +206,7 @@ class Home extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SearchPatientScreen()),
+                          MaterialPageRoute(builder: (context) => SearchPatient()),
                         );
                       },
                     ),
@@ -221,7 +228,7 @@ class Home extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => TelemedicineScreen()),
+                          MaterialPageRoute(builder: (context) => ShareZoomLink()),
                         );
                       },
                     ),
@@ -236,7 +243,7 @@ class Home extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ReviewImagesScreen()),
+                          MaterialPageRoute(builder: (context) => CameraExample()),
                         );
                       },
                     ),
@@ -245,6 +252,16 @@ class Home extends StatelessWidget {
               ],
             ),
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // Replace with your logic to start a new meeting
+            // For now, we'll just print a message
+            print('Start a new meeting');
+            // Navigate to the meeting page or open a meeting interface here
+          },
+          backgroundColor: Colors.blue,
+          child: Icon(Icons.video_call),
         ),
       ),
     );
@@ -289,114 +306,43 @@ class Home extends StatelessWidget {
                           color: Colors.purple.shade700,
                           borderRadius: BorderRadius.circular(8)),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                        padding: const EdgeInsets.all(4.0),
                         child: Text(
-                          'New',
+                          'NEW',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 10,
+                              fontSize: 8,
                               fontWeight: FontWeight.w300),
                         ),
                       ),
                     ),
-                  if (!isNew)
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.star,
-                          size: 12,
-                          color: Colors.yellow.shade800,
-                        ),
-                        Text(
-                          rating ?? '',
-                          style: TextStyle(
-                              color: textColor.withOpacity(0.7),
-                              fontSize: 10,
-                              fontWeight: FontWeight.w300),
-                        ),
-                      ],
+                  if (rating != null)
+                    Text(
+                      rating,
+                      style: TextStyle(
+                          color: Colors.yellow.shade500,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w300),
                     ),
                 ],
               ),
-              SizedBox(
-                height: 5,
-              ),
+              SizedBox(height: 10),
               Text(
                 title,
                 style: TextStyle(
-                    color: textColor,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16),
+                    color: textColor, fontSize: 18, fontWeight: FontWeight.w600),
               ),
-              Spacer(),
+              SizedBox(height: 10),
               Text(
                 description,
                 style: TextStyle(
-                    color: textColor.withOpacity(0.8),
+                    color: textColor.withOpacity(0.7),
                     fontSize: 10,
-                    fontWeight: FontWeight.w400),
+                    fontWeight: FontWeight.w300),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-// Screens to be navigated to
-
-class SavePatientScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Save Patient'),
-      ),
-      body: Center(
-        child: Text('This is the Save Patient Screen'),
-      ),
-    );
-  }
-}
-
-class SearchPatientScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Search Patient'),
-      ),
-      body: Center(
-        child: Text('This is the Search Patient Screen'),
-      ),
-    );
-  }
-}
-
-class TelemedicineScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Telemedicine'),
-      ),
-      body: Center(
-        child: Text('This is the Telemedicine Screen'),
-      ),
-    );
-  }
-}
-
-class ReviewImagesScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Review Images'),
-      ),
-      body: Center(
-        child: Text('This is the Review Images Screen'),
       ),
     );
   }
