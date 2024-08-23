@@ -177,6 +177,10 @@ class DatabaseHelper {
     );
   }
 
+  Future<List<Map<String, dynamic>>> getAllPatients() async {
+    final db = await instance.database;
+    return await db.query('patients');
+  }
   // User methods
   Future<void> createUser(String name, String surname, String email, String phone, String password) async {
     final db = await database;

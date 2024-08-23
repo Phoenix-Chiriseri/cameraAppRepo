@@ -6,6 +6,7 @@ import 'package:simple_project/telemedicine.dart';
 import 'package:simple_project/search_patient.dart';
 import 'package:simple_project/apply_iodine.dart';
 import 'package:simple_project/camera_example.dart';
+import 'package:simple_project/teams_test.dart';
 
 void main() {
   runApp(Home());
@@ -92,7 +93,7 @@ class Home extends StatelessWidget {
                           height: 5,
                         ),
                         Text(
-                          'Undersea world',
+                          "Medstake isn't just about technology; we infuse it with empathy. Our AI doctors don't replace the human touch; they enhance it.",
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.w700),
                         ),
@@ -253,15 +254,22 @@ class Home extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // Replace with your logic to start a new meeting
-            // For now, we'll just print a message
-            print('Start a new meeting');
-            // Navigate to the meeting page or open a meeting interface here
-          },
-          backgroundColor: Colors.blue,
-          child: Icon(Icons.video_call),
+        floatingActionButton: Tooltip(
+          message: 'Start meeting',
+          child: AnimatedOpacity(
+            duration: Duration(milliseconds: 500),
+            opacity: 1.0, // Set to 0.0 for invisible or 1.0 for visible
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TeamsHandler()),
+                );
+              },
+              backgroundColor: Colors.blue,
+              child: Icon(Icons.video_call),
+            ),
+          ),
         ),
       ),
     );
@@ -302,18 +310,16 @@ class Home extends StatelessWidget {
                   Spacer(),
                   if (isNew)
                     Container(
+                      padding: EdgeInsets.all(4.0),
                       decoration: BoxDecoration(
-                          color: Colors.purple.shade700,
-                          borderRadius: BorderRadius.circular(8)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Text(
-                          'NEW',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 8,
-                              fontWeight: FontWeight.w300),
-                        ),
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(4)),
+                      child: Text(
+                        'NEW',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 8,
+                            fontWeight: FontWeight.w300),
                       ),
                     ),
                   if (rating != null)

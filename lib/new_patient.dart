@@ -4,6 +4,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:intl/intl.dart';
 import 'camera_screen1.dart';
 import 'database_helper.dart'; // Import your database helper
+import 'patient_listscreen.dart'; // Import the patient list screen
 
 class NewPatient extends StatefulWidget {
   @override
@@ -120,6 +121,21 @@ class _NewPatientState extends State<NewPatient> {
                 textStyle: TextStyle(fontSize: 16),
               ),
               child: Text('Back', style: TextStyle(fontSize: 16)),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PatientListScreen()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                textStyle: TextStyle(fontSize: 16),
+              ),
+              child: Text('View All Patients', style: TextStyle(fontSize: 16)),
             ),
           ],
         ),
