@@ -119,7 +119,7 @@ class _SeeAllState extends State<SeeAll> {
                                         const SizedBox(width: 20),
                                         CircleAvatar(
                                           radius: 30,
-                                          backgroundColor: Colors.blue,
+                                          backgroundColor: Colors.black,
                                         ),
                                         const SizedBox(width: 10),
                                         Column(
@@ -127,7 +127,7 @@ class _SeeAllState extends State<SeeAll> {
                                           children: [
                                             TextWidget(
                                               'Patient ID: ${patient['id']}',
-                                              20,
+                                              12,
                                               Colors.black,
                                               FontWeight.bold,
                                               letterSpace: 0,
@@ -135,7 +135,7 @@ class _SeeAllState extends State<SeeAll> {
                                             const SizedBox(height: 5),
                                             TextWidget(
                                               'Date of Birth: ${patient['date_of_birth']}',
-                                              17,
+                                              12,
                                               Colors.black,
                                               FontWeight.bold,
                                               letterSpace: 0,
@@ -146,7 +146,7 @@ class _SeeAllState extends State<SeeAll> {
                                         const Spacer(),
                                         const Icon(
                                           Icons.navigation_sharp,
-                                          color: Colors.blue,
+                                          color: Colors.red,
                                         ),
                                         const SizedBox(width: 20),
                                       ],
@@ -182,9 +182,9 @@ class _SeeAllState extends State<SeeAll> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.blue.shade700,
-                    Colors.blue.shade900,
-                    Colors.blue.shade900,
+                    Colors.black,
+                    Colors.black,
+                    Colors.black,
                   ])),
           child: Stack(
             alignment: Alignment.center,
@@ -213,7 +213,7 @@ class _SeeAllState extends State<SeeAll> {
                           const SizedBox(height: 10),
                           TextWidget(
                             "Patient List!",
-                            18,
+                            14,
                             Colors.white,
                             FontWeight.bold,
                             letterSpace: 0,
@@ -221,7 +221,7 @@ class _SeeAllState extends State<SeeAll> {
                           const SizedBox(height: 5),
                           TextWidget(
                             "This is the list of patients \n in your database",
-                            15,
+                            12,
                             Colors.white,
                             FontWeight.normal,
                             letterSpace: 0,

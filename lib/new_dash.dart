@@ -235,8 +235,8 @@ class Home extends StatelessWidget {
                     ),
                     _buildCard(
                       context,
-                      title: 'Review Images',
-                      description: 'View images about your patients',
+                      title: 'Upload Images',
+                      description: 'Upload images and test via AI',
                       label: 'Self Education',
                       color: Colors.white70,
                       textColor: Colors.black,
