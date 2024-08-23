@@ -73,7 +73,7 @@ class Home extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              'Nature',
+                              'About Us',
                               style: TextStyle(
                                   color: Colors.grey.shade500,
                                   fontSize: 10,
@@ -81,7 +81,7 @@ class Home extends StatelessWidget {
                             ),
                             Spacer(),
                             Text(
-                              '10:00 AM',
+                              'Ai Powered',
                               style: TextStyle(
                                   color: Colors.grey.shade500,
                                   fontSize: 10,
@@ -266,7 +266,7 @@ class Home extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => TeamsHandler()),
                 );
               },
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.white,
               child: Icon(Icons.video_call),
             ),
           ),
