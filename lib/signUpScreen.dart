@@ -27,7 +27,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign Up",
+        title: Text("",
             style: TextStyle(
               color: Colors.black,
               fontFamily: 'Segoe UI',
@@ -42,7 +42,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
             )),
         //centerTitle: true,
         leading: InkWell(
-          onTap: () => Get.to(LoginScreen()),
+          onTap: () {
+            Navigator.pop(context); // This will pop the current screen and go back
+          },
           child: Icon(
             Icons.arrow_back,
             color: Colors.black,
@@ -67,7 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 spreadRadius: 5,
                 blurRadius: 7,
                 offset: Offset(0, 3), // changes position of shadow
-              ),
+              )
             ],
           ),
           width: screenWidth,
@@ -82,7 +84,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 30.0,
                   ),
                   Text(
-                    'Bienvenue chez nous!!',
+                    'Register With Us!',
                     style: TextStyle(
                       fontFamily: 'Segoe UI',
                       fontSize: 30,
@@ -96,7 +98,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 25.0,
                   ),
                   InputTextWidget(
-                      labelText: "Prénom",
+                      labelText: "Name",
                       icon: Icons.person,
                       obscureText: false,
                       keyboardType: TextInputType.text),
@@ -104,7 +106,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 12.0,
                   ),
                   InputTextWidget(
-                      labelText: "Nom",
+                      labelText: "Surname",
                       icon: Icons.person,
                       obscureText: false,
                       keyboardType: TextInputType.text),
@@ -113,7 +115,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   InputTextWidget(
                       controller: _emailController,
-                      labelText: "Adresse Email",
+                      labelText: "Email",
                       icon: Icons.email,
                       obscureText: false,
                       keyboardType: TextInputType.emailAddress),
@@ -121,7 +123,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 12.0,
                   ),
                   InputTextWidget(
-                      labelText: "Numéro Téléphone",
+                      labelText: "Telephone Number",
                       icon: Icons.phone,
                       obscureText: false,
                       keyboardType: TextInputType.number),
@@ -149,7 +151,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   color: Colors.black,
                                   size: 32.0, /*Color(0xff224597)*/
                                 ),
-                                labelText: "Mots de Passe",
+                                labelText: "Password",
                                 labelStyle: TextStyle(
                                     color: Colors.black54, fontSize: 18.0),
                                 hintText: '',
@@ -162,11 +164,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               controller: _pass,
                               validator: (val) {
                                 if (val!.isEmpty) {
-                                  return 'tapez un mot de passe ';
+                                  return 'please provide a password';
                                 } else if (val.length < 6) {
-                                  return 'mot de passe doit etre > 6 caractère';
+                                  return 'password should be  > than 6 characters';
                                 }
-
                                 return null;
                               }),
                         ),
@@ -197,7 +198,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   color: Colors.black,
                                   size: 32.0, /*Color(0xff224597)*/
                                 ),
-                                labelText: "Confirmer Mots de Passe",
+                                labelText: "Confirm Password",
                                 labelStyle: TextStyle(
                                     color: Colors.black54, fontSize: 18.0),
                                 hintText: '',
@@ -210,9 +211,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               controller: _confirmPass,
                               validator: (val) {
                                 if (val!.isEmpty)
-                                  return 'confirmer Mot de passe!!';
+                                  return 'Confirm the password!!';
                                 if (val != _pass.text)
-                                  return 'Mot de passe incorrect';
+                                  return 'Password doesnt match';
                                 return null;
                               }),
                         ),
@@ -250,7 +251,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            "Continuer",
+                            "Register",
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.white, fontSize: 25),
                           ),
