@@ -50,6 +50,7 @@ dependencies:
   flutter_round_slider: ^1.0.0
   sleek_circular_slider: ^2.0.1
   floating_frosted_bottom_bar: ^0.0.1
+  syncfusion_flutter_datepicker: ^20.3.60
 
 
 dev_dependencies:
@@ -86,3 +87,6 @@ flutter:
     - assets/google.png
     - assets/doctor6.png
     - assets/doctor3.png
+    - assets/doctor2.png
+    - assets/doctor4.png
+    - assets/doctor5.png

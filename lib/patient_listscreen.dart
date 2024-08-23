@@ -212,7 +212,7 @@ class _SeeAllState extends State<SeeAll> {
                         children: [
                           const SizedBox(height: 10),
                           TextWidget(
-                            "Find Doctors!",
+                            "Patient List!",
                             18,
                             Colors.white,
                             FontWeight.bold,
@@ -220,7 +220,7 @@ class _SeeAllState extends State<SeeAll> {
                           ),
                           const SizedBox(height: 5),
                           TextWidget(
-                            "Use this feature to find a doctor\nclosest to you",
+                            "This is the list of patients \n in your database",
                             15,
                             Colors.white,
                             FontWeight.normal,
