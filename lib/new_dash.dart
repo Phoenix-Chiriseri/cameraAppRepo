@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(Home());
 }
+
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +20,7 @@ class Home extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Welcome,',
+                    'Welcome To Medstake',
                     style: TextStyle(fontWeight: FontWeight.w800, fontSize: 22),
                   ),
                   Spacer(),
@@ -46,16 +48,7 @@ class Home extends StatelessWidget {
                   ),
                 ],
               ),
-              Text(
-                'David',
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 18,
-                    color: Colors.grey.shade600),
-              ),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20), // Space between the first and second row
               Row(
                 children: [
                   Text(
@@ -194,7 +187,6 @@ class Home extends StatelessWidget {
                   ),
                 ),
               ),
-              //
               SizedBox(
                 height: 20,
               ),
@@ -260,7 +252,7 @@ class Home extends StatelessWidget {
                             height: 8,
                           ),
                           Text(
-                            'Introduction to pyschology',
+                            'Save Patient',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w400,
@@ -270,7 +262,7 @@ class Home extends StatelessWidget {
                             height: 10,
                           ),
                           Text(
-                            'What are people most afraid of? What do our dreams mean?',
+                            'Create A New Patient And Save',
                             style: TextStyle(
                                 color: Colors.grey.shade600,
                                 fontWeight: FontWeight.w300,
@@ -323,7 +315,7 @@ class Home extends StatelessWidget {
                             height: 8,
                           ),
                           Text(
-                            'The Science of Well-Being',
+                            'Search Patient',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w400,
@@ -333,7 +325,7 @@ class Home extends StatelessWidget {
                             height: 10,
                           ),
                           Text(
-                            'What are people most afraid of? What do our dreams mean?',
+                            'Search A Patient And View Information',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w300,
@@ -345,7 +337,6 @@ class Home extends StatelessWidget {
                   ),
                 ],
               ),
-              //
               SizedBox(
                 height: 20,
               ),
@@ -427,7 +418,7 @@ class Home extends StatelessWidget {
                           Container(
                             width: 230,
                             child: Text(
-                              'In thos module, you will learn about fundamentals of psyhcological theories and findings.',
+                              'In this module, you will learn about fundamentals of psychological theories and findings.',
                               style: TextStyle(
                                   color: Colors.grey.shade500,
                                   fontSize: 10,

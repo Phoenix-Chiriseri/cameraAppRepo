@@ -9,7 +9,7 @@ class DatabaseHelper {
 
   Future<Database> get database async {
     if (_database != null) return _database!;
-    _database = await _initDB('patients.db');
+    _database = await _initDB('app_database.db');
     return _database!;
   }
 
@@ -19,7 +19,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 2, // Incremented version for migration
+      version: 3, // Incremented version for migration
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
@@ -43,6 +43,17 @@ class DatabaseHelper {
         time TEXT
       )
     ''');
+
+    await db.execute('''
+      CREATE TABLE users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        surname TEXT,
+        email TEXT UNIQUE,
+        phone TEXT,
+        password TEXT
+      )
+    ''');
   }
 
   Future _upgradeDB(Database db, int oldVersion, int newVersion) async {
@@ -54,6 +65,18 @@ class DatabaseHelper {
           amount INTEGER,
           type TEXT,
           time TEXT
+        )
+      ''');
+    }
+    if (oldVersion < 3) {
+      await db.execute('''
+        CREATE TABLE users (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT,
+          surname TEXT,
+          email TEXT UNIQUE,
+          phone TEXT,
+          password TEXT
         )
       ''');
     }
@@ -152,5 +175,36 @@ class DatabaseHelper {
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  // User methods
+  Future<void> createUser(String name, String surname, String email, String phone, String password) async {
+    final db = await database;
+    await db.insert(
+      'users',
+      {
+        'name': name,
+        'surname': surname,
+        'email': email,
+        'phone': phone,
+        'password': password,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getUsers() async {
+    final db = await database;
+    return await db.query('users');
+  }
+
+  Future<bool> validateUser(String email, String password) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'users',
+      where: 'email = ? AND password = ?',
+      whereArgs: [email, password],
+    );
+    return maps.isNotEmpty;
   }
 }

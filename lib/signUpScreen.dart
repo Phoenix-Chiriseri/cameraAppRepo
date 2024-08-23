@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:simple_project/widgets/inputTextWidget.dart';
-import 'package:simple_project/main.dart';
-
-void main() {
-  runApp(GetMaterialApp(
-    home: SignUpScreen(),
-  ));
-}
+import 'package:simple_project/database_helper.dart';
+import 'package:simple_project/new_dash.dart';// Import your database helper
+import 'new_dash.dart'; // Import the Home screen
+import 'package:simple_project/dash.dart';
 
 class SignUpScreen extends StatefulWidget {
-  SignUpScreen() : super();
-
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
@@ -21,13 +16,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _pass = TextEditingController();
   final TextEditingController _confirmPass = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _surnameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+
+  final DatabaseHelper _dbHelper = DatabaseHelper.instance;
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("",
+        title: Text("Sign Up",
             style: TextStyle(
               color: Colors.black,
               fontFamily: 'Segoe UI',
@@ -40,10 +42,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 )
               ],
             )),
-        //centerTitle: true,
         leading: InkWell(
           onTap: () {
-            Navigator.pop(context); // This will pop the current screen and go back
+            Navigator.pop(context); // Go back
           },
           child: Icon(
             Icons.arrow_back,
@@ -62,27 +63,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
               topRight: Radius.circular(30),
             ),
             color: Colors.white,
-
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 5,
                 blurRadius: 7,
-                offset: Offset(0, 3), // changes position of shadow
-              )
+                offset: Offset(0, 3),
+              ),
             ],
           ),
           width: screenWidth,
           height: screenHeight,
           child: SingleChildScrollView(
-            //controller: controller,
             child: Form(
               key: _formKey,
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 30.0,
-                  ),
+                  SizedBox(height: 30.0),
                   Text(
                     'Register With Us!',
                     style: TextStyle(
@@ -90,47 +87,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                       color: const Color(0xff000000),
-
                     ),
                     textAlign: TextAlign.left,
                   ),
-                  SizedBox(
-                    height: 25.0,
-                  ),
+                  SizedBox(height: 25.0),
                   InputTextWidget(
+                      controller: _nameController,
                       labelText: "Name",
                       icon: Icons.person,
                       obscureText: false,
                       keyboardType: TextInputType.text),
-                  SizedBox(
-                    height: 12.0,
-                  ),
+                  SizedBox(height: 12.0),
                   InputTextWidget(
+                      controller: _surnameController,
                       labelText: "Surname",
                       icon: Icons.person,
                       obscureText: false,
                       keyboardType: TextInputType.text),
-                  SizedBox(
-                    height: 12.0,
-                  ),
+                  SizedBox(height: 12.0),
                   InputTextWidget(
                       controller: _emailController,
                       labelText: "Email",
                       icon: Icons.email,
                       obscureText: false,
                       keyboardType: TextInputType.emailAddress),
-                  SizedBox(
-                    height: 12.0,
-                  ),
+                  SizedBox(height: 12.0),
                   InputTextWidget(
+                      controller: _phoneController,
                       labelText: "Telephone Number",
                       icon: Icons.phone,
                       obscureText: false,
                       keyboardType: TextInputType.number),
-                  SizedBox(
-                    height: 12.0,
-                  ),
-
+                  SizedBox(height: 12.0),
                   Padding(
                     padding: const EdgeInsets.only(left: 25.0, right: 25.0),
                     child: Container(
@@ -139,34 +127,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         shadowColor: Colors.black,
                         borderRadius: BorderRadius.circular(15.0),
                         child: Padding(
-                          padding:
-                          const EdgeInsets.only(right: 20.0, left: 15.0),
+                          padding: const EdgeInsets.only(right: 20.0, left: 15.0),
                           child: TextFormField(
                               obscureText: true,
-                              autofocus: false,
-                              keyboardType: TextInputType.text,
+                              controller: _pass,
                               decoration: InputDecoration(
-                                icon: Icon(
-                                  Icons.lock,
-                                  color: Colors.black,
-                                  size: 32.0, /*Color(0xff224597)*/
-                                ),
+                                icon: Icon(Icons.lock, color: Colors.black, size: 32.0),
                                 labelText: "Password",
-                                labelStyle: TextStyle(
-                                    color: Colors.black54, fontSize: 18.0),
-                                hintText: '',
+                                labelStyle: TextStyle(color: Colors.black54, fontSize: 18.0),
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black54),
                                 ),
                                 border: InputBorder.none,
                               ),
-                              controller: _pass,
                               validator: (val) {
                                 if (val!.isEmpty) {
-                                  return 'please provide a password';
+                                  return 'Please provide a password';
                                 } else if (val.length < 6) {
-                                  return 'password should be  > than 6 characters';
+                                  return 'Password should be more than 6 characters';
                                 }
                                 return null;
                               }),
@@ -174,10 +153,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-
+                  SizedBox(height: 15.0),
                   Padding(
                     padding: const EdgeInsets.only(left: 25.0, right: 25.0),
                     child: Container(
@@ -186,53 +162,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         shadowColor: Colors.black,
                         borderRadius: BorderRadius.circular(15.0),
                         child: Padding(
-                          padding:
-                          const EdgeInsets.only(right: 20.0, left: 15.0),
+                          padding: const EdgeInsets.only(right: 20.0, left: 15.0),
                           child: TextFormField(
                               obscureText: true,
-                              autofocus: false,
-                              keyboardType: TextInputType.text,
+                              controller: _confirmPass,
                               decoration: InputDecoration(
-                                icon: Icon(
-                                  Icons.lock,
-                                  color: Colors.black,
-                                  size: 32.0, /*Color(0xff224597)*/
-                                ),
+                                icon: Icon(Icons.lock, color: Colors.black, size: 32.0),
                                 labelText: "Confirm Password",
-                                labelStyle: TextStyle(
-                                    color: Colors.black54, fontSize: 18.0),
-                                hintText: '',
+                                labelStyle: TextStyle(color: Colors.black54, fontSize: 18.0),
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black54),
                                 ),
                                 border: InputBorder.none,
                               ),
-                              controller: _confirmPass,
                               validator: (val) {
-                                if (val!.isEmpty)
-                                  return 'Confirm the password!!';
-                                if (val != _pass.text)
-                                  return 'Password doesnt match';
+                                if (val!.isEmpty) return 'Confirm the password!!';
+                                if (val != _pass.text) return 'Passwords do not match';
                                 return null;
                               }),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
+                  SizedBox(height: 15.0),
                   Container(
                     height: 55.0,
                     child: ElevatedButton(
                       onPressed: () async {
-                        if (_formKey.currentState!.validate()) {}
+                        if (_formKey.currentState!.validate()) {
+                          await _dbHelper.createUser(
+                            _nameController.text,
+                            _surnameController.text,
+                            _emailController.text,
+                            _phoneController.text,
+                            _pass.text,
+                          );
+
+                          // Navigate to Home screen without the user’s name
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Home(),
+                            ),
+                          );
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         elevation: 0.0,
-                        minimumSize: Size(screenWidth, 150),
+                        minimumSize: Size(screenWidth, 55),
                         padding: EdgeInsets.symmetric(horizontal: 30),
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(0)),

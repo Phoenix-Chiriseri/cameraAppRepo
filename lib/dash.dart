@@ -1,267 +1,270 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-import 'package:contacts_service/contacts_service.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:simple_project/google_meet.dart';
-import 'package:simple_project/new_patient.dart';
-import 'package:simple_project/patient_history.dart';
-import 'package:simple_project/search_patient.dart';
-import 'package:simple_project/camera_example.dart';
-import 'package:simple_project/telemedicine.dart';
-import 'package:simple_project/medication_form.dart';
-import 'package:simple_project/teams_test.dart';
-import 'package:simple_project/start_zoom.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:simple_project/widgets/inputTextWidget.dart';
+import 'package:simple_project/signUpScreen.dart';
+import 'package:simple_project/new_dash.dart';
+import 'package:simple_project/database_helper.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  const initializationSettings = InitializationSettings(
-    android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-    //iOS: IOSInitializationSettings(),
-  );
-  flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  runApp(MyApp());
+  runApp(MaterialApp(
+    home: LoginScreen(),
+  ));
 }
 
-class MyApp extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  LoginScreen() : super();
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: MyHomePage(),
-    );
-  }
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: this,
-    )..repeat(reverse: true);
-
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.3).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeInOut,
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _showContacts() async {
-    var permissionStatus = await Permission.contacts.request();
-    if (permissionStatus.isGranted) {
-      Iterable<Contact> contacts = await ContactsService.getContacts();
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Select Contact'),
-            content: Container(
-              width: double.maxFinite,
-              child: ListView.builder(
-                itemCount: contacts.length,
-                itemBuilder: (context, index) {
-                  final contact = contacts.elementAt(index);
-                  return ListTile(
-                    title: Text(contact.displayName ?? ''),
-                    subtitle: contact.phones!.isEmpty
-                        ? Text('No phone number available')
-                        : Text(contact.phones!.first.value ?? ''),
-                    onTap: () {
-                      Navigator.pop(context);
-                      if (contact.phones!.isNotEmpty) {
-                        _makePhoneCall(contact.phones!.first.value ?? '');
-                      }
-                    },
-                  );
-                },
-              ),
-            ),
-          );
-        },
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Permission to access contacts is denied')),
-      );
-    }
-  }
-
-  void _makePhoneCall(String phoneNumber) async {
-    await FlutterPhoneDirectCaller.callNumber(phoneNumber);
-  }
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _pwdController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final DatabaseHelper _dbHelper = DatabaseHelper.instance;
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('MedStake'),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
       ),
-      body: ListView(
-        padding: EdgeInsets.all(16.0),
-        children: <Widget>[
-          CustomCard(
-            imageAsset: 'assets/advice.png',
-            title: 'New Patient',
-            subtitle: 'Add a new patient to your database and manage their information',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => NewPatient()),
-              );
-            },
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            expandedHeight: 200.0,
+            backgroundColor: Color(0xFFdccdb4),
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
+              background: Image.asset("assets/ndandi.jpg", fit: BoxFit.cover),
+            ),
           ),
-          CustomCard(
-            imageAsset: 'assets/diagnose.png',
-            title: 'Patient History',
-            subtitle: 'Access and review patients medical history and past appointments',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PatientHistory()),
-              );
-            },
-          ),
-          CustomCard(
-            imageAsset: 'assets/medical.png',
-            title: 'Search Patient',
-            subtitle: 'Quickly find specific patients by name or other criteria and manage their records',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SearchPatient()),
-              );
-            },
-          ),
-          CustomCard(
-            imageAsset: 'assets/telemedicine.png',
-            title: 'TeleMedicine',
-            subtitle: 'Connect instantly, manage records efficiently, and provide personalized care from anywhere.',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ShareZoomLink()),
-              );
-            },
-          ),
-          CustomCard(
-            imageAsset: 'assets/viewImages.png',
-            title: 'Review Images',
-            subtitle: 'View images about your patients',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CameraExample()),
-              );
-            },
-          ),
-          CustomCard(
-            imageAsset: 'assets/googleMeetIcon.jpeg',
-            title: 'View Google Meet Meeting',
-            subtitle: 'Connect to Google Meet and start meeting',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => GoogleMeet()),
-              );
-            },
-          ),
-          CustomCard(
-            imageAsset: 'assets/googleMeetIcon.jpeg',
-            title: 'Start Teams Meeting',
-            subtitle: 'Connect to a Teams meeting',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ZoomIntegrationApp()),
-              );
-            },
-          ),
-        ],
-      ),
-      floatingActionButton: Stack(
-        children: [
-          Positioned(
-            bottom: 80,
-            right: 20,
-            child: ScaleTransition(
-              scale: _scaleAnimation,
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ZoomIntegrationApp()),
-                  );
-                },
-                tooltip: 'Start Meeting',
-                child: Icon(Icons.tv_outlined),
-                backgroundColor: Colors.blue,
+          SliverToBoxAdapter(
+            child: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: <Color>[Color(0xFFdccdb4), Color(0xFFd8c3ab)])),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Welcome',
+                    style: TextStyle(
+                      fontFamily: 'Segoe UI',
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          InputTextWidget(
+                              controller: _emailController,
+                              labelText: "Email",
+                              icon: Icons.email,
+                              obscureText: false,
+                              keyboardType: TextInputType.emailAddress),
+                          InputTextWidget(
+                              controller: _pwdController,
+                              labelText: "Password",
+                              icon: Icons.lock,
+                              obscureText: true,
+                              keyboardType: TextInputType.text),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 25.0, top: 10.0),
+                            child: Align(
+                                alignment: Alignment.topRight,
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () {},
+                                    child: Text(
+                                      "Forgot Password?",
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey[700]),
+                                    ),
+                                  ),
+                                )),
+                          ),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          Container(
+                            height: 55.0,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                final email = _emailController.text;
+                                final password = _pwdController.text;
+
+                                bool isValid = await _dbHelper.validateUser(email, password);
+                                if (isValid) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => Home()),
+                                  );
+                                } else {
+                                  // Show an error message
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Invalid email or password')),
+                                  );
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                elevation: 0.0,
+                                minimumSize: Size(screenWidth, 150),
+                                padding: EdgeInsets.symmetric(horizontal: 30),
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(0)),
+                                ),
+                              ),
+                              child: Ink(
+                                decoration: BoxDecoration(
+                                    boxShadow: <BoxShadow>[
+                                      BoxShadow(
+                                          color: Colors.red,
+                                          offset: const Offset(1.1, 1.1),
+                                          blurRadius: 10.0),
+                                    ],
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(12.0)),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Sign In",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.white, fontSize: 25),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  Wrap(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30.0, right: 10.0, top: 15.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                    color: Colors.grey,
+                                    offset: const Offset(0, 0),
+                                    blurRadius: 5.0),
+                              ],
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12.0)),
+                          width: (screenWidth / 2) - 40,
+                          height: 55,
+                          child: Material(
+                            borderRadius: BorderRadius.circular(12.0),
+                            child: InkWell(
+                              onTap: () {
+                                print("facebook tapped");
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Image.asset("assets/fb.png", fit: BoxFit.cover),
+                                    SizedBox(
+                                      width: 7.0,
+                                    ),
+                                    Text("Sign in with\nfacebook")
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 15.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                    color: Colors.grey,
+                                    offset: const Offset(0, 0),
+                                    blurRadius: 5.0),
+                              ],
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12.0)),
+                          width: (screenWidth / 2) - 40,
+                          height: 55,
+                          child: Material(
+                            borderRadius: BorderRadius.circular(12.0),
+                            child: InkWell(
+                              onTap: () {
+                                print("google tapped");
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Image.asset("assets/google.png", fit: BoxFit.cover),
+                                    SizedBox(
+                                      width: 7.0,
+                                    ),
+                                    Text("Sign in with\nGoogle")
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                ],
               ),
             ),
           ),
-          Positioned(
-            bottom: 20,
-            right: 20,
-            child: FloatingActionButton(
-              onPressed: _showContacts,
-              tooltip: 'Call Patient',
-              child: Icon(Icons.contacts),
-              backgroundColor: Colors.green,
-            ),
-          ),
         ],
       ),
-    );
-  }
-}
-
-class CustomCard extends StatelessWidget {
-  final String imageAsset;
-  final String title;
-  final String subtitle;
-  final VoidCallback onTap;
-
-  CustomCard({
-    required this.imageAsset,
-    required this.title,
-    required this.subtitle,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 3,
-      margin: EdgeInsets.only(bottom: 16.0),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListTile(
-          leading: Image.asset(imageAsset),
-          title: Text(
-            title,
-            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(subtitle),
-          onTap: onTap,
-        ),
+      bottomNavigationBar: Container(
+        height: 50.0,
+        color: Colors.white,
+        child: Center(
+            child: Wrap(
+              children: [
+                Text(
+                  "Forgot Password?  ",
+                  style: TextStyle(
+                      color: Colors.grey[600], fontWeight: FontWeight.bold),
+                ),
+                Material(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SignUpScreen()),
+                        );
+                      },
+                      child: Text(
+                        "Sign Up",
+                        style: TextStyle(
+                          color: Colors.blue[800],
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                    )),
+              ],
+            )),
       ),
     );
   }
