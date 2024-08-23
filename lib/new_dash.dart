@@ -181,6 +181,12 @@ class Home extends StatelessWidget {
                       color: Colors.black,
                       textColor: Colors.white,
                       isNew: false,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SavePatientScreen()),
+                        );
+                      },
                     ),
                     _buildCard(
                       context,
@@ -190,6 +196,12 @@ class Home extends StatelessWidget {
                       color: Colors.white70,
                       textColor: Colors.black,
                       isNew: true,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SearchPatientScreen()),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -206,6 +218,12 @@ class Home extends StatelessWidget {
                       color: Colors.black,
                       textColor: Colors.white,
                       isNew: false,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => TelemedicineScreen()),
+                        );
+                      },
                     ),
                     _buildCard(
                       context,
@@ -215,6 +233,12 @@ class Home extends StatelessWidget {
                       color: Colors.white70,
                       textColor: Colors.black,
                       isNew: true,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ReviewImagesScreen()),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -235,82 +259,144 @@ class Home extends StatelessWidget {
         required Color color,
         required Color textColor,
         bool isNew = false,
+        required Function()? onTap,
       }) {
-    return Container(
-      height: 180,
-      width: 150,
-      decoration: BoxDecoration(
-          color: color, borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  label,
-                  style: TextStyle(
-                      color: textColor.withOpacity(0.7),
-                      fontSize: 10,
-                      fontWeight: FontWeight.w300),
-                ),
-                Spacer(),
-                if (isNew)
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Colors.purple.shade700,
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                      child: Text(
-                        'New',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 180,
+        width: 150,
+        decoration: BoxDecoration(
+            color: color, borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    label,
+                    style: TextStyle(
+                        color: textColor.withOpacity(0.7),
+                        fontSize: 10,
+                        fontWeight: FontWeight.w300),
+                  ),
+                  Spacer(),
+                  if (isNew)
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.purple.shade700,
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                        child: Text(
+                          'New',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w300),
+                        ),
                       ),
                     ),
-                  ),
-                if (!isNew)
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.star,
-                        size: 12,
-                        color: Colors.yellow.shade800,
-                      ),
-                      Text(
-                        rating ?? '',
-                        style: TextStyle(
-                            color: textColor.withOpacity(0.7),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300),
-                      ),
-                    ],
-                  ),
-              ],
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Text(
-              title,
-              style: TextStyle(
-                  color: textColor,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16),
-            ),
-            Spacer(),
-            Text(
-              description,
-              style: TextStyle(
-                  color: textColor.withOpacity(0.8),
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400),
-            ),
-          ],
+                  if (!isNew)
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.star,
+                          size: 12,
+                          color: Colors.yellow.shade800,
+                        ),
+                        Text(
+                          rating ?? '',
+                          style: TextStyle(
+                              color: textColor.withOpacity(0.7),
+                              fontSize: 10,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                title,
+                style: TextStyle(
+                    color: textColor,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+              ),
+              Spacer(),
+              Text(
+                description,
+                style: TextStyle(
+                    color: textColor.withOpacity(0.8),
+                    fontSize: 10,
+                    fontWeight: FontWeight.w400),
+              ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+}
+
+// Screens to be navigated to
+
+class SavePatientScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Save Patient'),
+      ),
+      body: Center(
+        child: Text('This is the Save Patient Screen'),
+      ),
+    );
+  }
+}
+
+class SearchPatientScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Search Patient'),
+      ),
+      body: Center(
+        child: Text('This is the Search Patient Screen'),
+      ),
+    );
+  }
+}
+
+class TelemedicineScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Telemedicine'),
+      ),
+      body: Center(
+        child: Text('This is the Telemedicine Screen'),
+      ),
+    );
+  }
+}
+
+class ReviewImagesScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Review Images'),
+      ),
+      body: Center(
+        child: Text('This is the Review Images Screen'),
       ),
     );
   }
