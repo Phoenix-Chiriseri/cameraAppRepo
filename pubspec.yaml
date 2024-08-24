@@ -52,6 +52,7 @@ dependencies:
   floating_frosted_bottom_bar: ^0.0.1
   syncfusion_flutter_datepicker: ^20.3.60
   curved_navigation_bar: ^1.0.0
+  typicons_flutter: ^0.5.0
   flutter_floating_bottom_bar: ^1.1.0
 
 dev_dependencies:
@@ -91,3 +92,4 @@ flutter:
     - assets/doctor2.png
     - assets/doctor4.png
     - assets/doctor5.png
+    - assets/whatsapp.jpg

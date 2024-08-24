@@ -247,7 +247,7 @@ class _HomeState extends State<Home> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ShareZoomLink()),
+                          MaterialPageRoute(builder: (context) => Telemedicine()),
                         );
                       },
                     ),

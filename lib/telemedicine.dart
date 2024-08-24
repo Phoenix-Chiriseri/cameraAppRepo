@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart'; // Added for launching URLs
+import 'package:permission_handler/permission_handler.dart'; // Added for permissions
+import 'package:simple_project/widgets/inputTextWidget.dart';
+import 'package:simple_project/signUpScreen.dart';
+import 'package:simple_project/new_dash.dart';
+import 'package:simple_project/database_helper.dart'; // Import the database helper
 
-class ShareZoomLink extends StatefulWidget {
-  @override
-  _ShareZoomLinkState createState() => _ShareZoomLinkState();
+void main() {
+  runApp(MaterialApp(
+    home: Telemedicine(),
+  ));
 }
 
-class _ShareZoomLinkState extends State<ShareZoomLink> {
+class Telemedicine extends StatefulWidget {
+  @override
+  _TelemedicineState createState() => _TelemedicineState();
+}
+
+class _TelemedicineState extends State<Telemedicine> {
   TextEditingController meetingTitleController = TextEditingController();
   TextEditingController zoomLinkController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -24,103 +35,10 @@ class _ShareZoomLinkState extends State<ShareZoomLink> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Share Zoom Link'),
-        backgroundColor: Colors.blue,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            _buildTextField(
-              controller: meetingTitleController,
-              labelText: 'Meeting Title',
-              icon: Icons.title,
-            ),
-            SizedBox(height: 16.0),
-            _buildTextField(
-              controller: zoomLinkController,
-              labelText: 'Zoom Link',
-              icon: Icons.link,
-            ),
-            SizedBox(height: 24.0),
-            ElevatedButton(
-              onPressed: () {
-                String title = meetingTitleController.text;
-                String link = zoomLinkController.text;
-                if (title.isEmpty || link.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Please don\'t leave any empty fields')),
-                  );
-                } else {
-                  sendWhatsAppMessage(title, link);
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue, // Button color
-                padding: EdgeInsets.symmetric(vertical: 16), // Adjust the padding
-                textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), // Adjust the text size and weight
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12), // Rounded corners
-                ),
-              ),
-              child: Text('Share Via WhatsApp'),
-            ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey, // Button color
-                padding: EdgeInsets.symmetric(vertical: 16), // Adjust the padding
-                textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), // Adjust the text size and weight
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12), // Rounded corners
-                ),
-              ),
-              child: Text('Back'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String labelText,
-    required IconData icon,
-  }) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: labelText,
-        prefixIcon: Icon(icon, color: Colors.blue),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.blue),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.blue),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey.shade300),
-        ),
-      ),
-    );
-  }
-
   void sendWhatsAppMessage(String meetingTitle, String zoomLink) async {
-    String message = "I’d like to invite you to a Zoom meeting titled \"$meetingTitle\"\n"
+    final String message = "I’d like to invite you to a Zoom meeting titled \"$meetingTitle\"\n"
         "Meeting Link: $zoomLink";
-    String deepLink = 'https://wa.me/?text=${Uri.encodeComponent(message)}';
+    final String deepLink = 'https://wa.me/?text=${Uri.encodeComponent(message)}';
     if (await canLaunch(deepLink)) {
       await launch(deepLink);
     } else {
@@ -129,10 +47,219 @@ class _ShareZoomLinkState extends State<ShareZoomLink> {
       );
     }
   }
-}
 
-void main() {
-  runApp(MaterialApp(
-    home: ShareZoomLink(),
-  ));
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final double r = (175 / 360); // Ratio for web test
+    final coverHeight = screenWidth * r;
+
+    final widgetList = [
+      Row(
+        children: [
+          SizedBox(width: 28),
+          Text(
+            'Share Via WhatsApp',
+            style: TextStyle(
+              fontFamily: 'Segoe UI',
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xff000000),
+            ),
+            textAlign: TextAlign.left,
+          ),
+        ],
+      ),
+      SizedBox(height: 12.0),
+      Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            InputTextWidget(
+              controller: meetingTitleController,
+              labelText: "Meeting Title",
+              icon: Icons.title,
+              obscureText: false,
+              keyboardType: TextInputType.text,
+            ),
+            SizedBox(height: 12.0),
+            InputTextWidget(
+              controller: zoomLinkController,
+              labelText: "Meeting Link",
+              icon: Icons.link,
+              obscureText: false,
+              keyboardType: TextInputType.url,
+            ),
+            SizedBox(height: 15.0),
+            Container(
+              height: 55.0,
+              child: ElevatedButton(
+                onPressed: () async {
+                  String title = meetingTitleController.text;
+                  String link = zoomLinkController.text;
+                  if (title.isEmpty || link.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Please don\'t leave any empty fields')),
+                    );
+                  } else {
+                    sendWhatsAppMessage(title, link);
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  elevation: 0.0,
+                  minimumSize: Size(150, 40),
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)), // Rounded corners
+                  ),
+                ),
+                child: Text(
+                  "Send Invitation",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white, fontSize: 25),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      SizedBox(height: 15.0),
+      Wrap(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 30.0, right: 10.0, top: 15.0),
+            child: Container(
+              decoration: BoxDecoration(
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.grey,
+                    offset: Offset(0, 0),
+                    blurRadius: 5.0,
+                  ),
+                ],
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              width: (screenWidth / 2) - 40,
+              height: 55,
+              child: Material(
+                borderRadius: BorderRadius.circular(12.0),
+                child: InkWell(
+                  onTap: () {
+                    print("facebook tapped");
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Image.asset("assets/fb.png", fit: BoxFit.cover),
+                        SizedBox(width: 7.0),
+                        Text("Sign in with\nFacebook"),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 15.0),
+            child: Container(
+              decoration: BoxDecoration(
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.grey,
+                    offset: Offset(0, 0),
+                    blurRadius: 5.0,
+                  ),
+                ],
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              width: (screenWidth / 2) - 40,
+              height: 55,
+              child: Material(
+                borderRadius: BorderRadius.circular(12.0),
+                child: InkWell(
+                  onTap: () {
+                    print("google tapped");
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Image.asset("assets/google.png", fit: BoxFit.cover),
+                        SizedBox(width: 7.0),
+                        Text("Sign in with\nGoogle"),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      SizedBox(height: 15.0),
+    ];
+
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+      ),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: true,
+            snap: false,
+            floating: false,
+            expandedHeight: coverHeight - 25,
+            backgroundColor: Color(0xFFdccdb4),
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
+              background: Image.asset("assets/whatsapp.jpg", fit: BoxFit.cover),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: <Color>[Color(0xFFdccdb4), Color(0xFFd8c3ab)],
+                ),
+              ),
+              width: screenWidth,
+              height: 25,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Container(
+                    width: screenWidth,
+                    height: 25,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30.0),
+                        topRight: Radius.circular(30.0),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                return widgetList[index];
+              },
+              childCount: widgetList.length,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
