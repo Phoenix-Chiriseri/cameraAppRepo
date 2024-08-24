@@ -151,13 +151,7 @@ class _TelemedicineState extends State<Telemedicine> {
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Image.asset("assets/fb.png", fit: BoxFit.cover),
-                        SizedBox(width: 7.0),
-                        Text("Sign in with\nFacebook"),
-                      ],
-                    ),
+
                   ),
                 ),
               ),
@@ -187,13 +181,7 @@ class _TelemedicineState extends State<Telemedicine> {
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Image.asset("assets/google.png", fit: BoxFit.cover),
-                        SizedBox(width: 7.0),
-                        Text("Sign in with\nGoogle"),
-                      ],
-                    ),
+
                   ),
                 ),
               ),
