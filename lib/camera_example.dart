@@ -15,10 +15,10 @@ class _CameraExampleState extends State<CameraExample> {
   @override
   void initState() {
     super.initState();
-     //request the permission into the application
-     requestPermission();
-     //load the model into the application throught the loadModel() function
-     loadModel();
+    //request the permission into the application
+    requestPermission();
+    //load the model into the application throught the loadModel() function
+    loadModel();
   }
 
   Future<void> requestPermission() async {

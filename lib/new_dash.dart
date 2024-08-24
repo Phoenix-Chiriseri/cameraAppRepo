@@ -7,13 +7,27 @@ import 'package:simple_project/search_patient.dart';
 import 'package:simple_project/apply_iodine.dart';
 import 'package:simple_project/camera_example.dart';
 import 'package:simple_project/teams_test.dart';
+import 'package:simple_project/camera_example.dart';
 
 void main() {
   runApp(Home());
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -271,6 +285,32 @@ class Home extends StatelessWidget {
             ),
           ),
         ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Search',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.notifications),
+                label: 'Notifications',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Profile',
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
+            backgroundColor: Colors.white, // Set the background color to white
+            selectedItemColor: Colors.black, // Set the color of the selected item to black
+            unselectedItemColor: Colors.black.withOpacity(0.6), // Set the color of unselected items to black with reduced opacity
+            elevation: 10, // Adds shadow for better visibility
+          ),
       ),
     );
   }

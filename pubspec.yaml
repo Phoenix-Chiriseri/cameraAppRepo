@@ -51,7 +51,8 @@ dependencies:
   sleek_circular_slider: ^2.0.1
   floating_frosted_bottom_bar: ^0.0.1
   syncfusion_flutter_datepicker: ^20.3.60
-
+  curved_navigation_bar: ^1.0.0
+  flutter_floating_bottom_bar: ^1.1.0
 
 dev_dependencies:
   flutter_test:
