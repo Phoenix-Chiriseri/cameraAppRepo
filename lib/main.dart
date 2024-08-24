@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:simple_project/widgets/inputTextWidget.dart';
 import 'package:simple_project/signUpScreen.dart';
 import 'package:simple_project/new_dash.dart';
+import 'package:simple_project/database_helper.dart'; // Import the database helper
 
 void main() {
   runApp(MaterialApp(
@@ -12,31 +12,26 @@ void main() {
 
 class LoginScreen extends StatefulWidget {
   LoginScreen() : super();
-
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _SearchScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _pwdController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  //final snackBar = SnackBar(content: Text('email ou mot de passe incorrect'));
   final _formKey = GlobalKey<FormState>();
+  final DatabaseHelper _dbHelper = DatabaseHelper.instance; // Initialize DatabaseHelper
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final double r = (175 / 360); //  rapport for web test(304 / 540);
+    final double r = (175 / 360); // Ratio for web test
     final coverHeight = screenWidth * r;
-    bool _pinned = false;
-    bool _snap = false;
-    bool _floating = false;
 
     final widgetList = [
       Row(
         children: [
-          SizedBox(
-            width: 28,
-          ),
+          SizedBox(width: 28),
           Text(
             'Welcome',
             style: TextStyle(
@@ -44,113 +39,123 @@ class _SearchScreenState extends State<LoginScreen> {
               fontSize: 40,
               fontWeight: FontWeight.bold,
               color: const Color(0xff000000),
-
             ),
             textAlign: TextAlign.left,
           ),
         ],
       ),
-      SizedBox(
-        height: 12.0,
-      ),
+      SizedBox(height: 12.0),
       Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              InputTextWidget(
-                  controller: _emailController,
-                  labelText: "Email",
-                  icon: Icons.email,
-                  obscureText: false,
-                  keyboardType: TextInputType.emailAddress),
-              SizedBox(
-                height: 12.0,
-              ),
-              InputTextWidget(
-                  controller: _pwdController,
-                  labelText: "Password",
-                  icon: Icons.lock,
-                  obscureText: true,
-                  keyboardType: TextInputType.text),
-              Padding(
-                padding: const EdgeInsets.only(right: 25.0, top: 10.0),
-                child: Align(
-                    alignment: Alignment.topRight,
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {},
-                        child: Text(
-                          "Forgot Password?",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[700]),
-                        ),
-                      ),
-                    )),
-              ),
-              SizedBox(
-                height: 15.0,
-              ),
-              Container(
-                height: 55.0,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Home()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    elevation: 0.0,
-                    minimumSize: Size(screenWidth, 150),
-                    padding: EdgeInsets.symmetric(horizontal: 30),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(0)),
-                    ),
-                  ),
-                  child: Ink(
-                    decoration: BoxDecoration(
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: Colors.red,
-                              offset: const Offset(1.1, 1.1),
-                              blurRadius: 10.0),
-                        ],
-                        color: Colors.red, // Color(0xffF05945),
-                        borderRadius: BorderRadius.circular(12.0)),
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Sign In",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white, fontSize: 25),
+        key: _formKey,
+        child: Column(
+          children: [
+            InputTextWidget(
+              controller: _emailController,
+              labelText: "Email",
+              icon: Icons.email,
+              obscureText: false,
+              keyboardType: TextInputType.emailAddress,
+            ),
+            SizedBox(height: 12.0),
+            InputTextWidget(
+              controller: _pwdController,
+              labelText: "Password",
+              icon: Icons.lock,
+              obscureText: true,
+              keyboardType: TextInputType.text,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 25.0, top: 10.0),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {},
+                    child: Text(
+                      "Forgot Password?",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[700],
                       ),
                     ),
                   ),
                 ),
               ),
-            ],
-          )),
-      SizedBox(
-        height: 15.0,
+            ),
+            SizedBox(height: 15.0),
+            Container(
+              height: 55.0,
+              child: ElevatedButton(
+                onPressed: () async {
+                  final email = _emailController.text;
+                  final password = _pwdController.text;
+
+                  bool isValid = await _dbHelper.validateUser(email, password);
+                  if (isValid) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Home()),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Invalid email or password')),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  elevation: 0.0,
+                  minimumSize: Size(screenWidth, 55),
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(0)),
+                  ),
+                ),
+                child: Ink(
+                  decoration: BoxDecoration(
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: Colors.red,
+                        offset: const Offset(1.1, 1.1),
+                        blurRadius: 10.0,
+                      ),
+                    ],
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Sign In",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 25),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
+      SizedBox(height: 15.0),
       Wrap(
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 30.0, right: 10.0, top: 15.0),
             child: Container(
               decoration: BoxDecoration(
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color: Colors.grey, //Color(0xfff05945),
-                        offset: const Offset(0, 0),
-                        blurRadius: 5.0),
-                  ],
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.0)),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.grey,
+                    offset: const Offset(0, 0),
+                    blurRadius: 5.0,
+                  ),
+                ],
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.0),
+              ),
               width: (screenWidth / 2) - 40,
               height: 55,
               child: Material(
@@ -164,10 +169,8 @@ class _SearchScreenState extends State<LoginScreen> {
                     child: Row(
                       children: [
                         Image.asset("assets/fb.png", fit: BoxFit.cover),
-                        SizedBox(
-                          width: 7.0,
-                        ),
-                        Text("Sign in with\nfacebook")
+                        SizedBox(width: 7.0),
+                        Text("Sign in with\nfacebook"),
                       ],
                     ),
                   ),
@@ -179,14 +182,16 @@ class _SearchScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 15.0),
             child: Container(
               decoration: BoxDecoration(
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color: Colors.grey, //Color(0xfff05945),
-                        offset: const Offset(0, 0),
-                        blurRadius: 5.0),
-                  ],
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.0)),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.grey,
+                    offset: const Offset(0, 0),
+                    blurRadius: 5.0,
+                  ),
+                ],
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.0),
+              ),
               width: (screenWidth / 2) - 40,
               height: 55,
               child: Material(
@@ -199,12 +204,9 @@ class _SearchScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        Image.asset("assets/google.png",
-                            fit: BoxFit.cover),
-                        SizedBox(
-                          width: 7.0,
-                        ),
-                        Text("Sign in with\nGoogle")
+                        Image.asset("assets/google.png", fit: BoxFit.cover),
+                        SizedBox(width: 7.0),
+                        Text("Sign in with\nGoogle"),
                       ],
                     ),
                   ),
@@ -214,40 +216,34 @@ class _SearchScreenState extends State<LoginScreen> {
           ),
         ],
       ),
-      SizedBox(
-        height: 15.0,
-      ),
+      SizedBox(height: 15.0),
     ];
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        // leading: Icon(Icons.arrow_back),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
-            pinned: _pinned,
-            snap: _snap,
-            floating: _floating,
-            expandedHeight: coverHeight - 25, //304,
+            pinned: true,
+            snap: false,
+            floating: false,
+            expandedHeight: coverHeight - 25,
             backgroundColor: Color(0xFFdccdb4),
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
-              background:
-              Image.asset("assets/ndandi.jpg", fit: BoxFit.cover),
+              background: Image.asset("assets/ndandi.jpg", fit: BoxFit.cover),
             ),
           ),
           SliverToBoxAdapter(
             child: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-
-                  ),
-                  gradient: LinearGradient(
-                      colors: <Color>[Color(0xFFdccdb4), Color(0xFFd8c3ab)])
-
+                gradient: LinearGradient(
+                  colors: <Color>[Color(0xFFdccdb4), Color(0xFFd8c3ab)],
+                ),
               ),
               width: screenWidth,
               height: 25,
@@ -259,56 +255,23 @@ class _SearchScreenState extends State<LoginScreen> {
                     height: 25,
                     decoration: BoxDecoration(
                       color: Colors.white,
-
                       borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(30.0),
                         topRight: const Radius.circular(30.0),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
           ),
           SliverList(
-              delegate:
-              SliverChildBuilderDelegate((BuildContext context, int index) {
+            delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
                 return widgetList[index];
-              }, childCount: widgetList.length))
-        ],
-      ),
-      bottomNavigationBar: Stack(
-        children: [
-          new Container(
-            height: 50.0,
-            color: Colors.white,
-            child: Center(
-                child: Wrap(
-                  children: [
-                    Text(
-                      "Forgot Password?  ",
-                      style: TextStyle(
-                          color: Colors.grey[600], fontWeight: FontWeight.bold),
-                    ),
-                    Material(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => SignUpScreen()),
-                            );
-                          },
-                          child: Text(
-                            "Sign Up",
-                            style: TextStyle(
-                              color: Colors.blue[800],
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        )),
-                  ],
-                )),
+              },
+              childCount: widgetList.length,
+            ),
           ),
         ],
       ),

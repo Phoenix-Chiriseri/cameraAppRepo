@@ -8,10 +8,10 @@ class ShareZoomLink extends StatefulWidget {
 }
 
 class _ShareZoomLinkState extends State<ShareZoomLink> {
-  //this is the meetingTitleController and the ZoomLinkController
   TextEditingController meetingTitleController = TextEditingController();
   TextEditingController zoomLinkController = TextEditingController();
 
+  @override
   void initState() {
     super.initState();
     requestPermission();
@@ -29,30 +29,30 @@ class _ShareZoomLinkState extends State<ShareZoomLink> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Share Zoom Link'),
-        backgroundColor:Colors.blue,
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            TextField(
+            _buildTextField(
               controller: meetingTitleController,
-              decoration: InputDecoration(labelText: 'Meeting Title'),
-            ),
-            SizedBox(height: 12.0),
-            TextField(
-              controller: zoomLinkController,
-              decoration: InputDecoration(labelText: 'Zoom Link'),
+              labelText: 'Meeting Title',
+              icon: Icons.title,
             ),
             SizedBox(height: 16.0),
+            _buildTextField(
+              controller: zoomLinkController,
+              labelText: 'Zoom Link',
+              icon: Icons.link,
+            ),
+            SizedBox(height: 24.0),
             ElevatedButton(
               onPressed: () {
-                // get the title and the meeting link
                 String title = meetingTitleController.text;
                 String link = zoomLinkController.text;
-                //if the title is empty or the link is empty
-                if (title.isEmpty  || link.isEmpty) {
+                if (title.isEmpty || link.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Please don\'t leave any empty fields')),
                   );
@@ -61,11 +61,14 @@ class _ShareZoomLinkState extends State<ShareZoomLink> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue, // Change the background color to green
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // Adjust the padding
-                textStyle: TextStyle(fontSize: 12), // Adjust the text size
+                backgroundColor: Colors.blue, // Button color
+                padding: EdgeInsets.symmetric(vertical: 16), // Adjust the padding
+                textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), // Adjust the text size and weight
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                ),
               ),
-              child: Text('Share Via WhatsApp', style: TextStyle(fontSize: 12)),
+              child: Text('Share Via WhatsApp'),
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
@@ -73,13 +76,42 @@ class _ShareZoomLinkState extends State<ShareZoomLink> {
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue, // Change the background color to green
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // Adjust the padding
-                textStyle: TextStyle(fontSize: 12), // Adjust the text size
+                backgroundColor: Colors.grey, // Button color
+                padding: EdgeInsets.symmetric(vertical: 16), // Adjust the padding
+                textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), // Adjust the text size and weight
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                ),
               ),
-              child: Text('Back', style: TextStyle(fontSize: 12)),
+              child: Text('Back'),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String labelText,
+    required IconData icon,
+  }) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        prefixIcon: Icon(icon, color: Colors.blue),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.blue),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.blue),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey.shade300),
         ),
       ),
     );

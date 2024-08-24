@@ -8,6 +8,7 @@ import 'package:simple_project/apply_iodine.dart';
 import 'package:simple_project/camera_example.dart';
 import 'package:simple_project/teams_test.dart';
 import 'package:simple_project/camera_example.dart';
+import 'package:simple_project/new_dash.dart';
 
 void main() {
   runApp(Home());
@@ -15,13 +16,16 @@ void main() {
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
-
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
+
+  final List<Widget> _screens = [
+    //HomeScreen()
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -293,15 +297,7 @@ class _HomeState extends State<Home> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.search),
-                label: 'Search',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.notifications),
-                label: 'Notifications',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
+                label: 'About',
               ),
             ],
             currentIndex: _selectedIndex,
