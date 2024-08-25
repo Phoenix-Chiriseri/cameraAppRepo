@@ -292,11 +292,15 @@ class _HomeState extends State<Home> {
           bottomNavigationBar: BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
+                icon: Icon(Icons.home), // Home icon
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.search),
+                icon: Icon(Icons.video_call), // Start Meeting icon
+                label: 'Start Meeting',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.info), // About icon
                 label: 'About',
               ),
             ],

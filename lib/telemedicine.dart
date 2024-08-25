@@ -58,156 +58,112 @@ class _TelemedicineState extends State<Telemedicine> {
     final double r = (175 / 360); // Ratio for web test
     final coverHeight = screenWidth * r;
 
+    final buttonWidth = screenWidth * 0.8; // Make buttons a bit smaller than screen width
+    final buttonHeight = 55.0; // Set a consistent height for buttons
+
     final widgetList = [
-      Row(
-        children: [
-          SizedBox(width: 28),
-          Text(
-            'Share Via WhatsApp',
-            style: TextStyle(
-              fontFamily: 'Segoe UI',
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xff000000),
-            ),
-            textAlign: TextAlign.left,
-          ),
-        ],
-      ),
-      SizedBox(height: 12.0),
-      Form(
-        key: _formKey,
-        child: Column(
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12.0),
+        child: Row(
           children: [
-            InputTextWidget(
-              controller: meetingTitleController,
-              labelText: "Meeting Title",
-              icon: Icons.title,
-              obscureText: false,
-              keyboardType: TextInputType.text,
-            ),
-            SizedBox(height: 12.0),
-            InputTextWidget(
-              controller: zoomLinkController,
-              labelText: "Meeting Link",
-              icon: Icons.link,
-              obscureText: false,
-              keyboardType: TextInputType.url,
-            ),
-            SizedBox(height: 15.0),
-            Container(
-              height: 55.0,
-              child: ElevatedButton(
-                onPressed: () async {
-                  String title = meetingTitleController.text;
-                  String link = zoomLinkController.text;
-                  if (title.isEmpty || link.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Please don\'t leave any empty fields')),
-                    );
-                  } else {
-                    sendWhatsAppMessage(title, link);
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  elevation: 0.0,
-                  minimumSize: Size(180, 40),
-                  padding: EdgeInsets.symmetric(horizontal: 30),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)), // Rounded corners
-                  ),
-                ),
+            Expanded(
+              child: Center(
                 child: Text(
-                  "Send Invitation",
+                  'Share Via WhatsApp',
+                  style: TextStyle(
+                    fontFamily: 'Segoe UI',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xff000000),
+                  ),
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
             ),
           ],
         ),
       ),
-      SizedBox(height: 15.0),
-      Wrap(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 30.0, right: 10.0, top: 15.0),
-            child: AnimatedOpacity(
-              opacity: _isVisible ? 1.0 : 0.0,
-              duration: Duration(milliseconds: 500),
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Colors.grey,
-                      offset: Offset(0, 0),
-                      blurRadius: 5.0,
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 28.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              InputTextWidget(
+                controller: meetingTitleController,
+                labelText: "Meeting Title",
+                icon: Icons.meeting_room, // Updated icon
+                obscureText: false,
+                keyboardType: TextInputType.text,
+              ),
+              SizedBox(height: 12.0),
+              InputTextWidget(
+                controller: zoomLinkController,
+                labelText: "Meeting Link",
+                icon: Icons.link,
+                obscureText: false,
+                keyboardType: TextInputType.url,
+              ),
+              SizedBox(height: 15.0),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 8.0), // Reduced vertical margin
+                width: buttonWidth,
+                height: buttonHeight,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    String title = meetingTitleController.text;
+                    String link = zoomLinkController.text;
+                    if (title.isEmpty || link.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Please don\'t leave any empty fields')),
+                      );
+                    } else {
+                      sendWhatsAppMessage(title, link);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    elevation: 0.0,
+                    minimumSize: Size(buttonWidth, buttonHeight),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)), // Rounded corners
                     ),
-                  ],
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                width: (screenWidth / 2) - 40,
-                height: 55,
-                child: Material(
-                  borderRadius: BorderRadius.circular(12.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pop(context); // Back navigation
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.arrow_back, size: 22.0, color: Colors.black),
-                        SizedBox(width: 8.0),
-                        Text("Back", style: TextStyle(fontSize: 16.0, color: Colors.black)),
-                      ],
-                    ),
+                  ),
+                  child: Text(
+                    "Send Invitation",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 15.0),
-            child: AnimatedOpacity(
-              opacity: _isVisible ? 1.0 : 0.0,
-              duration: Duration(milliseconds: 500),
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Colors.grey,
-                      offset: Offset(0, 0),
-                      blurRadius: 5.0,
+              SizedBox(height: 8.0), // Reduced space between buttons
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 8.0), // Reduced vertical margin
+                width: buttonWidth,
+                height: buttonHeight,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Back navigation
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    elevation: 0.0,
+                    minimumSize: Size(buttonWidth, buttonHeight),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)), // Rounded corners
                     ),
-                  ],
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                width: (screenWidth / 2) - 40,
-                height: 55,
-                child: Material(
-                  borderRadius: BorderRadius.circular(12.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/home'); // Navigate to the home screen
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.home, size: 22.0, color: Colors.black),
-                        SizedBox(width: 8.0),
-                        Text("Home", style: TextStyle(fontSize: 16.0, color: Colors.black)),
-                      ],
-                    ),
+                  ),
+                  child: Text(
+                    "Back",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),
               ),
-            ),
+              SizedBox(height: 15.0),
+            ],
           ),
-        ],
+        ),
       ),
       SizedBox(height: 15.0),
     ];
