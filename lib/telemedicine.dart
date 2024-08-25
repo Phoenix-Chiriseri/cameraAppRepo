@@ -5,7 +5,6 @@ import 'package:simple_project/widgets/inputTextWidget.dart';
 import 'package:simple_project/signUpScreen.dart';
 import 'package:simple_project/new_dash.dart';
 import 'package:simple_project/database_helper.dart'; // Import the database helper
-import 'package:simple_project/new_dash.dart'; // Import the database helper
 
 void main() {
   runApp(MaterialApp(
@@ -25,6 +24,7 @@ class _TelemedicineState extends State<Telemedicine> {
   TextEditingController meetingTitleController = TextEditingController();
   TextEditingController zoomLinkController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _isVisible = true;
 
   @override
   void initState() {
@@ -133,29 +133,37 @@ class _TelemedicineState extends State<Telemedicine> {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 30.0, right: 10.0, top: 15.0),
-            child: Container(
-              decoration: BoxDecoration(
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    color: Colors.grey,
-                    offset: Offset(0, 0),
-                    blurRadius: 5.0,
-                  ),
-                ],
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              width: (screenWidth / 2) - 40,
-              height: 55,
-              child: Material(
-                borderRadius: BorderRadius.circular(12.0),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pop(context); // Back navigation
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(Icons.arrow_back, size: 30.0, color: Colors.blue),
+            child: AnimatedOpacity(
+              opacity: _isVisible ? 1.0 : 0.0,
+              duration: Duration(milliseconds: 500),
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(0, 0),
+                      blurRadius: 5.0,
+                    ),
+                  ],
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                width: (screenWidth / 2) - 40,
+                height: 55,
+                child: Material(
+                  borderRadius: BorderRadius.circular(12.0),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context); // Back navigation
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.arrow_back, size: 22.0, color: Colors.black),
+                        SizedBox(width: 8.0),
+                        Text("Back", style: TextStyle(fontSize: 16.0, color: Colors.black)),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -163,29 +171,37 @@ class _TelemedicineState extends State<Telemedicine> {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 15.0),
-            child: Container(
-              decoration: BoxDecoration(
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    color: Colors.grey,
-                    offset: Offset(0, 0),
-                    blurRadius: 5.0,
-                  ),
-                ],
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              width: (screenWidth / 2) - 40,
-              height: 55,
-              child: Material(
-                borderRadius: BorderRadius.circular(12.0),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/home'); // Navigate to the home screen
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(Icons.home, size: 30.0, color: Colors.blue), // Home icon
+            child: AnimatedOpacity(
+              opacity: _isVisible ? 1.0 : 0.0,
+              duration: Duration(milliseconds: 500),
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(0, 0),
+                      blurRadius: 5.0,
+                    ),
+                  ],
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                width: (screenWidth / 2) - 40,
+                height: 55,
+                child: Material(
+                  borderRadius: BorderRadius.circular(12.0),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/home'); // Navigate to the home screen
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.home, size: 22.0, color: Colors.black),
+                        SizedBox(width: 8.0),
+                        Text("Home", style: TextStyle(fontSize: 16.0, color: Colors.black)),
+                      ],
+                    ),
                   ),
                 ),
               ),
