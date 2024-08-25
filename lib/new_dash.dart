@@ -238,7 +238,7 @@ class _HomeState extends State<Home> {
                     _buildCard(
                       context,
                       title: 'Telemedicine',
-                      description: 'Connect instantly to manage records efficiently',
+                      description: 'Share a meeting link via whatsapp and allow users to join',
                       label: 'Health',
                       rating: '5.0',
                       color: Colors.black,

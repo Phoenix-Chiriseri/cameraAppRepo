@@ -5,10 +5,14 @@ import 'package:simple_project/widgets/inputTextWidget.dart';
 import 'package:simple_project/signUpScreen.dart';
 import 'package:simple_project/new_dash.dart';
 import 'package:simple_project/database_helper.dart'; // Import the database helper
+import 'package:simple_project/new_dash.dart'; // Import the database helper
 
 void main() {
   runApp(MaterialApp(
     home: Telemedicine(),
+    routes: {
+      '/home': (context) => Home(), // Define your home screen route
+    },
   ));
 }
 
@@ -108,7 +112,7 @@ class _TelemedicineState extends State<Telemedicine> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   elevation: 0.0,
-                  minimumSize: Size(150, 40),
+                  minimumSize: Size(180, 40),
                   padding: EdgeInsets.symmetric(horizontal: 30),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8)), // Rounded corners
@@ -147,11 +151,11 @@ class _TelemedicineState extends State<Telemedicine> {
                 borderRadius: BorderRadius.circular(12.0),
                 child: InkWell(
                   onTap: () {
-                    print("facebook tapped");
+                    Navigator.pop(context); // Back navigation
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-
+                    child: Icon(Icons.arrow_back, size: 30.0, color: Colors.blue),
                   ),
                 ),
               ),
@@ -177,11 +181,11 @@ class _TelemedicineState extends State<Telemedicine> {
                 borderRadius: BorderRadius.circular(12.0),
                 child: InkWell(
                   onTap: () {
-                    print("google tapped");
+                    Navigator.pushNamed(context, '/home'); // Navigate to the home screen
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-
+                    child: Icon(Icons.home, size: 30.0, color: Colors.blue), // Home icon
                   ),
                 ),
               ),
