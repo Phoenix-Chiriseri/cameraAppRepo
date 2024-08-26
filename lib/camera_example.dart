@@ -12,12 +12,11 @@ class CameraExample extends StatefulWidget {
 class _CameraExampleState extends State<CameraExample> {
   XFile? _image;
   List<dynamic>? _recognitions;
+
   @override
   void initState() {
     super.initState();
-    //request the permission into the application
     requestPermission();
-    //load the model into the application throught the loadModel() function
     loadModel();
   }
 
@@ -28,15 +27,12 @@ class _CameraExampleState extends State<CameraExample> {
     }
   }
 
-  //function that will load the model into the application
   Future<void> loadModel() async {
     String? results = await Tflite.loadModel(
       model: "assets/model_unquant.tflite",
       labels: "assets/labels.txt",
     );
-
     print(results);
-
   }
 
   Future<void> pickImage(ImageSource source) async {
@@ -53,10 +49,10 @@ class _CameraExampleState extends State<CameraExample> {
   Future<void> classifyImage(File image) async {
     var recognitions = await Tflite.runModelOnImage(
       path: image.path,
-      numResults: 1, // Adjusted to 1 for a binary classification model
-      threshold: 0.5, // Adjust this based on your model
-      imageMean: 127.5, // Adjust this based on your model
-      imageStd: 127.5, // Adjust this based on your model
+      numResults: 1,
+      threshold: 0.5,
+      imageMean: 127.5,
+      imageStd: 127.5,
     );
     setState(() {
       _recognitions = recognitions;
@@ -67,8 +63,11 @@ class _CameraExampleState extends State<CameraExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Results'),
-        backgroundColor: Colors.blue,
+        title: Text(
+          'Image Classification',
+          style: TextStyle(color: Colors.white), // Set title text color to white
+        ),
+        backgroundColor: Colors.black,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -76,14 +75,41 @@ class _CameraExampleState extends State<CameraExample> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             if (_image != null)
-              Image.file(
-                File(_image!.path),
+              Container(
                 height: 200,
-              ),
-            if (_image == null)
-              Placeholder(
-                fallbackHeight: 200,
-                color: Colors.blue,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.3),
+                      blurRadius: 10,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.file(
+                    File(_image!.path),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              )
+            else
+              Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.blue.withOpacity(0.2),
+                  border: Border.all(color: Colors.blue.withOpacity(0.5)),
+                ),
+                child: Center(
+                  child: Text(
+                    'Image Preview',
+                    style: TextStyle(color: Colors.blue, fontSize: 18),
+                  ),
+                ),
               ),
             SizedBox(height: 16.0),
             Text(
@@ -91,22 +117,30 @@ class _CameraExampleState extends State<CameraExample> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
+            SizedBox(height: 8.0),
             if (_recognitions != null)
-              ..._recognitions!.map((res) {
-                return Text(
-                  "${res["label"]}: ${(res["confidence"] * 100).toStringAsFixed(0)}%",
-                  style: TextStyle(fontSize: 20),
-                );
-              }).toList(),
+              Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: _recognitions!.map((res) {
+                    return Text(
+                      "${res["label"]}: ${(res["confidence"] * 100).toStringAsFixed(0)}%",
+                      style: TextStyle(fontSize: 20),
+                      textAlign: TextAlign.center,
+                    );
+                  }).toList(),
+                ),
+              ),
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 pickImage(ImageSource.camera);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                textStyle: TextStyle(fontSize: 16),
+                backgroundColor: Colors.black,
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                textStyle: TextStyle(fontSize: 16), // Text style for font size
+                foregroundColor: Colors.white, // Sets the text color to white
               ),
               child: Text('Take Photo'),
             ),
@@ -116,9 +150,10 @@ class _CameraExampleState extends State<CameraExample> {
                 pickImage(ImageSource.gallery);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                textStyle: TextStyle(fontSize: 16),
+                backgroundColor: Colors.black, // Button background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding inside the button
+                textStyle: TextStyle(fontSize: 16), // Text style for font size
+                foregroundColor: Colors.white, // Text color
               ),
               child: Text('Pick From Gallery'),
             ),

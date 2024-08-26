@@ -134,7 +134,7 @@ class _SearchPatientState extends State<SearchPatient> {
                 keyboardType: TextInputType.text,
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0), // Reduced vertical margin
+                margin: EdgeInsets.symmetric(vertical: 8.0),
                 width: buttonWidth,
                 height: buttonHeight,
                 child: ElevatedButton(
