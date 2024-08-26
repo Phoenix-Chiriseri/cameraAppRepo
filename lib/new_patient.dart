@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import for date formatting
+import 'package:permission_handler/permission_handler.dart'; // Import for permissions
 import 'package:simple_project/widgets/inputTextWidget.dart';
 import 'package:simple_project/signUpScreen.dart';
 import 'package:simple_project/new_dash.dart';
 import 'package:simple_project/database_helper.dart';
 import 'package:simple_project/camera_screen1.dart';
-import 'package:permission_handler/permission_handler.dart'; // Import for permissions
+import 'package:simple_project/patient_listscreen.dart'; // Import the new screen
 
 void main() {
   runApp(MaterialApp(
@@ -56,7 +57,7 @@ class _NewPatientState extends State<NewPatient> {
     );
     if (pickedDate != null) {
       setState(() {
-        jobDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate); // Format the date
+        jobDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
       });
     }
   }
@@ -64,8 +65,152 @@ class _NewPatientState extends State<NewPatient> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final double r = (175 / 360); // Ratio for web test
+    final coverHeight = screenWidth * r;
+
+    final buttonWidth = screenWidth * 0.8;
+    final buttonHeight = 55.0;
+
+    final widgetList = [
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Center(
+                child: Text(
+                  'New Patient Form',
+                  style: TextStyle(
+                    fontFamily: 'Segoe UI',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xff000000),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 28.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              InputTextWidget(
+                controller: patientIdController,
+                labelText: "Patient ID",
+                icon: Icons.person,
+                obscureText: false,
+                keyboardType: TextInputType.text,
+              ),
+              SizedBox(height: 12.0),
+              TextFormField(
+                controller: jobDateController,
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: "Date of Birth",
+                  icon: Icon(Icons.calendar_today),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.calendar_today),
+                    onPressed: () => _selectDate(context),
+                  ),
+                ),
+                onTap: () => _selectDate(context),
+              ),
+              SizedBox(height: 15.0),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 8.0),
+                width: buttonWidth,
+                height: buttonHeight,
+                child: ElevatedButton(
+                  onPressed: () {
+                    String id = patientIdController.text;
+                    String date = jobDateController.text;
+                    if (id.isEmpty || date.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Please don\'t leave any fields empty')),
+                      );
+                    } else {
+                      saveInSqliteDatabase(id, date);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    elevation: 0.0,
+                    minimumSize: Size(buttonWidth, buttonHeight),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
+                  ),
+                  child: Text(
+                    "Save Patient",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                ),
+              ),
+              SizedBox(height: 8.0),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 8.0),
+                width: buttonWidth,
+                height: buttonHeight,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    elevation: 0.0,
+                    minimumSize: Size(buttonWidth, buttonHeight),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
+                  ),
+                  child: Text(
+                    "Back",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                ),
+              ),
+              SizedBox(height: 15.0),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 8.0),
+                width: buttonWidth,
+                height: buttonHeight,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SeeAll()), // Navigate to the view all patients screen
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    elevation: 0.0,
+                    minimumSize: Size(buttonWidth, buttonHeight),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
+                  ),
+                  child: Text(
+                    "View All Patients",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ];
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
@@ -73,7 +218,10 @@ class _NewPatientState extends State<NewPatient> {
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
-            expandedHeight: 200.0,
+            pinned: true,
+            snap: false,
+            floating: false,
+            expandedHeight: coverHeight - 25,
             backgroundColor: Color(0xFFdccdb4),
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
@@ -84,150 +232,35 @@ class _NewPatientState extends State<NewPatient> {
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    colors: <Color>[Color(0xFFdccdb4), Color(0xFFd8c3ab)]
+                  colors: <Color>[Color(0xFFdccdb4), Color(0xFFd8c3ab)],
                 ),
               ),
+              width: screenWidth,
+              height: 25,
               child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        InputTextWidget(
-                          controller: patientIdController,
-                          labelText: "Enter Patient Id",
-                          icon: Icons.person, // Updated icon
-                          obscureText: false,
-                          keyboardType: TextInputType.text,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            _selectDate(context);
-                          },
-                          child: InputTextWidget(
-                            controller: jobDateController,
-                            labelText: "Enter Date Of Birth",
-                            icon: Icons.calendar_today,
-                            obscureText: true,
-                            keyboardType: TextInputType.text,
-                          ),
-                        ),
-                        SizedBox(height: 15.0),
-                        Container(
-                          height: 55.0,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              String id = patientIdController.text;
-                              String date = jobDateController.text;
-
-                              if (id.isEmpty || date.isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('Please don\'t leave any fields empty')),
-                                );
-                              } else {
-                                saveInSqliteDatabase(id, date);
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              elevation: 0.0,
-                              minimumSize: Size(screenWidth * 0.8, 55), // Adjusted size
-                              padding: EdgeInsets.symmetric(horizontal: 30),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(12)),
-                              ),
-                            ),
-                            child: Text(
-                              "Save Patient",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white, fontSize: 25),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 15.0),
-                        Wrap(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 30.0, right: 10.0, top: 15.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow(
-                                      color: Colors.grey,
-                                      offset: Offset(0, 0),
-                                      blurRadius: 5.0,
-                                    ),
-                                  ],
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                width: (screenWidth / 2) - 40,
-                                height: 55,
-                                child: Material(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  child: InkWell(
-                                    onTap: () {
-                                      print("facebook tapped");
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: [
-                                          Image.asset("assets/fb.png", fit: BoxFit.cover),
-                                          SizedBox(width: 7.0),
-                                          Text("Sign in with\nFacebook")
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 15.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow(
-                                      color: Colors.grey,
-                                      offset: Offset(0, 0),
-                                      blurRadius: 5.0,
-                                    ),
-                                  ],
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                width: (screenWidth / 2) - 40,
-                                height: 55,
-                                child: Material(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  child: InkWell(
-                                    onTap: () {
-                                      print("google tapped");
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: [
-                                          Image.asset("assets/google.png", fit: BoxFit.cover),
-                                          SizedBox(width: 7.0),
-                                          Text("Sign in with\nGoogle")
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 15.0),
-                      ],
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Container(
+                    width: screenWidth,
+                    height: 25,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30.0),
+                        topRight: Radius.circular(30.0),
+                      ),
                     ),
                   ),
                 ],
               ),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                return widgetList[index];
+              },
+              childCount: widgetList.length,
             ),
           ),
         ],

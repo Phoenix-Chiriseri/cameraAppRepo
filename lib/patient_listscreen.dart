@@ -5,6 +5,12 @@ import 'package:simple_project/new_dash.dart';
 import 'package:simple_project/widgets/text_widget.dart';
 import 'package:simple_project/database_helper.dart';
 
+void main() {
+  runApp(MaterialApp(
+    home: SeeAll(),
+  ));
+}
+
 class SeeAll extends StatefulWidget {
   @override
   State<SeeAll> createState() => _SeeAllState();
