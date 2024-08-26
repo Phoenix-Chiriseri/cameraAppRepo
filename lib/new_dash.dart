@@ -296,8 +296,9 @@ class _HomeState extends State<Home> {
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.video_call), // Start Meeting icon
-                label: 'Start Meeting',
+                icon: Icon(Icons.chat), // Messages/Chats, // Start Meeting icon
+                label: 'Send Us Feedback',
+                
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.info), // About icon
