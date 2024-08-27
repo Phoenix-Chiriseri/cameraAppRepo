@@ -10,7 +10,7 @@ import 'package:simple_project/teams_test.dart';
 import 'package:simple_project/camera_example.dart';
 import 'package:simple_project/new_dash.dart';
 import 'package:simple_project/about.dart';
-import 'package:simple_project/google_meet.dart';
+import 'package:simple_project/start_googlemeet.dart';
 
 void main() {
   runApp(Home());
@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-
+    GoogleMeetIntegrationApp()
   ];
 
   void _onItemTapped(int index) {
@@ -283,7 +283,7 @@ class _HomeState extends State<Home> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => GoogleMeetIntegrationScreen()),
+                  MaterialPageRoute(builder: (context) => GoogleMeetIntegrationApp()),
                 );
               },
               backgroundColor: Colors.white,
