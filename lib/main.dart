@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: InkWell(
                     onTap: () {},
                     child: Text(
-                      "",
+                      "Forgot Password?",
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,

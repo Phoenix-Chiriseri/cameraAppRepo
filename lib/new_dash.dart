@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    GoogleMeetIntegrationApp()
+
   ];
 
   void _onItemTapped(int index) {
@@ -283,7 +283,7 @@ class _HomeState extends State<Home> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => GoogleMeetIntegrationApp()),
+                  MaterialPageRoute(builder: (context) => GoogleMeetIntegrationPage()),
                 );
               },
               backgroundColor: Colors.white,
