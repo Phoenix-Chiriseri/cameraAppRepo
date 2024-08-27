@@ -26,7 +26,7 @@ class _GoogleMeetIntegrationPageState extends State<GoogleMeetIntegrationPage> {
       );
       return;
     }
-    
+
     final meetUrl = 'https://meet.google.com/$meetingId';
 
     try {

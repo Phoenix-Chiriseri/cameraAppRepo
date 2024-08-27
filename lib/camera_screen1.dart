@@ -43,35 +43,44 @@ class _CameraScreen1State extends State<CameraScreen1> {
   Future<void> _initializeCameras() async {
     try {
       _cameras = await availableCameras();
-      _rearCamera = _cameras?.firstWhere((camera) => camera.lensDirection == CameraLensDirection.back);
-      _frontCamera = _cameras?.firstWhere((camera) => camera.lensDirection == CameraLensDirection.front);
 
-      if (_rearCamera != null && _frontCamera != null) {
-        _rearCameraController = CameraController(
-          _rearCamera!,
-          ResolutionPreset.high,
-        );
-
-        _frontCameraController = CameraController(
-          _frontCamera!,
-          ResolutionPreset.low,
-        );
-
-        await Future.wait([
-          _rearCameraController!.initialize(),
-          _frontCameraController!.initialize(),
-        ]);
-
-        // Get the min and max zoom levels
-        _minZoomLevel = await _rearCameraController!.getMinZoomLevel();
-        _maxZoomLevel = await _rearCameraController!.getMaxZoomLevel();
-
-        if (!mounted) return; // Check if the widget is still in the tree
-
-        setState(() {});
-      } else {
-        print('No cameras found');
+      if (_cameras == null || _cameras!.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('No cameras found'),
+        ));
+        return;
       }
+
+      _rearCamera = _cameras!.firstWhere(
+              (camera) => camera.lensDirection == CameraLensDirection.back,
+          orElse: () => throw StateError('No rear camera found'));
+
+      _frontCamera = _cameras!.firstWhere(
+              (camera) => camera.lensDirection == CameraLensDirection.front,
+          orElse: () => throw StateError('No front camera found'));
+
+      _rearCameraController = CameraController(
+        _rearCamera!,
+        ResolutionPreset.high,
+      );
+
+      _frontCameraController = CameraController(
+        _frontCamera!,
+        ResolutionPreset.low,
+      );
+
+      await Future.wait([
+        _rearCameraController!.initialize(),
+        _frontCameraController!.initialize(),
+      ]);
+
+      // Get the min and max zoom levels
+      _minZoomLevel = await _rearCameraController!.getMinZoomLevel();
+      _maxZoomLevel = await _rearCameraController!.getMaxZoomLevel();
+
+      if (!mounted) return; // Check if the widget is still in the tree
+
+      setState(() {});
     } catch (e) {
       print('Error initializing cameras: $e');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -96,14 +105,14 @@ class _CameraScreen1State extends State<CameraScreen1> {
   }
 
   Future<void> _takePicture() async {
-    if (!_rearCameraController!.value.isInitialized) {
+    if (_rearCameraController == null || !_rearCameraController!.value.isInitialized) {
       return;
     }
 
     final directory = await getApplicationDocumentsDirectory();
     final String picturePath = path.join(
       directory.path,
-      '${DateTime.now()}.png',
+      '${DateTime.now().toIso8601String()}.png',
     );
 
     try {
@@ -117,7 +126,7 @@ class _CameraScreen1State extends State<CameraScreen1> {
       // Store the IV along with the encrypted data
       final encryptedPicturePath = path.join(
         directory.path,
-        '${DateTime.now()}.enc',
+        '${DateTime.now().toIso8601String()}.enc',
       );
 
       final file = File(encryptedPicturePath);
@@ -143,7 +152,10 @@ class _CameraScreen1State extends State<CameraScreen1> {
   Widget build(BuildContext context) {
     if (_rearCameraController == null || !_rearCameraController!.value.isInitialized ||
         _frontCameraController == null || !_frontCameraController!.value.isInitialized) {
-      return Center(child: CircularProgressIndicator());
+      return Scaffold(
+        appBar: AppBar(title: Text('Apply Saline')),
+        body: Center(child: CircularProgressIndicator()),
+      );
     }
 
     return Scaffold(

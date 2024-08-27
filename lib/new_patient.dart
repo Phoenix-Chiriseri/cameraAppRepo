@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import for date formatting
 import 'package:permission_handler/permission_handler.dart'; // Import for permissions
 import 'package:simple_project/widgets/inputTextWidget.dart';
-import 'package:simple_project/signUpScreen.dart';
-import 'package:simple_project/new_dash.dart';
 import 'package:simple_project/database_helper.dart';
 import 'package:simple_project/camera_screen1.dart';
+import 'package:simple_project/camera_screen2.dart'; // Import the camera screen
 import 'package:simple_project/patient_listscreen.dart'; // Import the new screen
 
 void main() {
@@ -42,9 +41,22 @@ class _NewPatientState extends State<NewPatient> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Data Saved Successfully')),
     );
+    // Show a loading dialog before navigating
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Loading...'),
+          content: CircularProgressIndicator(),
+        );
+      },
+    );
+    await Future.delayed(Duration(seconds: 2)); // Simulate a delay if needed
+    Navigator.pop(context); // Close the loading dialog
     Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => CameraScreen1())
+      context,
+      MaterialPageRoute(builder: (context) => CameraScreen2()),
     );
   }
 
