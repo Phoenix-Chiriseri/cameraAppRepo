@@ -9,6 +9,8 @@ import 'package:simple_project/camera_example.dart';
 import 'package:simple_project/teams_test.dart';
 import 'package:simple_project/camera_example.dart';
 import 'package:simple_project/new_dash.dart';
+import 'package:simple_project/about.dart';
+import 'package:simple_project/google_meet.dart';
 
 void main() {
   runApp(Home());
@@ -24,7 +26,7 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    //HomeScreen()
+
   ];
 
   void _onItemTapped(int index) {
@@ -91,7 +93,7 @@ class _HomeState extends State<Home> {
                         Row(
                           children: [
                             Text(
-                              'About Us',
+                              'Sign Out',
                               style: TextStyle(
                                   color: Colors.grey.shade500,
                                   fontSize: 10,
@@ -281,7 +283,7 @@ class _HomeState extends State<Home> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => TeamsHandler()),
+                  MaterialPageRoute(builder: (context) => GoogleMeetIntegrationScreen()),
                 );
               },
               backgroundColor: Colors.white,
@@ -294,11 +296,6 @@ class _HomeState extends State<Home> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.home), // Home icon
                 label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.chat), // Messages/Chats, // Start Meeting icon
-                label: 'Send Us Feedback',
-                
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.info), // About icon

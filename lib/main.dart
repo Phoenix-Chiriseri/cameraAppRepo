@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:simple_project/widgets/inputTextWidget.dart';
-import 'package:simple_project/signUpScreen.dart';
 import 'package:simple_project/new_dash.dart';
-import 'package:simple_project/database_helper.dart'; // Import the database helper
+import 'package:simple_project/database_helper.dart';
+import 'package:simple_project/signUpScreen.dart';// Import the database helper
 
 void main() {
   runApp(MaterialApp(
@@ -162,7 +162,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderRadius: BorderRadius.circular(12.0),
                 child: InkWell(
                   onTap: () {
-                    print("facebook tapped");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignUpScreen()),
+                    );
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -170,7 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         Image.asset("assets/fb.png", fit: BoxFit.cover),
                         SizedBox(width: 7.0),
-                        Text("Sign in with\nfacebook"),
+                        Text("Sign Up"),
                       ],
                     ),
                   ),

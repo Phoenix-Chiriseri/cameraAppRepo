@@ -6,6 +6,12 @@ import 'package:simple_project/new_dash.dart';// Import your database helper
 import 'new_dash.dart'; // Import the Home screen
 import 'package:simple_project/dash.dart';
 
+void main() {
+  runApp(MaterialApp(
+    home: SignUpScreen(),
+  ));
+}
+
 class SignUpScreen extends StatefulWidget {
   @override
   _SignUpScreenState createState() => _SignUpScreenState();

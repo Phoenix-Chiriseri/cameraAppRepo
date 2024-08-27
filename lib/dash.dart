@@ -145,6 +145,34 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Container(
+                            height: 55.0,
+                            width: screenWidth - 60, // Adjust width to fit nicely
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => SignUpScreen()),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue, // Change to your preferred color
+                                elevation: 0.0,
+                                padding: EdgeInsets.symmetric(horizontal: 30),
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                                ),
+                              ),
+                              child: Text(
+                                "Register",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.white, fontSize: 25),
+                              ),
+                            ),
+                          ),
                         ],
                       )),
                   SizedBox(

@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart'; // Added for launching URLs
-import 'package:permission_handler/permission_handler.dart'; // Added for permissions
 import 'package:simple_project/widgets/inputTextWidget.dart';
-import 'package:simple_project/signUpScreen.dart';
-import 'package:simple_project/new_dash.dart';
 import 'package:simple_project/database_helper.dart'; // Import the database helper
 
 void main() {
   runApp(MaterialApp(
     home: SearchPatient(),
-    routes: {
-      '/home': (context) => Home(), // Define your home screen route
-    },
   ));
 }
 
@@ -37,54 +30,75 @@ class _SearchPatientState extends State<SearchPatient> {
       );
       return;
     }
-    final results = await DatabaseHelper.instance.searchPatientsById(id);
-    print(results);
-    if (results.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('No Patient Found'),
-            content: Text('No patient found with the provided ID.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
+
+    // Show loading indicator
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Searching...'),
+          content: CircularProgressIndicator(),
+        );
+      },
+    );
+
+    try {
+      final results = await DatabaseHelper.instance.searchPatientsById(id);
+      Navigator.of(context).pop(); // Close the loading dialog
+
+      if (results.isEmpty) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('No Patient Found'),
+              content: Text('No patient found with the provided ID.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Search Results'),
+              content: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (var patient in results)
+                      ListTile(
+                        title: Text('ID: ${patient['id']}'),
+                        subtitle: Text('Name: ${patient['name']}, Date: ${patient['date']}'),
+                      ),
+                  ],
+                ),
               ),
-            ],
-          );
-        },
-      );
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Search Results'),
-            content: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  for (var patient in results)
-                    ListTile(
-                      title: Text('ID: ${patient['id']}'),
-                      subtitle: Text('Name: ${patient['name']}, Date: ${patient['date']}'),
-                    ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (e) {
+      Navigator.of(context).pop(); // Close the loading dialog
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An error occurred: $e')),
       );
     }
   }
@@ -129,7 +143,7 @@ class _SearchPatientState extends State<SearchPatient> {
               InputTextWidget(
                 controller: idController,
                 labelText: "Enter Patient Id",
-                icon: Icons.person,// Updated icon
+                icon: Icons.person, // Updated icon
                 obscureText: false,
                 keyboardType: TextInputType.text,
               ),

@@ -7,6 +7,12 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'camera_screen2.dart'; // Import CameraScreen2
 
+void main() {
+  runApp(MaterialApp(
+    home: CameraScreen1(),
+  ));
+}
+
 class CameraScreen1 extends StatefulWidget {
   @override
   _CameraScreen1State createState() => _CameraScreen1State();
