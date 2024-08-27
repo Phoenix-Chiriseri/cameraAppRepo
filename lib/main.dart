@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: InkWell(
                     onTap: () {},
                     child: Text(
-                      "Forgot Password?",
+                      "",
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
@@ -91,7 +91,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () async {
                   final email = _emailController.text;
                   final password = _pwdController.text;
-
                   bool isValid = await _dbHelper.validateUser(email, password);
                   if (isValid) {
                     Navigator.push(
@@ -171,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        Text("Dont Have An Account Please Sign Up"),
+                        Text("Sign Up"),
                       ],
                     ),
                   ),
