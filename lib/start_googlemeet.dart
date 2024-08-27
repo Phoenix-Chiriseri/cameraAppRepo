@@ -26,14 +26,7 @@ class _GoogleMeetIntegrationPageState extends State<GoogleMeetIntegrationPage> {
       );
       return;
     }
-
-    if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(meetingId)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invalid Meeting ID format.')),
-      );
-      return;
-    }
-
+    
     final meetUrl = 'https://meet.google.com/$meetingId';
 
     try {
