@@ -113,9 +113,11 @@ class _HomeState extends State<Home> {
                           height: 5,
                         ),
                         Text(
-                          "Medstake isn't just about technology; we infuse it with empathy. Our AI doctors don't replace the human touch; they enhance it.",
+                          "ColpoPen is an AI-powered portable colposcopy device. Be sure to maintain patient privacy when using this device.",
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w700),
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                         Spacer(),
                         // Removed image display section
