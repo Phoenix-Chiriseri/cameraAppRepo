@@ -3,10 +3,12 @@ import 'package:simple_project/widgets/inputTextWidget.dart';
 import 'package:simple_project/new_dash.dart';
 import 'package:simple_project/database_helper.dart';
 import 'package:simple_project/signUpScreen.dart';// Import the database helper
+import 'package:simple_project/splash_screen.dart';// Import the database helper
 
 void main() {
   runApp(MaterialApp(
-    home: LoginScreen(),
+    home: SplashScreen(), // Set SplashScreen as the initial screen
+    debugShowCheckedModeBanner: false,
   ));
 }
 

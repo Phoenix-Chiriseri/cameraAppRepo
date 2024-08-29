@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:simple_project/widgets/inputTextWidget.dart'; // Import your custom widget
+import 'create_meeting_page.dart'; // Import the WebView page
 
 void main() {
   runApp(MaterialApp(
@@ -42,6 +43,13 @@ class _GoogleMeetIntegrationPageState extends State<GoogleMeetIntegrationPage> {
         SnackBar(content: Text('Error launching Google Meet: $e')),
       );
     }
+  }
+
+  void _createMeeting() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CreateMeetingPage()),
+    );
   }
 
   @override
@@ -95,6 +103,15 @@ class _GoogleMeetIntegrationPageState extends State<GoogleMeetIntegrationPage> {
                 child: ElevatedButton(
                   onPressed: _startMeeting,
                   child: Text("Start Google Meet"),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 8.0),
+                width: buttonWidth,
+                height: buttonHeight,
+                child: ElevatedButton(
+                  onPressed: _createMeeting,
+                  child: Text("Create Meeting"),
                 ),
               ),
               SizedBox(height: 8.0),
