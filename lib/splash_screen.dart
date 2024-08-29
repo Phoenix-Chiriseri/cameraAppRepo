@@ -23,20 +23,13 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        fit: StackFit.expand,
+        fit: StackFit.expand, // Ensure the stack takes up the whole screen
         children: [
-          Image.asset(
-            'assets/stake.png', // Path to your background image
-            fit: BoxFit.cover,
-          ),
-          Center(
-            child: Text(
-              'Welcome to My App',
-              style: TextStyle(
-                fontSize: 30,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
+          // Use a SizedBox with full width and height to cover the screen
+          SizedBox.expand(
+            child: Image.asset(
+              'assets/stake.png', // Path to your background image
+              fit: BoxFit.cover, // Ensure the image covers the entire screen
             ),
           ),
         ],
