@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
                 Row(
                   children: [
                     Text(
-                      'Welcome To Medstake',
+                      'Welcome To ColpoPen',
                       style: TextStyle(fontWeight: FontWeight.w800, fontSize: 22),
                     ),
                     Spacer(),
@@ -118,78 +118,7 @@ class _HomeState extends State<Home> {
                               color: Colors.white, fontWeight: FontWeight.w700),
                         ),
                         Spacer(),
-                        Row(
-                          children: [
-                            Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(6)),
-                              child: Center(
-                                  child: Icon(
-                                    Icons.play_arrow,
-                                    size: 14,
-                                    color: Colors.black,
-                                  )),
-                            ),
-                            Spacer(),
-                            Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?size=626&ext=jpg'),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(8)),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZmFjZSUyMHBvcnRyYWl0fGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80'),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(8)),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          'https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8bWVuJTIwcG9ydHJhaXR8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(8)),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Center(
-                                  child: Text(
-                                    '+17',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w400),
-                                  )),
-                            ),
-                          ],
-                        ),
+                        // Removed image display section
                       ],
                     ),
                   ),
@@ -291,24 +220,24 @@ class _HomeState extends State<Home> {
             ),
           ),
         ),
-          bottomNavigationBar: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home), // Home icon
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.info), // About icon
-                label: 'About',
-              ),
-            ],
-            currentIndex: _selectedIndex,
-            onTap: _onItemTapped,
-            backgroundColor: Colors.white, // Set the background color to white
-            selectedItemColor: Colors.black, // Set the color of the selected item to black
-            unselectedItemColor: Colors.black.withOpacity(0.6), // Set the color of unselected items to black with reduced opacity
-            elevation: 10, // Adds shadow for better visibility
-          ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home), // Home icon
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.info), // About icon
+              label: 'About',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          backgroundColor: Colors.white, // Set the background color to white
+          selectedItemColor: Colors.black, // Set the color of the selected item to black
+          unselectedItemColor: Colors.black.withOpacity(0.6), // Set the color of unselected items to black with reduced opacity
+          elevation: 10, // Adds shadow for better visibility
+        ),
       ),
     );
   }
