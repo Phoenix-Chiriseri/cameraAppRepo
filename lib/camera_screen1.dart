@@ -153,13 +153,13 @@ class _CameraScreen1State extends State<CameraScreen1> {
     if (_rearCameraController == null || !_rearCameraController!.value.isInitialized ||
         _frontCameraController == null || !_frontCameraController!.value.isInitialized) {
       return Scaffold(
-        appBar: AppBar(title: Text('Apply Saline')),
+        appBar: AppBar(title: Text('Clean Cervix with Saline')),
         body: Center(child: CircularProgressIndicator()),
       );
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Apply Saline')),
+      appBar: AppBar(title: Text('Clean Cervix with Saline')),
       body: Stack(
         children: [
           Positioned.fill(

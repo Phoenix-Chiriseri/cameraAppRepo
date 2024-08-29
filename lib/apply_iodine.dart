@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'dart:io';
 import 'package:simple_project/dash.dart';
+import 'package:simple_project/take_biopsy.dart';
 import 'camera_screen2.dart'; // Import CameraScreen2
 import 'new_dash.dart'; // Import CameraScreen2
 
@@ -92,7 +93,7 @@ class _ApplyIodine extends State<ApplyIodine> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Apply Iodine')),
+      appBar: AppBar(title: Text("Apply Lugol's Iodine Solution")),
       body: GestureDetector(
         onScaleUpdate: _onScaleUpdate,
         child: Column(
@@ -141,7 +142,10 @@ class _ApplyIodine extends State<ApplyIodine> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                   print("hello world");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TakeBiopsy()),
+                    );
                   },
                   child: Text('Next'),
                 ),

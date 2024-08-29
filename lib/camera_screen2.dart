@@ -114,7 +114,7 @@ class _CameraScreen2State extends State<CameraScreen2> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Apply Saline')),
+      appBar: AppBar(title: Text('Clean Cervix with Saline')),
       body: GestureDetector(
         onScaleUpdate: _onScaleUpdate,
         child: Column(

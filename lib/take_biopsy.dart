@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
-import 'package:encrypt/encrypt.dart' as encrypt;
 import 'dart:io';
-import 'dart:typed_data';
+import 'package:simple_project/dash.dart';
+import 'package:simple_project/take_biopsy.dart';
 import 'camera_screen2.dart'; // Import CameraScreen2
-import 'package:simple_project/apply_iodine.dart';
+import 'new_dash.dart'; // Import CameraScreen2
 
-class ApplyAcetic extends StatefulWidget {
+class TakeBiopsy extends StatefulWidget {
   @override
-  _ApplyAceticState createState() => _ApplyAceticState();
+  _TakeBiopsy createState() => _TakeBiopsy();
 }
 
-class _ApplyAceticState extends State<ApplyAcetic> {
+class _TakeBiopsy extends State<TakeBiopsy> {
   CameraController? _controller;
   List<CameraDescription>? cameras;
   CameraDescription? firstCamera;
@@ -22,14 +22,9 @@ class _ApplyAceticState extends State<ApplyAcetic> {
   double _maxZoomLevel = 1.0;
   String? _capturedImagePath;
 
-  late final encrypt.Key key;
-  late final encrypt.Encrypter encrypter;
-
   @override
   void initState() {
     super.initState();
-    key = encrypt.Key.fromLength(32); // Generate a secure key
-    encrypter = encrypt.Encrypter(encrypt.AES(key));
     _initializeCamera();
   }
 
@@ -76,28 +71,12 @@ class _ApplyAceticState extends State<ApplyAcetic> {
 
     try {
       XFile picture = await _controller!.takePicture();
-      final bytes = await picture.readAsBytes();
-
-      // Generate a random IV
-      final iv = encrypt.IV.fromLength(16);
-      final encryptedData = encrypter.encryptBytes(bytes, iv: iv);
-
-      // Store the IV along with the encrypted data
-      final encryptedPicturePath = path.join(
-        directory.path,
-        '${DateTime.now()}.enc',
-      );
-
-      final file = File(encryptedPicturePath);
-      await file.writeAsBytes(
-        Uint8List.fromList(iv.bytes + encryptedData.bytes),
-      );
-
+      await picture.saveTo(picturePath);
       setState(() {
-        _capturedImagePath = encryptedPicturePath;
+        _capturedImagePath = picturePath;
       });
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Encrypted picture saved to $encryptedPicturePath'),
+        content: Text('Picture saved to $picturePath'),
       ));
     } catch (e) {
       print(e);
@@ -114,7 +93,7 @@ class _ApplyAceticState extends State<ApplyAcetic> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Apply Acetic Acid')),
+      appBar: AppBar(title: Text("Take Biopsy")),
       body: GestureDetector(
         onScaleUpdate: _onScaleUpdate,
         child: Column(
@@ -131,7 +110,7 @@ class _ApplyAceticState extends State<ApplyAcetic> {
                             width: 10,
                             height: 10,
                             decoration: BoxDecoration(
-                              color: Colors.blue,
+                              color: Colors.red,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -165,7 +144,7 @@ class _ApplyAceticState extends State<ApplyAcetic> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ApplyIodine()),
+                      MaterialPageRoute(builder: (context) => TakeBiopsy()),
                     );
                   },
                   child: Text('Next'),
