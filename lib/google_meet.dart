@@ -25,21 +25,17 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
   String _baseMeetUrl = 'https://meet.google.com/'; // Base URL for Google Meet
   List<Map<String, dynamic>> results = []; // Example results list
 
-  Future<void> _launchMeet() async {
-    String meetingId = _meetingIdController.text.trim();
-    if (meetingId.isNotEmpty) {
-      String meetUrl = _baseMeetUrl + meetingId;
-      if (await canLaunch(meetUrl)) {
-        await launch(meetUrl);
-      } else {
-        throw 'Could not launch $meetUrl';
-      }
+  Future<void> _launchUrl(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url, forceSafariVC: false, forceWebView: false);
     } else {
-      // Handle the case where the meeting ID is empty
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter a meeting ID.')),
-      );
+      throw 'Could not launch $url';
     }
+  }
+
+  Future<void> _createMeeting() async {
+    const String createMeetingUrl = 'https://meet.google.com/new'; // URL to create a new meeting
+    await _launchUrl(createMeetingUrl);
   }
 
   Future<void> _searchPatient(BuildContext context) async {
@@ -153,7 +149,9 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
                 height: buttonHeight,
                 child: ElevatedButton(
                   onPressed: () async {
-                    await _launchMeet(); // Fixed method call
+                    final meetingId = _meetingIdController.text.trim();
+                    final meetUrl = _baseMeetUrl + meetingId;
+                    await _launchUrl(meetUrl); // Launch Meet with ID
                   },
                   child: Text("Join Google Meet"),
                 ),
@@ -164,11 +162,9 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
                 width: buttonWidth,
                 height: buttonHeight,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Back navigation
-                  },
+                  onPressed: _createMeeting, // Create a new meeting
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
+                    backgroundColor: Colors.green, // Change color for differentiation
                     elevation: 0.0,
                     minimumSize: Size(buttonWidth, buttonHeight),
                     shape: RoundedRectangleBorder(
@@ -176,7 +172,7 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
                     ),
                   ),
                   child: Text(
-                    "Back",
+                    "Create Meeting",
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),

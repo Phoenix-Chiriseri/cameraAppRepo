@@ -45,11 +45,13 @@ class _GoogleMeetIntegrationPageState extends State<GoogleMeetIntegrationPage> {
     }
   }
 
-  void _createMeeting() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => CreateMeetingPage()),
-    );
+  Future<void> _createMeeting() async {
+    const String createMeetingUrl = 'https://meet.google.com/new'; // URL to create a new meeting
+    if (await canLaunch(createMeetingUrl)) {
+      await launch(createMeetingUrl, forceSafariVC: false, forceWebView: false);
+    } else {
+      throw 'Could not launch $createMeetingUrl';
+    }
   }
 
   @override
