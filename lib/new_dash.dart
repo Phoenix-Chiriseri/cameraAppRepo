@@ -7,7 +7,6 @@ import 'package:simple_project/search_patient.dart';
 import 'package:simple_project/apply_iodine.dart';
 import 'package:simple_project/camera_example.dart';
 import 'package:simple_project/teams_test.dart';
-import 'package:simple_project/camera_example.dart';
 import 'package:simple_project/new_dash.dart';
 import 'package:simple_project/about.dart';
 import 'package:simple_project/start_googlemeet.dart';
@@ -18,6 +17,7 @@ void main() {
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -25,9 +25,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
-  final List<Widget> _screens = [
-
-  ];
+  final List<Widget> _screens = [];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -58,33 +56,29 @@ class _HomeState extends State<Home> {
                       color: Colors.black,
                       size: 18,
                     ),
-                    SizedBox(
-                      width: 15,
-                    ),
+                    SizedBox(width: 15),
                     Container(
                       height: 30,
                       width: 30,
                       decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                  'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?size=626&ext=jpg'),
-                              fit: BoxFit.cover),
-                          borderRadius: BorderRadius.circular(10)),
+                        image: DecorationImage(
+                          image: AssetImage('assets/main-doctor.jpg'), // Updated to use AssetImage
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
+                    SizedBox(width: 10),
                   ],
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20),
                 Container(
                   height: 130,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(10)),
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
@@ -95,23 +89,23 @@ class _HomeState extends State<Home> {
                             Text(
                               'Sign Out',
                               style: TextStyle(
-                                  color: Colors.grey.shade500,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w300),
+                                color: Colors.grey.shade500,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w300,
+                              ),
                             ),
                             Spacer(),
                             Text(
-                              'Ai Powered',
+                              'AI Powered',
                               style: TextStyle(
-                                  color: Colors.grey.shade500,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w300),
-                            )
+                                color: Colors.grey.shade500,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
                           ],
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
+                        SizedBox(height: 5),
                         Text(
                           "ColpoPen is an AI-powered portable colposcopy device. Be sure to maintain patient privacy when using this device.",
                           style: TextStyle(
@@ -125,15 +119,13 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _buildCard(
                       context,
-                      title: 'Save Patient',
+                      title: 'Start Exam',
                       description: 'Create A New Patient And Save',
                       label: 'Health',
                       rating: '5.0',
@@ -149,7 +141,7 @@ class _HomeState extends State<Home> {
                     ),
                     _buildCard(
                       context,
-                      title: 'Search Patient',
+                      title: 'Previous Exams',
                       description: 'Search A Patient And View Information',
                       label: 'Self Education',
                       color: Colors.white70,
@@ -170,8 +162,8 @@ class _HomeState extends State<Home> {
                   children: [
                     _buildCard(
                       context,
-                      title: 'Telemedicine',
-                      description: 'Share a meeting link via whatsapp and allow users to join',
+                      title: 'Add Participants',
+                      description: 'Share a meeting link via WhatsApp and allow users to join',
                       label: 'Health',
                       rating: '5.0',
                       color: Colors.black,
@@ -261,7 +253,9 @@ class _HomeState extends State<Home> {
         height: 180,
         width: 150,
         decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.circular(12)),
+          color: color,
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
@@ -272,32 +266,36 @@ class _HomeState extends State<Home> {
                   Text(
                     label,
                     style: TextStyle(
-                        color: textColor.withOpacity(0.7),
-                        fontSize: 10,
-                        fontWeight: FontWeight.w300),
+                      color: textColor.withOpacity(0.7),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w300,
+                    ),
                   ),
                   Spacer(),
                   if (isNew)
                     Container(
                       padding: EdgeInsets.all(4.0),
                       decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(4)),
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                       child: Text(
                         'NEW',
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 8,
-                            fontWeight: FontWeight.w300),
+                          color: Colors.white,
+                          fontSize: 8,
+                          fontWeight: FontWeight.w300,
+                        ),
                       ),
                     ),
                   if (rating != null)
                     Text(
                       rating,
                       style: TextStyle(
-                          color: Colors.yellow.shade500,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w300),
+                        color: Colors.yellow.shade500,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w300,
+                      ),
                     ),
                 ],
               ),
@@ -305,15 +303,19 @@ class _HomeState extends State<Home> {
               Text(
                 title,
                 style: TextStyle(
-                    color: textColor, fontSize: 18, fontWeight: FontWeight.w600),
+                  color: textColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               SizedBox(height: 10),
               Text(
                 description,
                 style: TextStyle(
-                    color: textColor.withOpacity(0.7),
-                    fontSize: 10,
-                    fontWeight: FontWeight.w300),
+                  color: textColor.withOpacity(0.7),
+                  fontSize: 10,
+                  fontWeight: FontWeight.w300,
+                ),
               ),
             ],
           ),
