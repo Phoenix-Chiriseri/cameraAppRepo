@@ -40,6 +40,7 @@ class _TelemedicineState extends State<Telemedicine> {
     }
   }
 
+  //using deeplink to send a whatsapp message to a user
   void sendWhatsAppMessage(String meetingTitle, String zoomLink) async {
     final String message =
         "I’d like to invite you to a Zoom meeting titled \"$meetingTitle\"\n"

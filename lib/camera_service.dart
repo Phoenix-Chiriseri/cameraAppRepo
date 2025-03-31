@@ -1,3 +1,4 @@
+//camera service that will connect to the camera and get the stream from the url
 class CameraService {
   final String ipAddress;
   CameraService(this.ipAddress);
