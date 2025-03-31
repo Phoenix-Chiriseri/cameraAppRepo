@@ -5,6 +5,8 @@ import 'package:simple_project/search_patient.dart';
 import 'package:simple_project/camera_example.dart';
 import 'package:simple_project/start_googlemeet.dart';
 
+//main entry point into the application. run app will run the application
+// and the home widget will be the first screen to be displayed
 void main() {
   runApp(const Home());
 }
