@@ -8,12 +8,14 @@ import 'dart:typed_data';
 import 'camera_screen2.dart'; // Import CameraScreen2
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: CameraScreen1(),
   ));
 }
 
 class CameraScreen1 extends StatefulWidget {
+  const CameraScreen1({super.key});
+
   @override
   _CameraScreen1State createState() => _CameraScreen1State();
 }
@@ -45,18 +47,18 @@ class _CameraScreen1State extends State<CameraScreen1> {
       _cameras = await availableCameras();
 
       if (_cameras == null || _cameras!.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('No cameras found'),
         ));
         return;
       }
 
       _rearCamera = _cameras!.firstWhere(
-              (camera) => camera.lensDirection == CameraLensDirection.back,
+          (camera) => camera.lensDirection == CameraLensDirection.back,
           orElse: () => throw StateError('No rear camera found'));
 
       _frontCamera = _cameras!.firstWhere(
-              (camera) => camera.lensDirection == CameraLensDirection.front,
+          (camera) => camera.lensDirection == CameraLensDirection.front,
           orElse: () => throw StateError('No front camera found'));
 
       _rearCameraController = CameraController(
@@ -105,15 +107,13 @@ class _CameraScreen1State extends State<CameraScreen1> {
   }
 
   Future<void> _takePicture() async {
-    if (_rearCameraController == null || !_rearCameraController!.value.isInitialized) {
+    if (_rearCameraController == null ||
+        !_rearCameraController!.value.isInitialized) {
       return;
     }
 
     final directory = await getApplicationDocumentsDirectory();
-    final String picturePath = path.join(
-      directory.path,
-      '${DateTime.now().toIso8601String()}.png',
-    );
+    // Removed unused picturePath variable
 
     try {
       XFile picture = await _rearCameraController!.takePicture();
@@ -150,27 +150,31 @@ class _CameraScreen1State extends State<CameraScreen1> {
 
   @override
   Widget build(BuildContext context) {
-    if (_rearCameraController == null || !_rearCameraController!.value.isInitialized ||
-        _frontCameraController == null || !_frontCameraController!.value.isInitialized) {
+    if (_rearCameraController == null ||
+        !_rearCameraController!.value.isInitialized ||
+        _frontCameraController == null ||
+        !_frontCameraController!.value.isInitialized) {
       return Scaffold(
-        appBar: AppBar(title: Text('Clean Cervix with Saline')),
-        body: Center(child: CircularProgressIndicator()),
+        appBar: AppBar(title: const Text('Clean Cervix with Saline')),
+        body: const Center(child: CircularProgressIndicator()),
       );
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Clean Cervix with Saline')),
+      appBar: AppBar(title: const Text('Clean Cervix with Saline')),
       body: Stack(
         children: [
           Positioned.fill(
-            child: CameraPreview(_rearCameraController!), // Main rear camera preview
+            child: CameraPreview(
+                _rearCameraController!), // Main rear camera preview
           ),
           Positioned(
             bottom: 10,
             right: 10,
             width: 100,
             height: 100,
-            child: CameraPreview(_frontCameraController!), // Miniature front camera preview
+            child: CameraPreview(
+                _frontCameraController!), // Miniature front camera preview
           ),
           GestureDetector(
             onScaleUpdate: _onScaleUpdate,
@@ -201,16 +205,16 @@ class _CameraScreen1State extends State<CameraScreen1> {
         children: [
           ElevatedButton(
             onPressed: _takePicture,
-            child: Icon(Icons.camera),
+            child: const Icon(Icons.camera),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CameraScreen2()),
+                MaterialPageRoute(builder: (context) => const CameraScreen2()),
               );
             },
-            child: Text('Next'),
+            child: const Text('Next'),
           ),
         ],
       ),

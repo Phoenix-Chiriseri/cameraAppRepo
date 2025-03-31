@@ -5,10 +5,12 @@ import 'package:path/path.dart' as path;
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'dart:io';
 import 'dart:typed_data';
-import 'camera_screen2.dart'; // Import CameraScreen2
+// Import CameraScreen2
 import 'package:simple_project/apply_iodine.dart';
 
 class ApplyAcetic extends StatefulWidget {
+  const ApplyAcetic({super.key});
+
   @override
   _ApplyAceticState createState() => _ApplyAceticState();
 }
@@ -69,10 +71,7 @@ class _ApplyAceticState extends State<ApplyAcetic> {
     }
 
     final directory = await getApplicationDocumentsDirectory();
-    final String picturePath = path.join(
-      directory.path,
-      '${DateTime.now()}.png',
-    );
+    // Removed unused picturePath variable
 
     try {
       XFile picture = await _controller!.takePicture();
@@ -110,11 +109,11 @@ class _ApplyAceticState extends State<ApplyAcetic> {
   @override
   Widget build(BuildContext context) {
     if (_controller == null || !_controller!.value.isInitialized) {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Apply Acetic Acid')),
+      appBar: AppBar(title: const Text('Apply Acetic Acid')),
       body: GestureDetector(
         onScaleUpdate: _onScaleUpdate,
         child: Column(
@@ -130,7 +129,7 @@ class _ApplyAceticState extends State<ApplyAcetic> {
                           child: Container(
                             width: 10,
                             height: 10,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.blue,
                               shape: BoxShape.circle,
                             ),
@@ -142,7 +141,7 @@ class _ApplyAceticState extends State<ApplyAcetic> {
                   if (_capturedImagePath != null)
                     Container(
                       width: 100,
-                      margin: EdgeInsets.all(8.0),
+                      margin: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Colors.white,
@@ -159,16 +158,17 @@ class _ApplyAceticState extends State<ApplyAcetic> {
               children: [
                 ElevatedButton(
                   onPressed: _takePicture,
-                  child: Icon(Icons.camera),
+                  child: const Icon(Icons.camera),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ApplyIodine()),
+                      MaterialPageRoute(
+                          builder: (context) => const ApplyIodine()),
                     );
                   },
-                  child: Text('Next'),
+                  child: const Text('Next'),
                 ),
               ],
             ),

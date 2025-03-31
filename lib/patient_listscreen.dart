@@ -1,17 +1,18 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:simple_project/signUpScreen.dart';
 import 'package:simple_project/new_dash.dart';
 import 'package:simple_project/widgets/text_widget.dart';
 import 'package:simple_project/database_helper.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: SeeAll(),
   ));
 }
 
 class SeeAll extends StatefulWidget {
+  const SeeAll({super.key});
+
   @override
   State<SeeAll> createState() => _SeeAllState();
 }
@@ -45,13 +46,13 @@ class _SeeAllState extends State<SeeAll> {
     return Scaffold(
       body: Container(
         color: Colors.white,
-        padding: EdgeInsets.only(top: 70),
+        padding: const EdgeInsets.only(top: 70),
         height: size.height,
         width: size.width,
         child: Stack(
           children: [
             AnimatedPositioned(
-              duration: Duration(milliseconds: 400),
+              duration: const Duration(milliseconds: 400),
               top: position ? 1 : 50,
               left: 20,
               right: 20,
@@ -61,46 +62,48 @@ class _SeeAllState extends State<SeeAll> {
                 top: position ? 60 : 120,
                 right: 20,
                 left: 20,
-                duration: Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 300),
                 child: findDoctor()),
             AnimatedPositioned(
                 top: position ? 390 : 450,
                 right: 20,
                 left: 20,
-                duration: Duration(milliseconds: 400),
+                duration: const Duration(milliseconds: 400),
                 child: AnimatedOpacity(
                   opacity: opacity,
-                  duration: Duration(milliseconds: 400),
-                  child: Container(
-                    width: size.width
-                  ),
+                  duration: const Duration(milliseconds: 400),
+                  child: Container(width: size.width),
                 )),
             AnimatedPositioned(
                 top: position ? 430 : 500,
                 left: 20,
                 right: 20,
-                duration: Duration(milliseconds: 500),
+                duration: const Duration(milliseconds: 500),
                 child: AnimatedOpacity(
                     duration: const Duration(milliseconds: 500),
                     opacity: opacity,
                     child: FutureBuilder<List<Map<String, dynamic>>>(
                       future: _fetchPatients(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
                         }
 
                         if (snapshot.hasError) {
-                          return Center(child: Text('Error: ${snapshot.error}'));
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
                         }
 
                         if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                          return Center(child: Text('No patients found.'));
+                          return const Center(
+                              child: Text('No patients found.'));
                         }
 
                         final patients = snapshot.data!;
 
-                        return Container(
+                        return SizedBox(
                           height: 350,
                           child: ListView.builder(
                             itemCount: patients.length,
@@ -109,7 +112,8 @@ class _SeeAllState extends State<SeeAll> {
                               return InkWell(
                                 onTap: () async {
                                   animator();
-                                  await Future.delayed(const Duration(milliseconds: 500));
+                                  await Future.delayed(
+                                      const Duration(milliseconds: 500));
                                   animator();
                                 },
                                 child: Card(
@@ -123,13 +127,14 @@ class _SeeAllState extends State<SeeAll> {
                                     child: Row(
                                       children: [
                                         const SizedBox(width: 20),
-                                        CircleAvatar(
+                                        const CircleAvatar(
                                           radius: 30,
                                           backgroundColor: Colors.black,
                                         ),
                                         const SizedBox(width: 10),
                                         Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             TextWidget(
                                               'Patient ID: ${patient['id']}',
@@ -164,8 +169,7 @@ class _SeeAllState extends State<SeeAll> {
                           ),
                         );
                       },
-                    )
-                )),
+                    ))),
           ],
         ),
       ),
@@ -177,14 +181,13 @@ class _SeeAllState extends State<SeeAll> {
       duration: const Duration(milliseconds: 400),
       opacity: opacity,
       child: Card(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: Container(
           height: 300,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [

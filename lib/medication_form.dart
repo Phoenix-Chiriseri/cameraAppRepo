@@ -12,12 +12,14 @@ void main() async {
   // Initialize timezone data
   tz.initializeTimeZones();
 
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: MedicationForm(),
   ));
 }
 
 class MedicationForm extends StatefulWidget {
+  const MedicationForm({super.key});
+
   @override
   _MedicationFormState createState() => _MedicationFormState();
 }
@@ -85,7 +87,7 @@ class _MedicationFormState extends State<MedicationForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Medication'),
+        title: const Text('Add Medication'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -93,11 +95,11 @@ class _MedicationFormState extends State<MedicationForm> {
           children: [
             TextField(
               controller: _nameController,
-              decoration: InputDecoration(labelText: 'Pill Name'),
+              decoration: const InputDecoration(labelText: 'Pill Name'),
             ),
             TextField(
               controller: _amountController,
-              decoration: InputDecoration(labelText: 'Amount'),
+              decoration: const InputDecoration(labelText: 'Amount'),
               keyboardType: TextInputType.number,
             ),
             DropdownButton<String>(
@@ -114,7 +116,7 @@ class _MedicationFormState extends State<MedicationForm> {
                 });
               },
             ),
-            Center(
+            const Center(
               child: Text(
                 'Select time to remind you to take your medication:',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
@@ -134,11 +136,11 @@ class _MedicationFormState extends State<MedicationForm> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue, // Background color
-                minimumSize: Size(double.infinity, 60), // Button size
+                minimumSize: const Size(double.infinity, 60), // Button size
               ),
               child: Text('Select Time: ${_selectedTime.format(context)}'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 final medication = {
@@ -157,7 +159,7 @@ class _MedicationFormState extends State<MedicationForm> {
                   );
 
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('Medication saved successfully!'),
                       backgroundColor: Colors.blue,
                       duration: Duration(seconds: 2),
@@ -180,9 +182,9 @@ class _MedicationFormState extends State<MedicationForm> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue, // Background color
-                minimumSize: Size(double.infinity, 60), // Button size
+                minimumSize: const Size(double.infinity, 60), // Button size
               ),
-              child: Text('Save Medication'),
+              child: const Text('Save Medication'),
             ),
           ],
         ),

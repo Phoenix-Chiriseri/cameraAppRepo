@@ -6,6 +6,8 @@ import 'camera_service.dart'; // Assuming this is a custom service you've create
 import 'package:permission_handler/permission_handler.dart';
 
 class CameraExample2 extends StatefulWidget {
+  const CameraExample2({super.key});
+
   @override
   _CameraExample2State createState() => _CameraExample2State();
 }
@@ -114,7 +116,7 @@ class _CameraExample2State extends State<CameraExample2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('External Camera Stream'),
+        title: const Text('External Camera Stream'),
         backgroundColor: Colors.green,
       ),
       body: Center(
@@ -134,11 +136,11 @@ class _CameraExample2State extends State<CameraExample2> {
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
               },
             )
-                : CircularProgressIndicator(),
+                : const CircularProgressIndicator(),
             if (_cameraIP != null) Text('Camera IP: $_cameraIP'),
           ],
         )
@@ -153,10 +155,10 @@ class _CameraExample2State extends State<CameraExample2> {
             }
           });
         },
+        backgroundColor: Colors.green,
         child: Icon(
           _controller != null && _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
         ),
-        backgroundColor: Colors.green,
       )
           : null,
     );

@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_tflite/flutter_tflite.dart';
 
 class CameraExample extends StatefulWidget {
+  const CameraExample({super.key});
+
   @override
   _CameraExampleState createState() => _CameraExampleState();
 }
@@ -36,8 +38,8 @@ class _CameraExampleState extends State<CameraExample> {
   }
 
   Future<void> pickImage(ImageSource source) async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? selectedImage = await _picker.pickImage(source: source);
+    final ImagePicker picker = ImagePicker();
+    final XFile? selectedImage = await picker.pickImage(source: source);
     if (selectedImage != null) {
       setState(() {
         _image = selectedImage;
@@ -63,7 +65,7 @@ class _CameraExampleState extends State<CameraExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Image Classification',
           style: TextStyle(color: Colors.white), // Set title text color to white
         ),
@@ -84,7 +86,7 @@ class _CameraExampleState extends State<CameraExample> {
                     BoxShadow(
                       color: Colors.black.withOpacity(0.3),
                       blurRadius: 10,
-                      offset: Offset(0, 4),
+                      offset: const Offset(0, 4),
                     ),
                   ],
                 ),
@@ -104,20 +106,20 @@ class _CameraExampleState extends State<CameraExample> {
                   color: Colors.blue.withOpacity(0.2),
                   border: Border.all(color: Colors.blue.withOpacity(0.5)),
                 ),
-                child: Center(
+                child: const Center(
                   child: Text(
                     'Image Preview',
                     style: TextStyle(color: Colors.blue, fontSize: 18),
                   ),
                 ),
               ),
-            SizedBox(height: 16.0),
-            Text(
+            const SizedBox(height: 16.0),
+            const Text(
               'Results',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             if (_recognitions != null)
               Center(
                 child: Column(
@@ -125,37 +127,37 @@ class _CameraExampleState extends State<CameraExample> {
                   children: _recognitions!.map((res) {
                     return Text(
                       "${res["label"]}: ${(res["confidence"] * 100).toStringAsFixed(0)}%",
-                      style: TextStyle(fontSize: 20),
+                      style: const TextStyle(fontSize: 20),
                       textAlign: TextAlign.center,
                     );
                   }).toList(),
                 ),
               ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 pickImage(ImageSource.camera);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                textStyle: TextStyle(fontSize: 16), // Text style for font size
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                textStyle: const TextStyle(fontSize: 16), // Text style for font size
                 foregroundColor: Colors.white, // Sets the text color to white
               ),
-              child: Text('Take Photo'),
+              child: const Text('Take Photo'),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 pickImage(ImageSource.gallery);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black, // Button background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding inside the button
-                textStyle: TextStyle(fontSize: 16), // Text style for font size
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding inside the button
+                textStyle: const TextStyle(fontSize: 16), // Text style for font size
                 foregroundColor: Colors.white, // Text color
               ),
-              child: Text('Pick From Gallery'),
+              child: const Text('Pick From Gallery'),
             ),
           ],
         ),
@@ -165,7 +167,7 @@ class _CameraExampleState extends State<CameraExample> {
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: CameraExample(),
   ));
 }

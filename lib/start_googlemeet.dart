@@ -1,29 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:simple_project/widgets/inputTextWidget.dart'; // Import your custom widget
-import 'create_meeting_page.dart'; // Import the WebView page
+// Import the WebView page
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: GoogleMeetIntegrationPage(),
   ));
 }
 
 class GoogleMeetIntegrationPage extends StatefulWidget {
+  const GoogleMeetIntegrationPage({super.key});
+
   @override
-  _GoogleMeetIntegrationPageState createState() => _GoogleMeetIntegrationPageState();
+  _GoogleMeetIntegrationPageState createState() =>
+      _GoogleMeetIntegrationPageState();
 }
 
 class _GoogleMeetIntegrationPageState extends State<GoogleMeetIntegrationPage> {
   final TextEditingController _meetingIdController = TextEditingController();
-  String _errorMessage = '';
+  // Removed unused _errorMessage field
   final _formKey = GlobalKey<FormState>();
 
   Future<void> _startMeeting() async {
     final meetingId = _meetingIdController.text.trim();
     if (meetingId.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Meeting ID cannot be empty.')),
+        const SnackBar(content: Text('Meeting ID cannot be empty.')),
       );
       return;
     }
@@ -35,7 +38,7 @@ class _GoogleMeetIntegrationPageState extends State<GoogleMeetIntegrationPage> {
         await launch(meetUrl);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not launch Google Meet.')),
+          const SnackBar(content: Text('Could not launch Google Meet.')),
         );
       }
     } catch (e) {
@@ -46,7 +49,8 @@ class _GoogleMeetIntegrationPageState extends State<GoogleMeetIntegrationPage> {
   }
 
   Future<void> _createMeeting() async {
-    const String createMeetingUrl = 'https://meet.google.com/new'; // URL to create a new meeting
+    const String createMeetingUrl =
+        'https://meet.google.com/new'; // URL to create a new meeting
     if (await canLaunch(createMeetingUrl)) {
       await launch(createMeetingUrl, forceSafariVC: false, forceWebView: false);
     } else {
@@ -57,15 +61,15 @@ class _GoogleMeetIntegrationPageState extends State<GoogleMeetIntegrationPage> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final double r = (175 / 360); // Ratio for web test
+    const double r = (175 / 360); // Ratio for web test
     final coverHeight = screenWidth * r;
 
     final buttonWidth = screenWidth * 0.8;
-    final buttonHeight = 55.0;
+    const buttonHeight = 55.0;
 
     final widgetList = [
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12.0),
+      const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 28.0, vertical: 12.0),
         child: Row(
           children: [
             Expanded(
@@ -99,26 +103,26 @@ class _GoogleMeetIntegrationPageState extends State<GoogleMeetIntegrationPage> {
                 keyboardType: TextInputType.text,
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
                 width: buttonWidth,
                 height: buttonHeight,
                 child: ElevatedButton(
                   onPressed: _startMeeting,
-                  child: Text("Start Google Meet"),
+                  child: const Text("Start Google Meet"),
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
                 width: buttonWidth,
                 height: buttonHeight,
                 child: ElevatedButton(
                   onPressed: _createMeeting,
-                  child: Text("Create Meeting"),
+                  child: const Text("Create Meeting"),
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
                 width: buttonWidth,
                 height: buttonHeight,
                 child: ElevatedButton(
@@ -129,18 +133,18 @@ class _GoogleMeetIntegrationPageState extends State<GoogleMeetIntegrationPage> {
                     backgroundColor: Colors.black,
                     elevation: 0.0,
                     minimumSize: Size(buttonWidth, buttonHeight),
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Back",
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),
               ),
-              SizedBox(height: 15.0),
+              const SizedBox(height: 15.0),
             ],
           ),
         ),
@@ -163,12 +167,13 @@ class _GoogleMeetIntegrationPageState extends State<GoogleMeetIntegrationPage> {
             backgroundColor: Colors.blue,
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
-              background: Image.asset("assets/google_meet.jpg", fit: BoxFit.cover), // Update asset
+              background: Image.asset("assets/google_meet.jpg",
+                  fit: BoxFit.cover), // Update asset
             ),
           ),
           SliverToBoxAdapter(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: <Color>[Color(0xFFb3cde0), Color(0xFFf7f7f7)],
                 ),
@@ -181,7 +186,7 @@ class _GoogleMeetIntegrationPageState extends State<GoogleMeetIntegrationPage> {
                   Container(
                     width: screenWidth,
                     height: 25,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(30.0),
@@ -195,7 +200,7 @@ class _GoogleMeetIntegrationPageState extends State<GoogleMeetIntegrationPage> {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
+              (BuildContext context, int index) {
                 return widgetList[index];
               },
               childCount: widgetList.length,

@@ -3,12 +3,14 @@ import 'package:simple_project/widgets/inputTextWidget.dart';
 import 'package:simple_project/database_helper.dart'; // Import the database helper
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: SearchPatient(),
   ));
 }
 
 class SearchPatient extends StatefulWidget {
+  const SearchPatient({super.key});
+
   @override
   _SearchPatientState createState() => _SearchPatientState();
 }
@@ -26,7 +28,7 @@ class _SearchPatientState extends State<SearchPatient> {
     final id = idController.text;
     if (id.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter a patient ID')),
+        const SnackBar(content: Text('Please enter a patient ID')),
       );
       return;
     }
@@ -36,7 +38,7 @@ class _SearchPatientState extends State<SearchPatient> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return AlertDialog(
+        return const AlertDialog(
           title: Text('Searching...'),
           content: CircularProgressIndicator(),
         );
@@ -52,14 +54,14 @@ class _SearchPatientState extends State<SearchPatient> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('No Patient Found'),
-              content: Text('No patient found with the provided ID.'),
+              title: const Text('No Patient Found'),
+              content: const Text('No patient found with the provided ID.'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
@@ -70,7 +72,7 @@ class _SearchPatientState extends State<SearchPatient> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Search Results'),
+              title: const Text('Search Results'),
               content: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,7 +90,7 @@ class _SearchPatientState extends State<SearchPatient> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
@@ -106,15 +108,15 @@ class _SearchPatientState extends State<SearchPatient> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final double r = (175 / 360); // Ratio for web test
+    const double r = (175 / 360); // Ratio for web test
     final coverHeight = screenWidth * r;
 
     final buttonWidth = screenWidth * 0.8; // Make buttons a bit smaller than screen width
-    final buttonHeight = 55.0; // Set a consistent height for buttons
+    const buttonHeight = 55.0; // Set a consistent height for buttons
 
     final widgetList = [
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12.0),
+      const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 28.0, vertical: 12.0),
         child: Row(
           children: [
             Expanded(
@@ -125,7 +127,7 @@ class _SearchPatientState extends State<SearchPatient> {
                     fontFamily: 'Segoe UI',
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xff000000),
+                    color: Color(0xff000000),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -148,19 +150,19 @@ class _SearchPatientState extends State<SearchPatient> {
                 keyboardType: TextInputType.text,
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
                 width: buttonWidth,
                 height: buttonHeight,
                 child: ElevatedButton(
                   onPressed: () async {
                     _searchPatient(context);
                   },
-                  child: Text("Search Patient"),
+                  child: const Text("Search Patient"),
                 ),
               ),
-              SizedBox(height: 8.0), // Reduced space between buttons
+              const SizedBox(height: 8.0), // Reduced space between buttons
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0), // Reduced vertical margin
+                margin: const EdgeInsets.symmetric(vertical: 8.0), // Reduced vertical margin
                 width: buttonWidth,
                 height: buttonHeight,
                 child: ElevatedButton(
@@ -171,18 +173,18 @@ class _SearchPatientState extends State<SearchPatient> {
                     backgroundColor: Colors.black,
                     elevation: 0.0,
                     minimumSize: Size(buttonWidth, buttonHeight),
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)), // Rounded corners
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Back",
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),
               ),
-              SizedBox(height: 15.0),
+              const SizedBox(height: 15.0),
             ],
           ),
         ),
@@ -202,7 +204,7 @@ class _SearchPatientState extends State<SearchPatient> {
             snap: false,
             floating: false,
             expandedHeight: coverHeight - 25,
-            backgroundColor: Color(0xFFdccdb4),
+            backgroundColor: const Color(0xFFdccdb4),
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               background: Image.asset("assets/patient.jpg", fit: BoxFit.cover),
@@ -210,7 +212,7 @@ class _SearchPatientState extends State<SearchPatient> {
           ),
           SliverToBoxAdapter(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: <Color>[Color(0xFFdccdb4), Color(0xFFd8c3ab)],
                 ),
@@ -223,7 +225,7 @@ class _SearchPatientState extends State<SearchPatient> {
                   Container(
                     width: screenWidth,
                     height: 25,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(30.0),

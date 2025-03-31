@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:simple_project/widgets/inputTextWidget.dart';
 import 'package:simple_project/new_dash.dart';
 import 'package:simple_project/database_helper.dart';
-import 'package:simple_project/signUpScreen.dart';// Import the database helper
-import 'package:simple_project/splash_screen.dart';// Import the database helper
+import 'package:simple_project/signUpScreen.dart'; // Import the database helper
+import 'package:simple_project/splash_screen.dart'; // Import the database helper
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: SplashScreen(), // Set SplashScreen as the initial screen
     debugShowCheckedModeBanner: false,
   ));
 }
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen() : super();
+  const LoginScreen({super.key});
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -22,16 +22,17 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _pwdController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final DatabaseHelper _dbHelper = DatabaseHelper.instance; // Initialize DatabaseHelper
+  final DatabaseHelper _dbHelper =
+      DatabaseHelper.instance; // Initialize DatabaseHelper
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final double r = (175 / 360); // Ratio for web test
+    const double r = (175 / 360); // Ratio for web test
     final coverHeight = screenWidth * r;
 
     final widgetList = [
-      Row(
+      const Row(
         children: [
           SizedBox(width: 28),
           Text(
@@ -40,13 +41,13 @@ class _LoginScreenState extends State<LoginScreen> {
               fontFamily: 'Segoe UI',
               fontSize: 40,
               fontWeight: FontWeight.bold,
-              color: const Color(0xff000000),
+              color: Color(0xff000000),
             ),
             textAlign: TextAlign.left,
           ),
         ],
       ),
-      SizedBox(height: 12.0),
+      const SizedBox(height: 12.0),
       Form(
         key: _formKey,
         child: Column(
@@ -58,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
               obscureText: false,
               keyboardType: TextInputType.emailAddress,
             ),
-            SizedBox(height: 12.0),
+            const SizedBox(height: 12.0),
             InputTextWidget(
               controller: _pwdController,
               labelText: "Password",
@@ -86,8 +87,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 15.0),
-            Container(
+            const SizedBox(height: 15.0),
+            SizedBox(
               height: 55.0,
               child: ElevatedButton(
                 onPressed: () async {
@@ -97,11 +98,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (isValid) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Home()),
+                      MaterialPageRoute(builder: (context) => const Home()),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Invalid email or password')),
+                      const SnackBar(
+                          content: Text('Invalid email or password')),
                     );
                   }
                 },
@@ -109,17 +111,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   backgroundColor: Colors.white,
                   elevation: 0.0,
                   minimumSize: Size(screenWidth, 55),
-                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(0)),
                   ),
                 ),
                 child: Ink(
                   decoration: BoxDecoration(
-                    boxShadow: <BoxShadow>[
+                    boxShadow: const <BoxShadow>[
                       BoxShadow(
                         color: Colors.red,
-                        offset: const Offset(1.1, 1.1),
+                        offset: Offset(1.1, 1.1),
                         blurRadius: 10.0,
                       ),
                     ],
@@ -128,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   child: Container(
                     alignment: Alignment.center,
-                    child: Text(
+                    child: const Text(
                       "Sign In",
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white, fontSize: 25),
@@ -140,17 +142,17 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
       ),
-      SizedBox(height: 15.0),
+      const SizedBox(height: 15.0),
       Wrap(
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 30.0, right: 10.0, top: 15.0),
             child: Container(
               decoration: BoxDecoration(
-                boxShadow: <BoxShadow>[
+                boxShadow: const <BoxShadow>[
                   BoxShadow(
                     color: Colors.grey,
-                    offset: const Offset(0, 0),
+                    offset: Offset(0, 0),
                     blurRadius: 5.0,
                   ),
                 ],
@@ -165,11 +167,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SignUpScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const SignUpScreen()),
                     );
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Row(
                       children: [
                         Text("Sign Up"),
@@ -184,10 +187,10 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 15.0),
             child: Container(
               decoration: BoxDecoration(
-                boxShadow: <BoxShadow>[
+                boxShadow: const <BoxShadow>[
                   BoxShadow(
                     color: Colors.grey,
-                    offset: const Offset(0, 0),
+                    offset: Offset(0, 0),
                     blurRadius: 5.0,
                   ),
                 ],
@@ -202,11 +205,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   onTap: () {
                     print("google tapped");
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-
-                    ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Row(),
                   ),
                 ),
               ),
@@ -214,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
-      SizedBox(height: 15.0),
+      const SizedBox(height: 15.0),
     ];
 
     return Scaffold(
@@ -230,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
             snap: false,
             floating: false,
             expandedHeight: coverHeight - 25,
-            backgroundColor: Color(0xFFdccdb4),
+            backgroundColor: const Color(0xFFdccdb4),
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               background: Image.asset("assets/ndandi.jpg", fit: BoxFit.cover),
@@ -238,7 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           SliverToBoxAdapter(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: <Color>[Color(0xFFdccdb4), Color(0xFFd8c3ab)],
                 ),
@@ -251,11 +252,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                     width: screenWidth,
                     height: 25,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
-                        topLeft: const Radius.circular(30.0),
-                        topRight: const Radius.circular(30.0),
+                        topLeft: Radius.circular(30.0),
+                        topRight: Radius.circular(30.0),
                       ),
                     ),
                   ),
@@ -265,7 +266,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
+              (BuildContext context, int index) {
                 return widgetList[index];
               },
               childCount: widgetList.length,

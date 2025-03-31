@@ -3,12 +3,12 @@ import 'package:camera/camera.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'dart:io';
-import 'package:simple_project/dash.dart';
-import 'package:simple_project/take_biopsy.dart';
-import 'camera_screen2.dart'; // Import CameraScreen2
-import 'new_dash.dart'; // Import CameraScreen2
+// Import CameraScreen2
+// Import CameraScreen2
 
 class TakeBiopsy extends StatefulWidget {
+  const TakeBiopsy({super.key});
+
   @override
   _TakeBiopsy createState() => _TakeBiopsy();
 }
@@ -89,11 +89,11 @@ class _TakeBiopsy extends State<TakeBiopsy> {
   @override
   Widget build(BuildContext context) {
     if (_controller == null || !_controller!.value.isInitialized) {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text("Take Biopsy")),
+      appBar: AppBar(title: const Text("Take Biopsy")),
       body: GestureDetector(
         onScaleUpdate: _onScaleUpdate,
         child: Column(
@@ -109,7 +109,7 @@ class _TakeBiopsy extends State<TakeBiopsy> {
                           child: Container(
                             width: 10,
                             height: 10,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.red,
                               shape: BoxShape.circle,
                             ),
@@ -121,7 +121,7 @@ class _TakeBiopsy extends State<TakeBiopsy> {
                   if (_capturedImagePath != null)
                     Container(
                       width: 100,
-                      margin: EdgeInsets.all(8.0),
+                      margin: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Colors.white,
@@ -138,16 +138,17 @@ class _TakeBiopsy extends State<TakeBiopsy> {
               children: [
                 ElevatedButton(
                   onPressed: _takePicture,
-                  child: Icon(Icons.camera),
+                  child: const Icon(Icons.camera),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => TakeBiopsy()),
+                      MaterialPageRoute(
+                          builder: (context) => const TakeBiopsy()),
                     );
                   },
-                  child: Text('Next'),
+                  child: const Text('Next'),
                 ),
               ],
             ),

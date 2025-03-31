@@ -3,17 +3,18 @@ import 'package:intl/intl.dart'; // Import for date formatting
 import 'package:permission_handler/permission_handler.dart'; // Import for permissions
 import 'package:simple_project/widgets/inputTextWidget.dart';
 import 'package:simple_project/database_helper.dart';
-import 'package:simple_project/camera_screen1.dart';
 import 'package:simple_project/camera_screen2.dart'; // Import the camera screen
 import 'package:simple_project/patient_listscreen.dart'; // Import the new screen
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: NewPatient(),
   ));
 }
 
 class NewPatient extends StatefulWidget {
+  const NewPatient({super.key});
+
   @override
   _NewPatientState createState() => _NewPatientState();
 }
@@ -39,24 +40,25 @@ class _NewPatientState extends State<NewPatient> {
   Future<void> saveInSqliteDatabase(String id, String date) async {
     await DatabaseHelper.instance.createPatient(id, date);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Data Saved Successfully')),
+      const SnackBar(content: Text('Data Saved Successfully')),
     );
     // Show a loading dialog before navigating
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return AlertDialog(
+        return const AlertDialog(
           title: Text('Loading...'),
           content: CircularProgressIndicator(),
         );
       },
     );
-    await Future.delayed(Duration(seconds: 2)); // Simulate a delay if needed
+    await Future.delayed(
+        const Duration(seconds: 2)); // Simulate a delay if needed
     Navigator.pop(context); // Close the loading dialog
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => CameraScreen2()),
+      MaterialPageRoute(builder: (context) => const CameraScreen2()),
     );
   }
 
@@ -77,15 +79,15 @@ class _NewPatientState extends State<NewPatient> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final double r = (175 / 360); // Ratio for web test
+    const double r = (175 / 360); // Ratio for web test
     final coverHeight = screenWidth * r;
 
     final buttonWidth = screenWidth * 0.8;
-    final buttonHeight = 55.0;
+    const buttonHeight = 55.0;
 
     final widgetList = [
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12.0),
+      const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 28.0, vertical: 12.0),
         child: Row(
           children: [
             Expanded(
@@ -96,7 +98,7 @@ class _NewPatientState extends State<NewPatient> {
                     fontFamily: 'Segoe UI',
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xff000000),
+                    color: Color(0xff000000),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -118,23 +120,23 @@ class _NewPatientState extends State<NewPatient> {
                 obscureText: false,
                 keyboardType: TextInputType.text,
               ),
-              SizedBox(height: 12.0),
+              const SizedBox(height: 12.0),
               TextFormField(
                 controller: jobDateController,
                 readOnly: true,
                 decoration: InputDecoration(
                   labelText: "Date of Birth",
-                  icon: Icon(Icons.calendar_today),
+                  icon: const Icon(Icons.calendar_today),
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.calendar_today),
+                    icon: const Icon(Icons.calendar_today),
                     onPressed: () => _selectDate(context),
                   ),
                 ),
                 onTap: () => _selectDate(context),
               ),
-              SizedBox(height: 15.0),
+              const SizedBox(height: 15.0),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
                 width: buttonWidth,
                 height: buttonHeight,
                 child: ElevatedButton(
@@ -143,7 +145,9 @@ class _NewPatientState extends State<NewPatient> {
                     String date = jobDateController.text;
                     if (id.isEmpty || date.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Please don\'t leave any fields empty')),
+                        const SnackBar(
+                            content:
+                                Text('Please don\'t leave any fields empty')),
                       );
                     } else {
                       saveInSqliteDatabase(id, date);
@@ -153,20 +157,20 @@ class _NewPatientState extends State<NewPatient> {
                     backgroundColor: Colors.black,
                     elevation: 0.0,
                     minimumSize: Size(buttonWidth, buttonHeight),
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Save Patient",
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
                 width: buttonWidth,
                 height: buttonHeight,
                 child: ElevatedButton(
@@ -177,38 +181,40 @@ class _NewPatientState extends State<NewPatient> {
                     backgroundColor: Colors.black,
                     elevation: 0.0,
                     minimumSize: Size(buttonWidth, buttonHeight),
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Back",
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),
               ),
-              SizedBox(height: 15.0),
+              const SizedBox(height: 15.0),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
                 width: buttonWidth,
                 height: buttonHeight,
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SeeAll()), // Navigate to the view all patients screen
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const SeeAll()), // Navigate to the view all patients screen
                     );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                     elevation: 0.0,
                     minimumSize: Size(buttonWidth, buttonHeight),
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     "View All Patients",
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white, fontSize: 15),
@@ -234,7 +240,7 @@ class _NewPatientState extends State<NewPatient> {
             snap: false,
             floating: false,
             expandedHeight: coverHeight - 25,
-            backgroundColor: Color(0xFFdccdb4),
+            backgroundColor: const Color(0xFFdccdb4),
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               background: Image.asset("assets/ndandi.jpg", fit: BoxFit.cover),
@@ -242,7 +248,7 @@ class _NewPatientState extends State<NewPatient> {
           ),
           SliverToBoxAdapter(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: <Color>[Color(0xFFdccdb4), Color(0xFFd8c3ab)],
                 ),
@@ -255,7 +261,7 @@ class _NewPatientState extends State<NewPatient> {
                   Container(
                     width: screenWidth,
                     height: 25,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(30.0),
@@ -269,7 +275,7 @@ class _NewPatientState extends State<NewPatient> {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
+              (BuildContext context, int index) {
                 return widgetList[index];
               },
               childCount: widgetList.length,

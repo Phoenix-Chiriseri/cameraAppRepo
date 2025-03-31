@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:simple_project/widgets/inputTextWidget.dart';
 import 'package:simple_project/new_patient.dart';
 import 'package:simple_project/telemedicine.dart';
 import 'package:simple_project/search_patient.dart';
-import 'package:simple_project/apply_iodine.dart';
 import 'package:simple_project/camera_example.dart';
-import 'package:simple_project/teams_test.dart';
-import 'package:simple_project/new_dash.dart';
-import 'package:simple_project/about.dart';
 import 'package:simple_project/start_googlemeet.dart';
 
 void main() {
-  runApp(Home());
+  runApp(const Home());
 }
 
 class Home extends StatefulWidget {
@@ -25,7 +19,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
-  final List<Widget> _screens = [];
+  // Removed unused '_screens' field
 
   void _onItemTapped(int index) {
     setState(() {
@@ -37,7 +31,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Color(0xFFD8D9EC),
+        backgroundColor: const Color(0xFFD8D9EC),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16, top: 20),
@@ -46,32 +40,34 @@ class _HomeState extends State<Home> {
               children: [
                 Row(
                   children: [
-                    Text(
+                    const Text(
                       'Welcome To ColpoPen',
-                      style: TextStyle(fontWeight: FontWeight.w800, fontSize: 22),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w800, fontSize: 22),
                     ),
-                    Spacer(),
-                    Icon(
+                    const Spacer(),
+                    const Icon(
                       Icons.notifications,
                       color: Colors.black,
                       size: 18,
                     ),
-                    SizedBox(width: 15),
+                    const SizedBox(width: 15),
                     Container(
                       height: 30,
                       width: 30,
                       decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/main-doctor.jpg'), // Updated to use AssetImage
+                        image: const DecorationImage(
+                          image: AssetImage(
+                              'assets/main-doctor.jpg'), // Updated to use AssetImage
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Container(
                   height: 130,
                   width: double.infinity,
@@ -94,7 +90,7 @@ class _HomeState extends State<Home> {
                                 fontWeight: FontWeight.w300,
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             Text(
                               'AI Powered',
                               style: TextStyle(
@@ -105,21 +101,21 @@ class _HomeState extends State<Home> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5),
-                        Text(
+                        const SizedBox(height: 5),
+                        const Text(
                           "ColpoPen is an AI-powered portable colposcopy device. Be sure to maintain patient privacy when using this device.",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         // Removed image display section
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -135,7 +131,8 @@ class _HomeState extends State<Home> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => NewPatient()),
+                          MaterialPageRoute(
+                              builder: (context) => const NewPatient()),
                         );
                       },
                     ),
@@ -150,20 +147,22 @@ class _HomeState extends State<Home> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SearchPatient()),
+                          MaterialPageRoute(
+                              builder: (context) => const SearchPatient()),
                         );
                       },
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _buildCard(
                       context,
                       title: 'Add Participants',
-                      description: 'Share a meeting link via WhatsApp and allow users to join',
+                      description:
+                          'Share a meeting link via WhatsApp and allow users to join',
                       label: 'Health',
                       rating: '5.0',
                       color: Colors.black,
@@ -172,7 +171,8 @@ class _HomeState extends State<Home> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Telemedicine()),
+                          MaterialPageRoute(
+                              builder: (context) => const Telemedicine()),
                         );
                       },
                     ),
@@ -187,7 +187,8 @@ class _HomeState extends State<Home> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => CameraExample()),
+                          MaterialPageRoute(
+                              builder: (context) => const CameraExample()),
                         );
                       },
                     ),
@@ -200,17 +201,18 @@ class _HomeState extends State<Home> {
         floatingActionButton: Tooltip(
           message: 'Start meeting',
           child: AnimatedOpacity(
-            duration: Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 500),
             opacity: 1.0, // Set to 0.0 for invisible or 1.0 for visible
             child: FloatingActionButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => GoogleMeetIntegrationPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const GoogleMeetIntegrationPage()),
                 );
               },
               backgroundColor: Colors.white,
-              child: Icon(Icons.video_call),
+              child: const Icon(Icons.video_call),
             ),
           ),
         ),
@@ -228,8 +230,10 @@ class _HomeState extends State<Home> {
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           backgroundColor: Colors.white, // Set the background color to white
-          selectedItemColor: Colors.black, // Set the color of the selected item to black
-          unselectedItemColor: Colors.black.withOpacity(0.6), // Set the color of unselected items to black with reduced opacity
+          selectedItemColor:
+              Colors.black, // Set the color of the selected item to black
+          unselectedItemColor: Colors.black.withOpacity(
+              0.6), // Set the color of unselected items to black with reduced opacity
           elevation: 10, // Adds shadow for better visibility
         ),
       ),
@@ -237,16 +241,16 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildCard(
-      BuildContext context, {
-        required String title,
-        required String description,
-        required String label,
-        String? rating,
-        required Color color,
-        required Color textColor,
-        bool isNew = false,
-        required Function()? onTap,
-      }) {
+    BuildContext context, {
+    required String title,
+    required String description,
+    required String label,
+    String? rating,
+    required Color color,
+    required Color textColor,
+    bool isNew = false,
+    required Function()? onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -271,15 +275,15 @@ class _HomeState extends State<Home> {
                       fontWeight: FontWeight.w300,
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   if (isNew)
                     Container(
-                      padding: EdgeInsets.all(4.0),
+                      padding: const EdgeInsets.all(4.0),
                       decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: Text(
+                      child: const Text(
                         'NEW',
                         style: TextStyle(
                           color: Colors.white,
@@ -299,7 +303,7 @@ class _HomeState extends State<Home> {
                     ),
                 ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 title,
                 style: TextStyle(
@@ -308,7 +312,7 @@ class _HomeState extends State<Home> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 description,
                 style: TextStyle(

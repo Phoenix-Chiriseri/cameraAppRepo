@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: TeamsHandler(),
   ));
 }
 
 class TeamsHandler extends StatelessWidget {
+  const TeamsHandler({super.key});
+
   Future<void> _openTeamsApp() async {
     const url = 'msteams://';
     if (await canLaunch(url)) {
@@ -26,7 +28,7 @@ class TeamsHandler extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Start Teams Meeting'),
+        title: const Text('Start Teams Meeting'),
         backgroundColor: Colors.blue,
       ),
       body: Center(
@@ -42,15 +44,15 @@ class TeamsHandler extends StatelessWidget {
                 width: 700, // Adjust the width as needed
                 height: 500, // Adjust the height as needed
               ),
-              SizedBox(height: 20), // Space between the GIF and the button
+              const SizedBox(height: 20), // Space between the GIF and the button
               ElevatedButton(
                 onPressed: _openTeamsApp,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
-                  padding: EdgeInsets.symmetric(vertical: 16,horizontal: 16),
-                  textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 16),
+                  textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                child: Text('Open Microsoft Teams App'),
+                child: const Text('Open Microsoft Teams App'),
               ),
             ],
           ),

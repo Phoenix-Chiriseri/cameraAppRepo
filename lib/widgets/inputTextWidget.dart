@@ -8,12 +8,11 @@ class InputTextWidget extends StatelessWidget {
   final controller;
 
   const InputTextWidget(
-      {required this.labelText,
+      {super.key, required this.labelText,
         required this.icon,
         required this.obscureText,
         required this.keyboardType,
-        this.controller})
-      : super();
+        this.controller});
 
 
   @override
@@ -39,10 +38,10 @@ class InputTextWidget extends StatelessWidget {
                     size: 32.0, /*Color(0xff224597)*/
                   ),
                   labelText: labelText,
-                  labelStyle: TextStyle(color: Colors.black54, fontSize: 18.0),
+                  labelStyle: const TextStyle(color: Colors.black54, fontSize: 18.0),
                   hintText: '',
                   enabledBorder: InputBorder.none,
-                  focusedBorder: UnderlineInputBorder(
+                  focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.black54),
                   ),
                   border: InputBorder.none,
@@ -51,6 +50,7 @@ class InputTextWidget extends StatelessWidget {
                   if (val!.isEmpty) {
                     return 'Field Cannot Be Empty!';
                   }
+                  return null;
                 }),
           ),
         ),

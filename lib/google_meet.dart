@@ -1,28 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart'; // Added for launching URLs
 import 'package:simple_project/widgets/inputTextWidget.dart'; // Assuming you have this widget
-import 'package:simple_project/signUpScreen.dart';
 import 'package:simple_project/new_dash.dart';
-import 'package:simple_project/database_helper.dart'; // Import the database helper
+// Import the database helper
 
 void main() {
   runApp(MaterialApp(
-    home: GoogleMeetIntegrationScreen(), // Updated to use the correct screen
+    home:
+        const GoogleMeetIntegrationScreen(), // Updated to use the correct screen
     routes: {
-      '/home': (context) => Home(), // Define your home screen route
+      '/home': (context) => const Home(), // Define your home screen route
     },
   ));
 }
 
 class GoogleMeetIntegrationScreen extends StatefulWidget {
+  const GoogleMeetIntegrationScreen({super.key});
+
   @override
-  _GoogleMeetIntegrationScreenState createState() => _GoogleMeetIntegrationScreenState();
+  _GoogleMeetIntegrationScreenState createState() =>
+      _GoogleMeetIntegrationScreenState();
 }
 
-class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScreen> {
+class _GoogleMeetIntegrationScreenState
+    extends State<GoogleMeetIntegrationScreen> {
   final TextEditingController _meetingIdController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(); // Added form key
-  String _baseMeetUrl = 'https://meet.google.com/'; // Base URL for Google Meet
+  final GlobalKey<FormState> _formKey =
+      GlobalKey<FormState>(); // Added form key
+  final String _baseMeetUrl =
+      'https://meet.google.com/'; // Base URL for Google Meet
   List<Map<String, dynamic>> results = []; // Example results list
 
   Future<void> _launchUrl(String url) async {
@@ -34,7 +40,8 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
   }
 
   Future<void> _createMeeting() async {
-    const String createMeetingUrl = 'https://meet.google.com/new'; // URL to create a new meeting
+    const String createMeetingUrl =
+        'https://meet.google.com/new'; // URL to create a new meeting
     await _launchUrl(createMeetingUrl);
   }
 
@@ -42,7 +49,7 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
     final id = _meetingIdController.text;
     if (id.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter meeting id')),
+        const SnackBar(content: Text('Please enter meeting id')),
       );
       return;
     }
@@ -54,14 +61,14 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('No Patient Found'),
-            content: Text('No patient found with the provided ID.'),
+            title: const Text('No Patient Found'),
+            content: const Text('No patient found with the provided ID.'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -72,7 +79,7 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Search Results'),
+            title: const Text('Search Results'),
             content: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,7 +87,8 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
                   for (var patient in results)
                     ListTile(
                       title: Text('ID: ${patient['id']}'),
-                      subtitle: Text('Name: ${patient['name']}, Date: ${patient['date']}'),
+                      subtitle: Text(
+                          'Name: ${patient['name']}, Date: ${patient['date']}'),
                     ),
                 ],
               ),
@@ -90,7 +98,7 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -102,15 +110,16 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final double r = (175 / 360); // Ratio for web test
+    const double r = (175 / 360); // Ratio for web test
     final coverHeight = screenWidth * r;
 
-    final buttonWidth = screenWidth * 0.8; // Make buttons a bit smaller than screen width
-    final buttonHeight = 55.0; // Set a consistent height for buttons
+    final buttonWidth =
+        screenWidth * 0.8; // Make buttons a bit smaller than screen width
+    const buttonHeight = 55.0; // Set a consistent height for buttons
 
     final widgetList = [
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12.0),
+      const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 28.0, vertical: 12.0),
         child: Row(
           children: [
             Expanded(
@@ -121,7 +130,7 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
                     fontFamily: 'Segoe UI',
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xff000000),
+                    color: Color(0xff000000),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -144,7 +153,7 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
                 keyboardType: TextInputType.text,
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
                 width: buttonWidth,
                 height: buttonHeight,
                 child: ElevatedButton(
@@ -153,32 +162,35 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
                     final meetUrl = _baseMeetUrl + meetingId;
                     await _launchUrl(meetUrl); // Launch Meet with ID
                   },
-                  child: Text("Join Google Meet"),
+                  child: const Text("Join Google Meet"),
                 ),
               ),
-              SizedBox(height: 8.0), // Reduced space between buttons
+              const SizedBox(height: 8.0), // Reduced space between buttons
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0), // Reduced vertical margin
+                margin: const EdgeInsets.symmetric(
+                    vertical: 8.0), // Reduced vertical margin
                 width: buttonWidth,
                 height: buttonHeight,
                 child: ElevatedButton(
                   onPressed: _createMeeting, // Create a new meeting
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green, // Change color for differentiation
+                    backgroundColor:
+                        Colors.green, // Change color for differentiation
                     elevation: 0.0,
                     minimumSize: Size(buttonWidth, buttonHeight),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)), // Rounded corners
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(8)), // Rounded corners
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Create Meeting",
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),
               ),
-              SizedBox(height: 15.0),
+              const SizedBox(height: 15.0),
             ],
           ),
         ),
@@ -198,7 +210,7 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
             snap: false,
             floating: false,
             expandedHeight: coverHeight - 25,
-            backgroundColor: Color(0xFFdccdb4),
+            backgroundColor: const Color(0xFFdccdb4),
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               background: Image.asset("assets/patient.jpg", fit: BoxFit.cover),
@@ -206,7 +218,7 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
           ),
           SliverToBoxAdapter(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: <Color>[Color(0xFFdccdb4), Color(0xFFd8c3ab)],
                 ),
@@ -219,7 +231,7 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
                   Container(
                     width: screenWidth,
                     height: 25,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(30.0),
@@ -233,7 +245,7 @@ class _GoogleMeetIntegrationScreenState extends State<GoogleMeetIntegrationScree
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
+              (BuildContext context, int index) {
                 return widgetList[index];
               },
               childCount: widgetList.length,

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class TextWidget extends StatelessWidget {
   final String text;
   final double letterSpace;
-  double size = 5.0;
-  FontWeight fontWeight = FontWeight.normal;
+  final double size;
+  final FontWeight fontWeight;
   final Color color;
 
   TextWidget(this.text, this.size, this.color, this.fontWeight,

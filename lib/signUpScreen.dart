@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:simple_project/widgets/inputTextWidget.dart';
 import 'package:simple_project/database_helper.dart';
-import 'package:simple_project/new_dash.dart';// Import your database helper
-import 'new_dash.dart'; // Import the Home screen
-import 'package:simple_project/dash.dart';
+import 'package:simple_project/new_dash.dart'; // Import your database helper
+// Import the Home screen
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: SignUpScreen(),
   ));
 }
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
@@ -35,14 +35,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign Up",
+        title: const Text("Sign Up",
             style: TextStyle(
               color: Colors.black,
               fontFamily: 'Segoe UI',
               fontSize: 30,
               shadows: [
                 Shadow(
-                  color: const Color(0xba000000),
+                  color: Color(0xba000000),
                   offset: Offset(0, 3),
                   blurRadius: 6,
                 )
@@ -52,7 +52,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           onTap: () {
             Navigator.pop(context); // Go back
           },
-          child: Icon(
+          child: const Icon(
             Icons.arrow_back,
             color: Colors.black,
           ),
@@ -64,7 +64,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         padding: const EdgeInsets.only(top: 15.0),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(30),
               topRight: Radius.circular(30),
             ),
@@ -74,7 +74,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 5,
                 blurRadius: 7,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -85,46 +85,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  SizedBox(height: 30.0),
-                  Text(
+                  const SizedBox(height: 30.0),
+                  const Text(
                     'Register With Us!',
                     style: TextStyle(
                       fontFamily: 'Segoe UI',
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: const Color(0xff000000),
+                      color: Color(0xff000000),
                     ),
                     textAlign: TextAlign.left,
                   ),
-                  SizedBox(height: 25.0),
+                  const SizedBox(height: 25.0),
                   InputTextWidget(
                       controller: _nameController,
                       labelText: "Name",
                       icon: Icons.person,
                       obscureText: false,
                       keyboardType: TextInputType.text),
-                  SizedBox(height: 12.0),
+                  const SizedBox(height: 12.0),
                   InputTextWidget(
                       controller: _surnameController,
                       labelText: "Surname",
                       icon: Icons.person,
                       obscureText: false,
                       keyboardType: TextInputType.text),
-                  SizedBox(height: 12.0),
+                  const SizedBox(height: 12.0),
                   InputTextWidget(
                       controller: _emailController,
                       labelText: "Email",
                       icon: Icons.email,
                       obscureText: false,
                       keyboardType: TextInputType.emailAddress),
-                  SizedBox(height: 12.0),
+                  const SizedBox(height: 12.0),
                   InputTextWidget(
                       controller: _phoneController,
                       labelText: "Telephone Number",
                       icon: Icons.phone,
                       obscureText: false,
                       keyboardType: TextInputType.number),
-                  SizedBox(height: 12.0),
+                  const SizedBox(height: 12.0),
                   Padding(
                     padding: const EdgeInsets.only(left: 25.0, right: 25.0),
                     child: Container(
@@ -133,14 +133,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         shadowColor: Colors.black,
                         borderRadius: BorderRadius.circular(15.0),
                         child: Padding(
-                          padding: const EdgeInsets.only(right: 20.0, left: 15.0),
+                          padding:
+                              const EdgeInsets.only(right: 20.0, left: 15.0),
                           child: TextFormField(
                               obscureText: true,
                               controller: _pass,
-                              decoration: InputDecoration(
-                                icon: Icon(Icons.lock, color: Colors.black, size: 32.0),
+                              decoration: const InputDecoration(
+                                icon: Icon(Icons.lock,
+                                    color: Colors.black, size: 32.0),
                                 labelText: "Password",
-                                labelStyle: TextStyle(color: Colors.black54, fontSize: 18.0),
+                                labelStyle: TextStyle(
+                                    color: Colors.black54, fontSize: 18.0),
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black54),
@@ -159,7 +162,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 15.0),
+                  const SizedBox(height: 15.0),
                   Padding(
                     padding: const EdgeInsets.only(left: 25.0, right: 25.0),
                     child: Container(
@@ -168,14 +171,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         shadowColor: Colors.black,
                         borderRadius: BorderRadius.circular(15.0),
                         child: Padding(
-                          padding: const EdgeInsets.only(right: 20.0, left: 15.0),
+                          padding:
+                              const EdgeInsets.only(right: 20.0, left: 15.0),
                           child: TextFormField(
                               obscureText: true,
                               controller: _confirmPass,
-                              decoration: InputDecoration(
-                                icon: Icon(Icons.lock, color: Colors.black, size: 32.0),
+                              decoration: const InputDecoration(
+                                icon: Icon(Icons.lock,
+                                    color: Colors.black, size: 32.0),
                                 labelText: "Confirm Password",
-                                labelStyle: TextStyle(color: Colors.black54, fontSize: 18.0),
+                                labelStyle: TextStyle(
+                                    color: Colors.black54, fontSize: 18.0),
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black54),
@@ -183,16 +189,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 border: InputBorder.none,
                               ),
                               validator: (val) {
-                                if (val!.isEmpty) return 'Confirm the password!!';
-                                if (val != _pass.text) return 'Passwords do not match';
+                                if (val!.isEmpty)
+                                  return 'Confirm the password!!';
+                                if (val != _pass.text)
+                                  return 'Passwords do not match';
                                 return null;
                               }),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 15.0),
-                  Container(
+                  const SizedBox(height: 15.0),
+                  SizedBox(
                     height: 55.0,
                     child: ElevatedButton(
                       onPressed: () async {
@@ -209,7 +217,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Home(),
+                              builder: (context) => const Home(),
                             ),
                           );
                         }
@@ -218,24 +226,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         backgroundColor: Colors.white,
                         elevation: 0.0,
                         minimumSize: Size(screenWidth, 55),
-                        padding: EdgeInsets.symmetric(horizontal: 30),
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(0)),
                         ),
                       ),
                       child: Ink(
                         decoration: BoxDecoration(
-                            boxShadow: <BoxShadow>[
+                            boxShadow: const <BoxShadow>[
                               BoxShadow(
                                   color: Color(0xfff05945),
-                                  offset: const Offset(1.1, 1.1),
+                                  offset: Offset(1.1, 1.1),
                                   blurRadius: 10.0),
                             ],
-                            color: Color(0xffF05945),
+                            color: const Color(0xffF05945),
                             borderRadius: BorderRadius.circular(12.0)),
                         child: Container(
                           alignment: Alignment.center,
-                          child: Text(
+                          child: const Text(
                             "Register",
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.white, fontSize: 25),
